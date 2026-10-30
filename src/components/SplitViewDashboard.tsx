@@ -59,13 +59,13 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
   };
 
   return (
-    <section id="care-plan-section" className="py-12 md:py-16 border-t border-white/5 bg-[#070A11]/60">
+    <section id="care-plan-section" className="py-14 md:py-20 border-t border-white/5 bg-[#06080F]/70">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Top Header & Action Bar */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-10">
           <div>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full neu-pill border border-cyan-500/30 text-cyan-300 text-xs font-mono font-bold mb-2">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full neu-pill border border-cyan-400/30 text-cyan-300 text-xs font-mono font-bold mb-2.5">
               <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
               <span>Verified Clinical Analysis Output</span>
             </div>
@@ -85,18 +85,18 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
             <button
               onClick={handleDownloadPDF}
               disabled={isExporting}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-2xl liquid-chrome-button text-slate-950 font-black text-xs sm:text-sm cursor-pointer"
+              className="flex items-center gap-2.5 px-5 py-2.5 rounded-2xl liquid-chrome-button text-slate-950 font-black text-xs sm:text-sm cursor-pointer"
             >
-              <Download className="w-4 h-4" />
+              <Download className="w-4 h-4 drop-shadow-[0_1px_1px_rgba(255,255,255,0.7)]" />
               <span>{isExporting ? 'Generating PDF...' : 'Download Care Plan (PDF)'}</span>
             </button>
 
             {/* Set Reminders (Neumorphic Raised) */}
             <button
               onClick={onOpenReminders}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-2xl neu-raised border border-white/5 hover:border-cyan-400/30 text-slate-200 hover:text-white font-bold text-xs sm:text-sm transition-all cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-2xl neu-raised border border-white/10 hover:border-cyan-400/40 text-slate-200 hover:text-white font-bold text-xs sm:text-sm transition-all cursor-pointer"
             >
-              <Bell className="w-4 h-4 text-cyan-400" />
+              <Bell className="w-4 h-4 text-cyan-400 drop-shadow-[0_0_8px_rgba(0,242,254,0.5)]" />
               <span>SMS / WhatsApp Reminders</span>
             </button>
 
@@ -105,8 +105,8 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
               onClick={onSaveToProfile}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl neu-raised border font-bold text-xs sm:text-sm transition-all cursor-pointer ${
                 isSaved
-                  ? 'border-emerald-500/40 text-emerald-300'
-                  : 'border-white/5 text-slate-300 hover:border-white/20'
+                  ? 'border-emerald-500/40 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.2)]'
+                  : 'border-white/10 text-slate-300 hover:border-white/25'
               }`}
             >
               {isSaved ? (
@@ -125,7 +125,7 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
             {/* Scan New Prescription Button */}
             <button
               onClick={onResetScan}
-              className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl neu-raised border border-white/5 hover:border-cyan-400/30 text-slate-300 hover:text-cyan-300 text-xs font-bold transition-all cursor-pointer"
+              className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl neu-raised border border-white/10 hover:border-cyan-400/40 text-slate-300 hover:text-cyan-300 text-xs font-bold transition-all cursor-pointer"
               title="Upload another prescription"
             >
               <RotateCcw className="w-3.5 h-3.5" />
@@ -135,7 +135,7 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
             {/* Share / Copy link */}
             <button
               onClick={handleShare}
-              className="p-2.5 rounded-2xl neu-raised border border-white/5 hover:border-white/20 text-slate-400 hover:text-slate-200 transition-all cursor-pointer"
+              className="p-2.5 rounded-2xl neu-raised border border-white/10 hover:border-white/25 text-slate-400 hover:text-slate-200 transition-all cursor-pointer"
               title="Share Link"
             >
               {copiedLink ? <Check className="w-4 h-4 text-emerald-400" /> : <Share2 className="w-4 h-4" />}
@@ -151,18 +151,18 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
           {/* ========================================================= */}
           <div className="lg:col-span-6 space-y-6">
             
-            {/* Patient & Doctor Header Box (Glassy + Neumorphic) */}
-            <div className="rounded-3xl glass-card-premium neu-flat p-5 sm:p-6 shadow-xl">
-              <div className="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-white/5">
-                <div className="flex items-center gap-2">
-                  <div className="p-2 rounded-xl neu-raised text-cyan-400 border border-white/5">
-                    <User className="w-4 h-4" />
+            {/* Patient & Doctor Header Box (Glassy Acrylic + Neumorphic) */}
+            <div className="rounded-3xl glass-card-premium neu-flat p-6 sm:p-7 shadow-2xl">
+              <div className="flex items-center justify-between gap-2 mb-5 pb-3.5 border-b border-white/10">
+                <div className="flex items-center gap-2.5">
+                  <div className="p-2 rounded-xl neu-raised text-cyan-400 border border-white/10">
+                    <User className="w-4 h-4 drop-shadow-[0_0_8px_rgba(0,242,254,0.5)]" />
                   </div>
                   <h3 className="text-xs font-black text-white uppercase tracking-wider font-mono">
                     Patient &amp; Prescriber Metadata
                   </h3>
                 </div>
-                <div className="flex items-center gap-1.5 text-xs font-mono text-emerald-400 neu-pill px-2.5 py-0.5 border border-emerald-500/20">
+                <div className="flex items-center gap-1.5 text-xs font-mono text-emerald-400 neu-pill px-3 py-1 border border-emerald-500/30 font-bold">
                   <ShieldCheck className="w-3.5 h-3.5" />
                   <span>Verified 98.4%</span>
                 </div>
@@ -170,9 +170,9 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                 {/* Patient Details */}
-                <div className="space-y-1.5 neu-raised p-4 rounded-2xl border border-white/5">
-                  <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Patient Name</div>
-                  <div className="text-sm font-bold text-white liquid-chrome-text">
+                <div className="space-y-1.5 neu-raised p-4 rounded-2xl border border-white/10">
+                  <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider font-bold">Patient Name</div>
+                  <div className="text-base font-black text-white liquid-chrome-silver-text">
                     {data.patient_info?.name || 'Verified Patient'}
                   </div>
                   <div className="text-slate-400 font-mono text-[11px]">
@@ -180,16 +180,16 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
                   </div>
                   <div className="flex items-center gap-1.5 text-slate-400 pt-1">
                     <Calendar className="w-3.5 h-3.5 text-slate-500" />
-                    <span>Rx Date: <strong className="text-slate-300 font-mono">{data.patient_info?.date || 'Current'}</strong></span>
+                    <span>Rx Date: <strong className="text-slate-200 font-mono">{data.patient_info?.date || 'Current'}</strong></span>
                   </div>
                 </div>
 
                 {/* Doctor Details */}
-                <div className="space-y-1.5 neu-raised p-4 rounded-2xl border border-white/5">
-                  <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Prescribing Physician</div>
-                  <div className="text-sm font-bold text-cyan-300 flex items-center gap-1.5">
-                    <Stethoscope className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-                    <span>{data.patient_info?.physician_name || 'Medical Officer'}</span>
+                <div className="space-y-1.5 neu-raised p-4 rounded-2xl border border-white/10">
+                  <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider font-bold">Prescribing Physician</div>
+                  <div className="text-base font-black text-cyan-300 flex items-center gap-1.5">
+                    <Stethoscope className="w-4 h-4 text-cyan-400 shrink-0 drop-shadow-[0_0_8px_rgba(0,242,254,0.5)]" />
+                    <span className="line-clamp-1">{data.patient_info?.physician_name || 'Medical Officer'}</span>
                   </div>
                   <div className="text-slate-400 flex items-center gap-1.5 text-[11px]">
                     <Building2 className="w-3.5 h-3.5 text-slate-500 shrink-0" />
@@ -197,7 +197,7 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
                   </div>
                   {data.patient_info?.diagnosis_impression && (
                     <div className="text-[11px] text-slate-400 line-clamp-2 pt-0.5 font-mono">
-                      <span className="text-slate-300 font-semibold">Impression:</span> {data.patient_info.diagnosis_impression}
+                      <span className="text-slate-300 font-bold">Impression:</span> {data.patient_info.diagnosis_impression}
                     </div>
                   )}
                 </div>
@@ -218,9 +218,9 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
 
             {/* Extracted Medications List */}
             <div>
-              <div className="flex items-center justify-between gap-2 mb-3">
+              <div className="flex items-center justify-between gap-2 mb-3.5">
                 <div className="flex items-center gap-2">
-                  <div className="p-1.5 rounded-xl neu-raised text-cyan-400 border border-white/5">
+                  <div className="p-1.5 rounded-xl neu-raised text-cyan-400 border border-white/10">
                     <FileCheck2 className="w-4 h-4" />
                   </div>
                   <h3 className="text-base font-bold text-white">
@@ -230,7 +230,7 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
                 <span className="text-xs text-slate-400 font-mono">Mapped to Active INN</span>
               </div>
 
-              <div className="space-y-3.5">
+              <div className="space-y-4">
                 {data.medications?.map((med, idx) => (
                   <MedicationCard key={idx} medication={med} index={idx} />
                 ))}
@@ -249,12 +249,12 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
           {/* ========================================================= */}
           <div className="lg:col-span-6 space-y-6">
             
-            {/* Schedule Container Box (Glassy + Neumorphic) */}
-            <div className="rounded-3xl glass-card-premium neu-flat p-5 sm:p-6 shadow-xl">
-              <div className="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-white/5">
+            {/* Schedule Container Box (Glassy Acrylic + Neumorphic) */}
+            <div className="rounded-3xl glass-card-premium neu-flat p-6 sm:p-7 shadow-2xl">
+              <div className="flex items-center justify-between gap-2 mb-5 pb-3.5 border-b border-white/10">
                 <div className="flex items-center gap-2.5">
-                  <div className="p-2 rounded-xl neu-raised text-cyan-400 border border-white/5">
-                    <Clock className="w-4 h-4" />
+                  <div className="p-2 rounded-xl neu-raised text-cyan-400 border border-white/10">
+                    <Clock className="w-4 h-4 drop-shadow-[0_0_8px_rgba(0,242,254,0.5)]" />
                   </div>
                   <div>
                     <h3 className="text-xs font-black text-white uppercase tracking-wider font-mono">
@@ -266,7 +266,7 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
                   </div>
                 </div>
 
-                <span className="text-xs font-mono text-cyan-400 neu-pill px-3 py-1 border border-cyan-500/20 font-bold">
+                <span className="text-xs font-mono text-cyan-300 neu-pill px-3 py-1 border border-cyan-400/30 font-bold shadow-[0_0_12px_rgba(0,242,254,0.15)]">
                   {data.schedule_24h?.length || 0} Dose Slots
                 </span>
               </div>
@@ -278,15 +278,15 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
             {/* Dietary & Lifestyle Guardrails Box */}
             <DietaryGuardrails warnings={data.dietary_warnings} />
 
-            {/* Quick Helper / Caregiver Tips */}
-            <div className="p-4 rounded-3xl neu-raised border border-white/5 text-xs text-slate-400 flex items-center justify-between">
+            {/* Caregiver Sync Helper */}
+            <div className="p-5 rounded-3xl neu-raised border border-white/10 text-xs text-slate-400 flex items-center justify-between">
               <div>
-                <span className="text-white font-bold">Caregiver Synchronization Available</span>
+                <span className="text-white font-bold text-sm">Caregiver Synchronization Available</span>
                 <p className="text-slate-400 text-[11px] mt-0.5">Automated SMS / WhatsApp alerts notify designated family members on missed doses.</p>
               </div>
               <button
                 onClick={onOpenReminders}
-                className="shrink-0 ml-4 px-3.5 py-1.5 rounded-xl neu-raised border border-cyan-400/40 text-cyan-300 font-bold text-xs hover:border-cyan-400 transition-colors cursor-pointer"
+                className="shrink-0 ml-4 px-4 py-2 rounded-2xl neu-raised border border-cyan-400/40 text-cyan-300 font-bold text-xs hover:border-cyan-400 transition-colors cursor-pointer"
               >
                 Configure
               </button>

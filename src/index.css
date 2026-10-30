@@ -9,10 +9,15 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #070A11;
+  background-color: #06080F;
   color: #FFFFFF;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
+  background-image: 
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 242, 254, 0.08), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 85% 60%, rgba(59, 130, 246, 0.04), transparent 60%),
+    radial-gradient(ellipse 50% 30% at 15% 40%, rgba(0, 242, 254, 0.03), transparent 50%);
+  background-attachment: fixed;
 }
 
 /* Custom Scrollbar */
@@ -22,152 +27,250 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #070A11;
+  background: #06080F;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1b2438;
+  background: #141c2e;
   border-radius: 9999px;
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: #00F2FE;
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
 }
 
 /* ========================================================= */
-/* LIQUID CHROME & METALLIC SHEEN TOKENS                     */
+/* LIQUID CHROME METALLIC SHINE & REFLECTIONS                */
 /* ========================================================= */
+@keyframes liquidSheen {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes mercuryPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 12px rgba(0, 242, 254, 0.35)) drop-shadow(0 0 24px rgba(255, 255, 255, 0.15));
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(0, 242, 254, 0.6)) drop-shadow(0 0 35px rgba(56, 189, 248, 0.3));
+  }
+}
+
 .liquid-chrome-text {
-  background: linear-gradient(135deg, #FFFFFF 0%, #E2E8F0 25%, #94A3B8 50%, #FFFFFF 75%, #CBD5E1 100%);
+  background: linear-gradient(
+    135deg, 
+    #FFFFFF 0%, 
+    #E2E8F0 18%, 
+    #94A3B8 38%, 
+    #FFFFFF 55%, 
+    #CBD5E1 75%, 
+    #FFFFFF 100%
+  );
+  background-size: 250% 250%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  animation: liquidSheen 8s ease infinite;
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.25);
 }
 
 .liquid-chrome-cyan-text {
-  background: linear-gradient(135deg, #FFFFFF 0%, #00F2FE 30%, #38BDF8 60%, #FFFFFF 85%, #06B6D4 100%);
+  background: linear-gradient(
+    135deg, 
+    #FFFFFF 0%, 
+    #00F2FE 25%, 
+    #38BDF8 50%, 
+    #FFFFFF 75%, 
+    #06B6D4 90%,
+    #00F2FE 100%
+  );
+  background-size: 250% 250%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 16px rgba(0, 242, 254, 0.35));
+  animation: liquidSheen 6s ease infinite;
+  animation-name: liquidSheen, mercuryPulse;
+  animation-duration: 6s, 4s;
+  animation-iteration-count: infinite, infinite;
 }
 
-.liquid-chrome-border {
-  border: 1px solid transparent;
-  background-image: linear-gradient(#0c111e, #0c111e), linear-gradient(135deg, rgba(255, 255, 255, 0.45) 0%, rgba(0, 242, 254, 0.3) 30%, rgba(255, 255, 255, 0.05) 50%, rgba(59, 130, 246, 0.3) 75%, rgba(255, 255, 255, 0.4) 100%);
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
+.liquid-chrome-silver-text {
+  background: linear-gradient(135deg, #FFFFFF 0%, #E2E8F0 30%, #94A3B8 50%, #F8FAFC 70%, #CBD5E1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
+/* Liquid Chrome Button with Metallic Specular Sheen */
 .liquid-chrome-button {
-  background: linear-gradient(135deg, #00F2FE 0%, #38BDF8 35%, #2563EB 70%, #00F2FE 100%);
+  position: relative;
+  background: linear-gradient(135deg, #FFFFFF 0%, #00F2FE 20%, #38BDF8 50%, #2563EB 80%, #00F2FE 100%);
   background-size: 200% 200%;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: liquidSheen 5s ease infinite;
+  color: #03060E;
+  font-weight: 900;
+  border: 1px solid rgba(255, 255, 255, 0.7);
   box-shadow: 
-    0 4px 15px -3px rgba(0, 242, 254, 0.4),
-    inset 0 1px 1px rgba(255, 255, 255, 0.6),
-    inset 0 -1px 2px rgba(0, 0, 0, 0.4);
+    0 6px 20px -2px rgba(0, 242, 254, 0.45),
+    0 0 15px rgba(0, 242, 254, 0.25),
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.95),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.45);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.liquid-chrome-button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  transform: skewX(-25deg);
+  transition: all 0.75s ease;
+}
+
+.liquid-chrome-button:hover::after {
+  left: 140%;
 }
 
 .liquid-chrome-button:hover {
-  background-position: right center;
+  transform: translateY(-2px);
   box-shadow: 
-    0 6px 25px -2px rgba(0, 242, 254, 0.6),
-    inset 0 1px 2px rgba(255, 255, 255, 0.8),
-    inset 0 -1px 3px rgba(0, 0, 0, 0.5);
-  transform: translateY(-1px);
+    0 8px 30px -2px rgba(0, 242, 254, 0.65),
+    0 0 25px rgba(0, 242, 254, 0.4),
+    inset 0 2px 3px rgba(255, 255, 255, 1),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .liquid-chrome-button:active {
   transform: translateY(1px);
   box-shadow: 
-    0 2px 8px -1px rgba(0, 242, 254, 0.3),
-    inset 0 2px 4px rgba(0, 0, 0, 0.4);
+    0 2px 10px -1px rgba(0, 242, 254, 0.3),
+    inset 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 /* ========================================================= */
-/* NEUMORPHISM (DARK MODE SOFT EXTRUDED & INSET DEPTH)       */
+/* NEUMORPHISM (DARK MODE SCULPTED 3D DEPTH)                 */
 /* ========================================================= */
-.neu-flat {
-  background: #0C111D;
+
+/* Raised Surface: Casts soft shadow bottom-right and subtle light top-left */
+.neu-raised {
+  background: linear-gradient(145deg, #0e1424, #080c16);
   box-shadow: 
-    6px 6px 14px #04060b, 
+    7px 7px 16px #030408, 
+    -5px -5px 14px rgba(255, 255, 255, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.neu-raised:hover {
+  background: linear-gradient(145deg, #101729, #090e1a);
+  box-shadow: 
+    9px 9px 20px #030408, 
+    -6px -6px 16px rgba(255, 255, 255, 0.07),
+    inset 0 1px 1px rgba(255, 255, 255, 0.22);
+  transform: translateY(-1.5px);
+}
+
+.neu-raised:active {
+  background: linear-gradient(145deg, #070a13, #0a0e1c);
+  box-shadow: 
+    inset 4px 4px 8px #020306, 
+    inset -3px -3px 6px rgba(255, 255, 255, 0.04);
+  transform: translateY(1px);
+}
+
+/* Flat Neumorphic Base */
+.neu-flat {
+  background: #0B0F1B;
+  box-shadow: 
+    6px 6px 14px #030407, 
     -5px -5px 12px rgba(255, 255, 255, 0.03),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
-.neu-raised {
-  background: #0E1524;
+/* Sunken Inset Well / Cavity (Inputs, debossed panels, dropzones) */
+.neu-pressed {
+  background: #060912;
   box-shadow: 
-    8px 8px 18px #04060c, 
-    -6px -6px 16px rgba(255, 255, 255, 0.04),
-    inset 0 1px 1px rgba(255, 255, 255, 0.12);
-  transition: all 0.25s ease;
+    inset 5px 5px 10px #020307, 
+    inset -4px -4px 8px rgba(255, 255, 255, 0.03),
+    0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-.neu-raised:hover {
-  box-shadow: 
-    10px 10px 22px #04060c, 
-    -7px -7px 18px rgba(255, 255, 255, 0.06),
-    inset 0 1px 1px rgba(255, 255, 255, 0.2);
-  transform: translateY(-1px);
-}
-
-.neu-raised:active, .neu-pressed {
-  background: #0a0e18;
-  box-shadow: 
-    inset 4px 4px 8px #030509, 
-    inset -3px -3px 8px rgba(255, 255, 255, 0.03);
-  transform: translateY(1px);
-}
-
+/* Neumorphic Rounded Pill */
 .neu-pill {
-  background: #0d1321;
+  background: linear-gradient(145deg, #0d1322, #080c17);
   box-shadow: 
-    4px 4px 10px #04060b, 
-    -3px -3px 8px rgba(255, 255, 255, 0.03),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    4px 4px 10px #030407, 
+    -3px -3px 8px rgba(255, 255, 255, 0.035),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 /* ========================================================= */
-/* GLASSY CARD WITH SPECULAR REFLECTION & BLUR               */
+/* GLASSY FOR CARDS (FROSTED ACRYLIC + SPECULAR GLOW)        */
 /* ========================================================= */
 .glass-card-premium {
-  background: rgba(14, 21, 36, 0.75);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: radial-gradient(120% 120% at 50% 0%, rgba(18, 26, 46, 0.72) 0%, rgba(8, 12, 22, 0.85) 100%);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 
-    0 10px 35px -5px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12),
-    inset 0 0 15px rgba(0, 242, 254, 0.02);
+    0 20px 50px -10px rgba(0, 0, 0, 0.75),
+    inset 0 1.5px 0 0 rgba(255, 255, 255, 0.18),
+    inset 0 0 20px rgba(0, 242, 254, 0.02);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glass-card-premium:hover {
-  border-color: rgba(0, 242, 254, 0.28);
+  border-color: rgba(0, 242, 254, 0.35);
   box-shadow: 
-    0 15px 45px -5px rgba(0, 0, 0, 0.7),
-    0 0 25px -5px rgba(0, 242, 254, 0.12),
-    inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    0 25px 60px -10px rgba(0, 0, 0, 0.85),
+    0 0 30px -5px rgba(0, 242, 254, 0.15),
+    inset 0 2px 1px 0 rgba(255, 255, 255, 0.28);
 }
 
-/* Glowing Aura */
-.glow-cyan-liquid {
-  box-shadow: 0 0 35px -5px rgba(0, 242, 254, 0.35);
+/* Sub-card glass inside panels */
+.glass-subcard {
+  background: rgba(11, 16, 29, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 
+    0 8px 20px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-/* Animated Laser Scan */
+.glass-subcard:hover {
+  border-color: rgba(0, 242, 254, 0.3);
+  box-shadow: 
+    0 12px 25px rgba(0, 0, 0, 0.5),
+    0 0 15px rgba(0, 242, 254, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+/* ========================================================= */
+/* LASER & HUD SCANNING EFFECTS                              */
+/* ========================================================= */
 @keyframes laserSweep {
   0% {
     top: 0%;
-    opacity: 0.9;
+    opacity: 0.95;
   }
   50% {
     opacity: 1;
   }
   100% {
     top: 98%;
-    opacity: 0.9;
+    opacity: 0.95;
   }
 }
 
@@ -176,25 +279,33 @@ body {
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, transparent, #FFFFFF, #00F2FE, #3B82F6, #FFFFFF, transparent);
-  box-shadow: 0 0 18px #00F2FE, 0 0 35px #38BDF8;
+  background: linear-gradient(
+    90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.8) 15%, 
+    #00F2FE 40%, 
+    #38BDF8 60%, 
+    rgba(255, 255, 255, 0.8) 85%, 
+    transparent 100%
+  );
+  box-shadow: 
+    0 0 15px #00F2FE, 
+    0 0 30px #38BDF8, 
+    0 0 50px rgba(0, 242, 254, 0.5);
   animation: laserSweep 2s ease-in-out infinite alternate;
   z-index: 20;
 }
 
-/* Metallic specular gradient border utility */
-.chrome-gradient-border {
-  position: relative;
+/* Floating liquid chrome ball animation */
+@keyframes floatChrome {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(3deg);
+  }
 }
-.chrome-gradient-border::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(0, 242, 254, 0.2), rgba(255, 255, 255, 0.05), rgba(59, 130, 246, 0.3));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
+
+.animate-float-chrome {
+  animation: floatChrome 6s ease-in-out infinite;
 }
