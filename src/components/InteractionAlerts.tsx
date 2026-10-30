@@ -52,18 +52,27 @@ export const InteractionAlerts: React.FC<InteractionAlertsProps> = ({ interactio
 
   return (
     <div className="space-y-3">
+      <div className="flex items-center gap-2 mb-2">
+        <div className="p-1.5 rounded-xl neu-raised text-rose-400 border border-white/5">
+          <AlertTriangle className="w-4 h-4" />
+        </div>
+        <h3 className="text-base font-bold text-white">
+          Multi-Drug Hazard Matrix ({interactions.length})
+        </h3>
+      </div>
+
       {interactions.map((interaction, idx) => {
         const style = getSeverityBadge(interaction.severity);
 
         return (
           <div
             key={idx}
-            className={`p-4 rounded-2xl border transition-all duration-300 shadow-sm ${style.wrapper}`}
+            className={`p-4 rounded-2xl glass-card-premium neu-flat border transition-all duration-300 shadow-sm ${style.wrapper}`}
           >
             <div className="flex items-start justify-between gap-3 mb-2">
               <div className="flex items-center gap-2">
                 {style.icon}
-                <span className="text-xs font-bold text-white uppercase tracking-wider">
+                <span className="text-xs font-bold text-white uppercase tracking-wider font-mono">
                   {style.title}
                 </span>
               </div>
@@ -88,4 +97,3 @@ export const InteractionAlerts: React.FC<InteractionAlertsProps> = ({ interactio
     </div>
   );
 };
-

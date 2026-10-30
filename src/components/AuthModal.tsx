@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Lock, Mail, User, ShieldCheck, ArrowRight } from 'lucide-react';
+import { X, Lock, Mail, User } from 'lucide-react';
 import { UserProfile } from '../types/prescription';
 import { saveUserProfile } from '../services/storage';
 
@@ -22,7 +22,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSu
     const user: UserProfile = {
       id: `usr-${Date.now()}`,
       name: fullName || (activeTab === 'login' ? 'Dr. Sarah Jenkins' : 'New User'),
-      email: email || 'user@medilens.health',
+      email: email || 'user@medscan.health',
       role: 'clinician',
     };
     saveUserProfile(user);
@@ -35,7 +35,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSu
       ? {
           id: 'demo-clinician',
           name: 'Dr. Alistair Vance, MD',
-          email: 'alistair.vance@apexhealth.org',
+          email: 'alistair.vance@medscan.health',
           role: 'clinician',
         }
       : {
@@ -53,36 +53,36 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSu
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <div className="relative w-full max-w-md rounded-3xl bg-[#111827] border border-slate-800 p-6 sm:p-8 shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+      <div className="relative w-full max-w-md rounded-3xl glass-card-premium neu-flat p-6 sm:p-8 shadow-2xl border border-white/10">
         
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
+          className="absolute top-5 right-5 p-2 rounded-xl neu-raised text-slate-400 hover:text-white transition-colors cursor-pointer"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Header */}
         <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 mb-3 shadow-[0_0_20px_rgba(6,182,212,0.2)]">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl neu-raised border border-cyan-400/30 text-cyan-400 mb-3 shadow-[0_0_20px_rgba(0,242,254,0.2)]">
             <Lock className="w-6 h-6" />
           </div>
-          <h3 className="text-xl font-bold text-white">MediLens Account</h3>
+          <h3 className="text-xl font-black text-white liquid-chrome-text">MedScan AI Account</h3>
           <p className="text-xs text-slate-400 mt-1">
             Access past prescriptions, track adherence, and sync caregiver alerts
           </p>
         </div>
 
         {/* Tab Switcher */}
-        <div className="grid grid-cols-2 p-1 rounded-xl bg-slate-950 border border-slate-800 mb-6">
+        <div className="grid grid-cols-2 p-1.5 rounded-2xl neu-pressed border border-white/5 mb-6">
           <button
             type="button"
             onClick={() => setActiveTab('login')}
-            className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+            className={`py-2 text-xs font-bold rounded-xl transition-all cursor-pointer ${
               activeTab === 'login'
-                ? 'bg-cyan-500 text-slate-950 shadow-md'
+                ? 'liquid-chrome-button text-slate-950 font-black shadow-md'
                 : 'text-slate-400 hover:text-white'
             }`}
           >
@@ -91,9 +91,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSu
           <button
             type="button"
             onClick={() => setActiveTab('signup')}
-            className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+            className={`py-2 text-xs font-bold rounded-xl transition-all cursor-pointer ${
               activeTab === 'signup'
-                ? 'bg-cyan-500 text-slate-950 shadow-md'
+                ? 'liquid-chrome-button text-slate-950 font-black shadow-md'
                 : 'text-slate-400 hover:text-white'
             }`}
           >
@@ -105,7 +105,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSu
         <button
           type="button"
           onClick={() => handleDemoLogin('patient')}
-          className="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl border border-slate-700 hover:border-slate-500 bg-slate-900/80 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold transition-all mb-4 cursor-pointer"
+          className="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-2xl neu-raised border border-white/10 hover:border-white/20 text-white text-xs sm:text-sm font-bold transition-all mb-4 cursor-pointer"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24">
             <path
@@ -130,9 +130,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSu
 
         <div className="relative flex items-center justify-center my-4">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-slate-800" />
+            <div className="w-full border-t border-white/5" />
           </div>
-          <span className="relative px-3 text-[11px] font-mono uppercase bg-[#111827] text-slate-500">
+          <span className="relative px-3 text-[10px] font-mono uppercase bg-[#0C111D] text-slate-500">
             Or with email
           </span>
         </div>
@@ -141,7 +141,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSu
         <form onSubmit={handleSubmit} className="space-y-4">
           {activeTab === 'signup' && (
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1 font-mono">
                 Full Name
               </label>
               <div className="relative">
@@ -152,14 +152,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSu
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="e.g. Dr. Jane Smith"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:border-cyan-400 transition-colors"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-2xl neu-pressed border border-white/5 text-sm text-white focus:outline-none focus:border-cyan-400 transition-colors"
                 />
               </div>
             </div>
           )}
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
+            <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1 font-mono">
               Email Address
             </label>
             <div className="relative">
@@ -170,13 +170,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSu
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="doctor@hospital.org"
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:border-cyan-400 transition-colors"
+                className="w-full pl-10 pr-4 py-2.5 rounded-2xl neu-pressed border border-white/5 text-sm text-white focus:outline-none focus:border-cyan-400 transition-colors"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
+            <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1 font-mono">
               Password
             </label>
             <div className="relative">
@@ -187,34 +187,34 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSu
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:border-cyan-400 transition-colors"
+                className="w-full pl-10 pr-4 py-2.5 rounded-2xl neu-pressed border border-white/5 text-sm text-white focus:outline-none focus:border-cyan-400 transition-colors"
               />
             </div>
           </div>
 
           <button
             type="submit"
-            className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-950 font-bold text-sm shadow-[0_0_20px_rgba(0,242,254,0.3)] transition-all cursor-pointer"
+            className="w-full py-3 px-4 rounded-2xl liquid-chrome-button text-slate-950 font-black text-sm cursor-pointer mt-2"
           >
             {activeTab === 'login' ? 'Sign In to Dashboard' : 'Create Free Account'}
           </button>
         </form>
 
         {/* Demo Fast Login Switcher */}
-        <div className="mt-6 pt-4 border-t border-slate-800 text-center">
+        <div className="mt-6 pt-4 border-t border-white/5 text-center">
           <span className="text-[11px] text-slate-500 block mb-2 font-mono">
             ⚡ Quick Test / Guest Access:
           </span>
           <div className="flex items-center justify-center gap-2">
             <button
               onClick={() => handleDemoLogin('clinician')}
-              className="text-xs px-2.5 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-cyan-300 border border-slate-700 cursor-pointer"
+              className="text-xs px-3 py-1.5 rounded-xl neu-raised text-cyan-300 border border-white/5 cursor-pointer font-semibold"
             >
               Demo Clinician
             </button>
             <button
               onClick={() => handleDemoLogin('patient')}
-              className="text-xs px-2.5 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-emerald-300 border border-slate-700 cursor-pointer"
+              className="text-xs px-3 py-1.5 rounded-xl neu-raised text-emerald-300 border border-white/5 cursor-pointer font-semibold"
             >
               Demo Patient
             </button>
@@ -224,4 +224,3 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSu
     </div>
   );
 };
-

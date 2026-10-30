@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pill, Clock, Calendar, AlertCircle, Info, Sparkles } from 'lucide-react';
+import { Sparkles, Calendar, Info } from 'lucide-react';
 import { Medication } from '../types/prescription';
 
 interface MedicationCardProps {
@@ -26,27 +26,27 @@ export const MedicationCard: React.FC<MedicationCardProps> = ({ medication, inde
   };
 
   return (
-    <div className="rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-cyan-500/40 p-4 sm:p-5 transition-all duration-300 group shadow-md">
+    <div className="rounded-2xl glass-card-premium neu-flat p-4 sm:p-5 transition-all duration-300 group shadow-md hover:border-cyan-400/40">
       {/* Top Row: Index, Brand Name & Generic Formula */}
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
         <div className="flex items-start gap-3">
-          <div className="w-8 h-8 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-mono text-xs font-bold shrink-0 mt-0.5">
+          <div className="w-8 h-8 rounded-xl neu-raised border border-cyan-400/30 flex items-center justify-center text-cyan-400 font-mono text-xs font-bold shrink-0 mt-0.5">
             0{index + 1}
           </div>
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <h4 className="text-base sm:text-lg font-bold text-white group-hover:text-cyan-300 transition-colors">
+              <h4 className="text-base sm:text-lg font-black text-white group-hover:text-cyan-300 transition-colors">
                 {medication.brand_name}
               </h4>
               {medication.food_relation && (
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-slate-800 border border-slate-700 text-slate-300">
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-mono neu-pill border border-white/5 text-slate-300">
                   {medication.food_relation}
                 </span>
               )}
             </div>
 
             {/* Generic Chemical Mapping: Green badge showing exact active ingredient */}
-            <div className="mt-1.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-medium">
+            <div className="mt-1.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-medium">
               <Sparkles className="w-3 h-3 text-emerald-400 shrink-0" />
               <span>Generic: {medication.generic_name}</span>
             </div>
@@ -55,18 +55,18 @@ export const MedicationCard: React.FC<MedicationCardProps> = ({ medication, inde
 
         {/* Dosage & Frequency Badges */}
         <div className="flex flex-wrap sm:flex-col items-start sm:items-end gap-1.5 mt-2 sm:mt-0 font-mono text-xs">
-          <span className="px-2.5 py-1 rounded-md bg-slate-800 text-slate-200 font-semibold border border-slate-700">
+          <span className="px-2.5 py-1 rounded-xl neu-raised text-slate-100 font-bold border border-white/10">
             {medication.dosage}
           </span>
-          <span className="text-[11px] text-cyan-400">
+          <span className="text-[11px] text-cyan-400 font-bold">
             {medication.frequency}
           </span>
         </div>
       </div>
 
       {/* Middle Row: Duration & Designated Timing Slots */}
-      <div className="mt-4 pt-3.5 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3 text-xs">
-        <div className="flex items-center gap-2 text-slate-400">
+      <div className="mt-4 pt-3.5 border-t border-white/5 flex flex-wrap items-center justify-between gap-3 text-xs">
+        <div className="flex items-center gap-2 text-slate-400 font-medium">
           <Calendar className="w-3.5 h-3.5 text-slate-500" />
           <span>Duration: <strong className="text-slate-200 font-mono">{medication.duration || 'As prescribed'}</strong></span>
         </div>
@@ -78,7 +78,7 @@ export const MedicationCard: React.FC<MedicationCardProps> = ({ medication, inde
             medication.timing_slots.map((slot, sIdx) => (
               <span
                 key={sIdx}
-                className={`px-2 py-0.5 rounded-md text-[11px] font-medium border ${getSlotBadgeColor(
+                className={`px-2.5 py-0.5 rounded-lg text-[11px] font-semibold border ${getSlotBadgeColor(
                   slot
                 )}`}
               >
@@ -93,7 +93,7 @@ export const MedicationCard: React.FC<MedicationCardProps> = ({ medication, inde
 
       {/* Special Instructions / Advice Box */}
       {medication.special_instructions && (
-        <div className="mt-3 p-2.5 rounded-xl bg-slate-950/60 border border-slate-800/80 text-xs text-slate-300 flex items-start gap-2">
+        <div className="mt-3 p-3 rounded-xl neu-pressed border border-white/5 text-xs text-slate-300 flex items-start gap-2">
           <Info className="w-3.5 h-3.5 text-cyan-400 shrink-0 mt-0.5" />
           <span className="leading-relaxed">{medication.special_instructions}</span>
         </div>
@@ -101,4 +101,3 @@ export const MedicationCard: React.FC<MedicationCardProps> = ({ medication, inde
     </div>
   );
 };
-

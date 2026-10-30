@@ -2,12 +2,12 @@ import { PrescriptionAnalysisResult, PrescriptionHistoryItem, UserProfile } from
 import { SAMPLE_PRESCRIPTIONS } from './sampleData';
 
 const STORAGE_KEYS = {
-  HISTORY: 'medilens_history_v1',
-  ACTIVE_RESULT: 'medilens_active_result_v1',
-  API_KEY: 'medilens_gemini_api_key',
-  SELECTED_MODEL: 'medilens_gemini_model',
-  USER_PROFILE: 'medilens_user_profile_v1',
-  REMINDERS: 'medilens_reminders_v1',
+  HISTORY: 'medscan_history_v2',
+  ACTIVE_RESULT: 'medscan_active_result_v2',
+  API_KEY: 'medscan_gemini_api_key',
+  SELECTED_MODEL: 'medscan_gemini_model',
+  USER_PROFILE: 'medscan_user_profile_v2',
+  REMINDERS: 'medscan_reminders_v2',
 };
 
 export function getStoredApiKey(): string {
@@ -38,7 +38,7 @@ export function getStoredHistory(): PrescriptionHistoryItem[] {
   if (typeof window === 'undefined') return [];
   const raw = localStorage.getItem(STORAGE_KEYS.HISTORY);
   if (!raw) {
-    // Seed with our high quality sample prescriptions so user has immediate rich history
+    // Seed with high quality sample prescriptions
     const initialHistory: PrescriptionHistoryItem[] = SAMPLE_PRESCRIPTIONS.slice(0, 3).map((sample, idx) => ({
       id: `hist-${sample.id}`,
       created_at: new Date(Date.now() - (idx + 1) * 86400000 * 2).toISOString(),
@@ -94,7 +94,7 @@ export function getStoredUserProfile(): UserProfile {
     return {
       id: 'demo-user-1',
       name: 'Dr. Alistair Vance',
-      email: 'alistair.vance@medilens.health',
+      email: 'alistair.vance@medscan.health',
       role: 'clinician',
     };
   }
@@ -123,4 +123,3 @@ export function saveUserProfile(profile: UserProfile): void {
   if (typeof window === 'undefined') return;
   localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(profile));
 }
-

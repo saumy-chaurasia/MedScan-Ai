@@ -9,7 +9,6 @@ import { AuthModal } from './components/AuthModal';
 import { HistoryModal } from './components/HistoryModal';
 import { ApiKeyModal } from './components/ApiKeyModal';
 import { ReminderModal } from './components/ReminderModal';
-import { DocsModal } from './components/DocsModal';
 import { PrescriptionAnalysisResult, PrescriptionHistoryItem, UserProfile } from './types/prescription';
 import { SAMPLE_PRESCRIPTIONS, SamplePrescriptionItem } from './services/sampleData';
 import { 
@@ -31,7 +30,7 @@ export const App: React.FC = () => {
   );
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
-  const [statusMessage, setStatusMessage] = useState('Extracting handwritten text via AI Vision...');
+  const [statusMessage, setStatusMessage] = useState('Extracting handwritten script and clinical typography...');
   const [history, setHistory] = useState<PrescriptionHistoryItem[]>([]);
   const [isSaved, setIsSaved] = useState(false);
   const [apiKeyConfigured, setApiKeyConfigured] = useState(false);
@@ -42,7 +41,6 @@ export const App: React.FC = () => {
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [isApiKeyOpen, setIsApiKeyOpen] = useState(false);
   const [isReminderOpen, setIsReminderOpen] = useState(false);
-  const [isDocsOpen, setIsDocsOpen] = useState(false);
 
   // Toast alert feedback
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -75,7 +73,7 @@ export const App: React.FC = () => {
   const handleAnalyzeFile = async (file: File) => {
     setIsAnalyzing(true);
     setCurrentStep(1);
-    setStatusMessage('Extracting handwritten text via AI Vision...');
+    setStatusMessage('Extracting handwritten script and clinical typography...');
 
     const tempUrl = URL.createObjectURL(file);
     setPreviewUrl(tempUrl);
@@ -99,7 +97,7 @@ export const App: React.FC = () => {
       setHistory((prev) => [savedItem, ...prev]);
       setIsSaved(true);
 
-      showToast('✓ Prescription analyzed & care plan generated successfully!');
+      showToast('✓ MedScan AI: Prescription decoded successfully!');
 
       // Smooth scroll to results
       setTimeout(() => {
@@ -116,7 +114,7 @@ export const App: React.FC = () => {
   const handleSelectSample = (sample: SamplePrescriptionItem) => {
     setIsAnalyzing(true);
     setCurrentStep(1);
-    setStatusMessage('Loading sample clinical prescription...');
+    setStatusMessage('Loading clinical scenario...');
     setPreviewUrl(sample.imageThumbnail);
     setIsSaved(false);
 
@@ -127,7 +125,7 @@ export const App: React.FC = () => {
 
     setTimeout(() => {
       setCurrentStep(3);
-      setStatusMessage('Evaluating drug-drug interaction matrix...');
+      setStatusMessage('Evaluating multi-drug interaction matrix...');
     }, 800);
 
     setTimeout(() => {
@@ -141,6 +139,13 @@ export const App: React.FC = () => {
       showToast(`Loaded ${sample.title} Care Plan!`);
       scrollTo('care-plan-section');
     }, 1600);
+  };
+
+  // Reset Scan
+  const handleResetScan = () => {
+    setPreviewUrl(null);
+    scrollTo('scanner-section');
+    showToast('Ready for new prescription scan.');
   };
 
   // Manual Save Action
@@ -164,11 +169,11 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B0F19] text-white flex flex-col font-sans selection:bg-cyan-500/30 selection:text-cyan-200">
+    <div className="min-h-screen bg-[#070A11] text-white flex flex-col font-sans selection:bg-cyan-500/30 selection:text-cyan-200">
       
-      {/* Toast Notification */}
+      {/* Toast Notification (Neumorphic Liquid Toast) */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 px-5 py-3 rounded-2xl bg-slate-900/95 border border-cyan-500/50 text-cyan-300 font-medium text-xs sm:text-sm shadow-[0_0_25px_rgba(0,242,254,0.3)] backdrop-blur-md animate-fade-in flex items-center gap-2">
+        <div className="fixed bottom-6 right-6 z-50 px-5 py-3 rounded-2xl glass-card-premium neu-flat border border-cyan-400/40 text-cyan-300 font-bold text-xs sm:text-sm shadow-[0_0_30px_rgba(0,242,254,0.3)] backdrop-blur-2xl animate-fade-in flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
           <span>{toastMessage}</span>
         </div>
@@ -179,7 +184,6 @@ export const App: React.FC = () => {
         onOpenAuth={() => setIsAuthOpen(true)}
         onOpenHistory={() => setIsHistoryOpen(true)}
         onOpenApiKey={() => setIsApiKeyOpen(true)}
-        onOpenDocs={() => setIsDocsOpen(true)}
         onSelectSample={(sampleId) => {
           const s = SAMPLE_PRESCRIPTIONS.find((p) => p.id === sampleId);
           if (s) handleSelectSample(s);
@@ -201,6 +205,7 @@ export const App: React.FC = () => {
         <PrescriptionScanner
           onAnalyzeFile={handleAnalyzeFile}
           onSelectSample={handleSelectSample}
+          onResetScan={handleResetScan}
           isAnalyzing={isAnalyzing}
           currentStep={currentStep}
           statusMessage={statusMessage}
@@ -213,6 +218,7 @@ export const App: React.FC = () => {
             data={activeResult}
             onOpenReminders={() => setIsReminderOpen(true)}
             onSaveToProfile={handleSaveToProfile}
+            onResetScan={handleResetScan}
             isSaved={isSaved}
           />
         )}
@@ -225,7 +231,6 @@ export const App: React.FC = () => {
 
       {/* Footer */}
       <Footer
-        onOpenDocs={() => setIsDocsOpen(true)}
         onOpenApiKey={() => setIsApiKeyOpen(true)}
       />
 
@@ -257,7 +262,7 @@ export const App: React.FC = () => {
         onClose={() => setIsApiKeyOpen(false)}
         onKeySaved={(hasKey) => {
           setApiKeyConfigured(hasKey);
-          showToast(hasKey ? 'Gemini 2.0 API Key connected!' : 'Demo mode restored');
+          showToast(hasKey ? 'Vision AI Engine connected!' : 'Demo mode active');
         }}
       />
 
@@ -266,14 +271,8 @@ export const App: React.FC = () => {
         onClose={() => setIsReminderOpen(false)}
         patientName={activeResult?.patient_info?.name || 'Patient'}
       />
-
-      <DocsModal
-        isOpen={isDocsOpen}
-        onClose={() => setIsDocsOpen(false)}
-      />
     </div>
   );
 };
 
 export default App;
-

@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, History, Trash2, Eye, Calendar, Pill, CheckCircle2, AlertCircle } from 'lucide-react';
+import { X, History, Trash2, Eye, Pill } from 'lucide-react';
 import { PrescriptionHistoryItem } from '../types/prescription';
 
 interface HistoryModalProps {
@@ -20,24 +20,24 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <div className="relative w-full max-w-4xl max-h-[85vh] rounded-3xl bg-[#111827] border border-slate-800 p-6 sm:p-8 shadow-2xl flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+      <div className="relative w-full max-w-4xl max-h-[85vh] rounded-3xl glass-card-premium neu-flat p-6 sm:p-8 shadow-2xl flex flex-col border border-white/10">
         
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
+          className="absolute top-5 right-5 p-2 rounded-xl neu-raised text-slate-400 hover:text-white transition-colors cursor-pointer"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Header */}
         <div className="flex items-center gap-3 mb-6 shrink-0">
-          <div className="p-3 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400">
+          <div className="p-3 rounded-2xl neu-raised border border-cyan-400/30 text-cyan-400">
             <History className="w-6 h-6" />
           </div>
           <div>
-            <h3 className="text-xl font-bold text-white">Historical Prescription Records</h3>
+            <h3 className="text-xl font-black text-white liquid-chrome-text">Historical Prescription Records</h3>
             <p className="text-xs text-slate-400">
               Audit log of all analyzed prescriptions, active courses, and chronotherapeutic plans
             </p>
@@ -53,10 +53,10 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({
               <p className="text-xs text-slate-600 mt-1">Upload a prescription to begin tracking.</p>
             </div>
           ) : (
-            <div className="border border-slate-800 rounded-2xl overflow-hidden bg-slate-950/60">
+            <div className="border border-white/5 rounded-2xl overflow-hidden neu-pressed">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-slate-800 bg-slate-900/80 text-[11px] font-mono uppercase tracking-wider text-slate-400">
+                  <tr className="border-b border-white/5 bg-slate-900/60 text-[11px] font-mono uppercase tracking-wider text-slate-400">
                     <th className="py-3 px-4">Date</th>
                     <th className="py-3 px-4">Prescription / Patient</th>
                     <th className="py-3 px-4 text-center">Medications</th>
@@ -64,11 +64,11 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({
                     <th className="py-3 px-4 text-right">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/80 text-xs text-slate-300">
+                <tbody className="divide-y divide-white/5 text-xs text-slate-300">
                   {history.map((item) => (
                     <tr
                       key={item.id}
-                      className="hover:bg-slate-900/50 transition-colors group"
+                      className="hover:bg-slate-900/40 transition-colors group"
                     >
                       {/* Date */}
                       <td className="py-3.5 px-4 font-mono text-slate-400 whitespace-nowrap">
@@ -91,7 +91,7 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({
 
                       {/* Medications Count */}
                       <td className="py-3.5 px-4 text-center">
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-slate-800 text-cyan-300 font-mono text-xs border border-slate-700">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl neu-raised text-cyan-300 font-mono text-xs border border-white/5">
                           <Pill className="w-3 h-3 text-cyan-400" />
                           <span>{item.medications_count} Meds</span>
                         </span>
@@ -100,10 +100,10 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({
                       {/* Status */}
                       <td className="py-3.5 px-4 whitespace-nowrap">
                         <span
-                          className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-semibold border ${
+                          className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold border ${
                             item.status === 'Active'
                               ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-300'
-                              : 'bg-slate-800 border-slate-700 text-slate-400'
+                              : 'neu-pill border-white/5 text-slate-400'
                           }`}
                         >
                           {item.status === 'Active' ? (
@@ -123,14 +123,14 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({
                               onSelectHistoryItem(item);
                               onClose();
                             }}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 hover:text-cyan-200 text-xs font-semibold transition-all cursor-pointer"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl neu-raised border border-cyan-400/40 text-cyan-300 hover:text-cyan-200 text-xs font-bold transition-all cursor-pointer"
                           >
                             <Eye className="w-3.5 h-3.5" />
-                            <span>View Care Plan</span>
+                            <span>View Plan</span>
                           </button>
                           <button
                             onClick={() => onDeleteItem(item.id)}
-                            className="p-1.5 rounded-lg text-slate-500 hover:text-red-400 hover:bg-red-950/30 transition-colors cursor-pointer"
+                            className="p-1.5 rounded-xl text-slate-500 hover:text-red-400 hover:bg-red-950/30 transition-colors cursor-pointer"
                             title="Delete entry"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -146,12 +146,11 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({
         </div>
 
         {/* Footer info */}
-        <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-500 font-mono shrink-0">
+        <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-xs text-slate-500 font-mono shrink-0">
           <span>Total records: {history.length}</span>
-          <span>Encrypted Local Storage Storage Layer</span>
+          <span>Encrypted Local Storage Layer</span>
         </div>
       </div>
     </div>
   );
 };
-

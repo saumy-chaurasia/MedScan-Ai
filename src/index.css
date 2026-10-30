@@ -9,7 +9,7 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #0B0F19;
+  background-color: #070A11;
   color: #FFFFFF;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
@@ -17,44 +17,146 @@ body {
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0B0F19;
+  background: #070A11;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #06B6D4;
-}
-
-/* Glow effects */
-.glow-cyan {
-  box-shadow: 0 0 25px -5px rgba(0, 242, 254, 0.35);
-}
-
-.glow-cyan-sm {
-  box-shadow: 0 0 15px -3px rgba(0, 242, 254, 0.25);
-}
-
-.glow-blue {
-  box-shadow: 0 0 25px -5px rgba(59, 130, 246, 0.35);
-}
-
-/* Glassmorphism card utility */
-.glass-card {
-  background: rgba(17, 24, 39, 0.85);
-  backdrop-filter: blur(16px);
+  background: #1b2438;
+  border-radius: 9999px;
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Laser scan animation overlay */
+::-webkit-scrollbar-thumb:hover {
+  background: #00F2FE;
+}
+
+/* ========================================================= */
+/* LIQUID CHROME & METALLIC SHEEN TOKENS                     */
+/* ========================================================= */
+.liquid-chrome-text {
+  background: linear-gradient(135deg, #FFFFFF 0%, #E2E8F0 25%, #94A3B8 50%, #FFFFFF 75%, #CBD5E1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.liquid-chrome-cyan-text {
+  background: linear-gradient(135deg, #FFFFFF 0%, #00F2FE 30%, #38BDF8 60%, #FFFFFF 85%, #06B6D4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 16px rgba(0, 242, 254, 0.35));
+}
+
+.liquid-chrome-border {
+  border: 1px solid transparent;
+  background-image: linear-gradient(#0c111e, #0c111e), linear-gradient(135deg, rgba(255, 255, 255, 0.45) 0%, rgba(0, 242, 254, 0.3) 30%, rgba(255, 255, 255, 0.05) 50%, rgba(59, 130, 246, 0.3) 75%, rgba(255, 255, 255, 0.4) 100%);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+.liquid-chrome-button {
+  background: linear-gradient(135deg, #00F2FE 0%, #38BDF8 35%, #2563EB 70%, #00F2FE 100%);
+  background-size: 200% 200%;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 4px 15px -3px rgba(0, 242, 254, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.liquid-chrome-button:hover {
+  background-position: right center;
+  box-shadow: 
+    0 6px 25px -2px rgba(0, 242, 254, 0.6),
+    inset 0 1px 2px rgba(255, 255, 255, 0.8),
+    inset 0 -1px 3px rgba(0, 0, 0, 0.5);
+  transform: translateY(-1px);
+}
+
+.liquid-chrome-button:active {
+  transform: translateY(1px);
+  box-shadow: 
+    0 2px 8px -1px rgba(0, 242, 254, 0.3),
+    inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* ========================================================= */
+/* NEUMORPHISM (DARK MODE SOFT EXTRUDED & INSET DEPTH)       */
+/* ========================================================= */
+.neu-flat {
+  background: #0C111D;
+  box-shadow: 
+    6px 6px 14px #04060b, 
+    -5px -5px 12px rgba(255, 255, 255, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.neu-raised {
+  background: #0E1524;
+  box-shadow: 
+    8px 8px 18px #04060c, 
+    -6px -6px 16px rgba(255, 255, 255, 0.04),
+    inset 0 1px 1px rgba(255, 255, 255, 0.12);
+  transition: all 0.25s ease;
+}
+
+.neu-raised:hover {
+  box-shadow: 
+    10px 10px 22px #04060c, 
+    -7px -7px 18px rgba(255, 255, 255, 0.06),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.neu-raised:active, .neu-pressed {
+  background: #0a0e18;
+  box-shadow: 
+    inset 4px 4px 8px #030509, 
+    inset -3px -3px 8px rgba(255, 255, 255, 0.03);
+  transform: translateY(1px);
+}
+
+.neu-pill {
+  background: #0d1321;
+  box-shadow: 
+    4px 4px 10px #04060b, 
+    -3px -3px 8px rgba(255, 255, 255, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* ========================================================= */
+/* GLASSY CARD WITH SPECULAR REFLECTION & BLUR               */
+/* ========================================================= */
+.glass-card-premium {
+  background: rgba(14, 21, 36, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 10px 35px -5px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 0 15px rgba(0, 242, 254, 0.02);
+}
+
+.glass-card-premium:hover {
+  border-color: rgba(0, 242, 254, 0.28);
+  box-shadow: 
+    0 15px 45px -5px rgba(0, 0, 0, 0.7),
+    0 0 25px -5px rgba(0, 242, 254, 0.12),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+/* Glowing Aura */
+.glow-cyan-liquid {
+  box-shadow: 0 0 35px -5px rgba(0, 242, 254, 0.35);
+}
+
+/* Animated Laser Scan */
 @keyframes laserSweep {
   0% {
     top: 0%;
@@ -74,17 +176,25 @@ body {
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, transparent, #00F2FE, #06B6D4, #3B82F6, transparent);
-  box-shadow: 0 0 15px #00F2FE, 0 0 30px #06B6D4;
+  background: linear-gradient(90deg, transparent, #FFFFFF, #00F2FE, #3B82F6, #FFFFFF, transparent);
+  box-shadow: 0 0 18px #00F2FE, 0 0 35px #38BDF8;
   animation: laserSweep 2s ease-in-out infinite alternate;
   z-index: 20;
 }
 
-/* Pulsing radar grid background */
-.bg-grid-pattern {
-  background-size: 40px 40px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+/* Metallic specular gradient border utility */
+.chrome-gradient-border {
+  position: relative;
 }
-
+.chrome-gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(0, 242, 254, 0.2), rgba(255, 255, 255, 0.05), rgba(59, 130, 246, 0.3));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}

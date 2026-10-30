@@ -12,15 +12,15 @@ export function generateCarePlanPDF(result: PrescriptionAnalysisResult): void {
   const pageWidth = doc.internal.pageSize.getWidth();
 
   // Primary Colors
-  const darkNavy = [11, 15, 25] as [number, number, number];
-  const cyanBrand = [6, 182, 212] as [number, number, number];
+  const darkNavy = [7, 10, 17] as [number, number, number];
+  const cyanBrand = [0, 242, 254] as [number, number, number];
   const slateText = [100, 116, 139] as [number, number, number];
 
   // Header Banner
   doc.setFillColor(...darkNavy);
   doc.rect(0, 0, pageWidth, 28, 'F');
 
-  // Accent Line
+  // Accent Liquid Line
   doc.setFillColor(...cyanBrand);
   doc.rect(0, 28, pageWidth, 2, 'F');
 
@@ -28,7 +28,7 @@ export function generateCarePlanPDF(result: PrescriptionAnalysisResult): void {
   doc.setTextColor(255, 255, 255);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(18);
-  doc.text('MEDILENS AI', 14, 15);
+  doc.text('MEDSCAN AI', 14, 15);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9);
@@ -43,7 +43,7 @@ export function generateCarePlanPDF(result: PrescriptionAnalysisResult): void {
   });
   doc.setFontSize(8);
   doc.text(`Generated: ${reportDate}`, pageWidth - 14, 15, { align: 'right' });
-  doc.text('Verified by Gemini Vision AI', pageWidth - 14, 21, { align: 'right' });
+  doc.text('Verified by MedScan AI Vision', pageWidth - 14, 21, { align: 'right' });
 
   let cursorY = 38;
 
@@ -237,11 +237,10 @@ export function generateCarePlanPDF(result: PrescriptionAnalysisResult): void {
   // Footer Disclaimer
   doc.setFontSize(6.5);
   doc.setTextColor(148, 163, 184);
-  const disclaimer = 'DISCLAIMER: MediLens AI is an artificial intelligence decision-support tool. It does not replace professional medical diagnosis, advice, or physician judgment. Always verify with your registered pharmacist or prescribing clinician before altering any medication dosages.';
+  const disclaimer = 'DISCLAIMER: MedScan AI is an artificial intelligence decision-support tool. It does not replace professional medical diagnosis, advice, or physician judgment. Always verify with your registered pharmacist or prescribing clinician before altering any medication dosages.';
   doc.text(disclaimer, 14, 290, { maxWidth: pageWidth - 28 });
 
   // Save the PDF
   const cleanPatientName = (result.patient_info?.name || 'Patient').replace(/[^a-zA-Z0-9]/g, '_');
-  doc.save(`MediLens_CarePlan_${cleanPatientName}.pdf`);
+  doc.save(`MedScan_CarePlan_${cleanPatientName}.pdf`);
 }
-
