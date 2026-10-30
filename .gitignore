@@ -8,12 +8,19 @@ dist/
 dist-ssr/
 build/
 
-# Environment files
+# Environment files & secrets
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env*
+*.env
+*.env.*
+*.local
+secrets/
+*.pem
+*.key
+*.cert
+*.crt
+credentials.json
+service-account*.json
 
 # Logs
 npm-debug.log*
@@ -31,4 +38,3 @@ pnpm-debug.log*
 *.sln
 *.sw?
 Thumbs.db
-
