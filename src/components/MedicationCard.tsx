@@ -1,6 +1,7 @@
 import React from 'react';
 import { Sparkles, Calendar, Info } from 'lucide-react';
 import { Medication } from '../types/prescription';
+import { useLang } from '../contexts/LanguageContext';
 
 interface MedicationCardProps {
   medication: Medication;
@@ -8,6 +9,7 @@ interface MedicationCardProps {
 }
 
 export const MedicationCard: React.FC<MedicationCardProps> = ({ medication, index }) => {
+  const { t } = useLang();
   const getSlotBadgeColor = (slot: string) => {
     const s = slot.toLowerCase();
     if (s.includes('morning') || s.includes('breakfast')) {
@@ -48,7 +50,7 @@ export const MedicationCard: React.FC<MedicationCardProps> = ({ medication, inde
             {/* Generic Chemical Mapping: Green badge showing exact active ingredient */}
             <div className="mt-1.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-medium">
               <Sparkles className="w-3 h-3 text-emerald-400 shrink-0" />
-              <span>Generic: {medication.generic_name}</span>
+              <span>{t('med_generic')} {medication.generic_name}</span>
             </div>
           </div>
         </div>
@@ -68,7 +70,7 @@ export const MedicationCard: React.FC<MedicationCardProps> = ({ medication, inde
       <div className="mt-4 pt-3.5 border-t border-white/5 flex flex-wrap items-center justify-between gap-3 text-xs">
         <div className="flex items-center gap-2 text-slate-400 font-medium">
           <Calendar className="w-3.5 h-3.5 text-slate-500" />
-          <span>Duration: <strong className="text-slate-200 font-mono">{medication.duration || 'As prescribed'}</strong></span>
+          <span>{t('med_duration')} <strong className="text-slate-200 font-mono">{medication.duration || 'As prescribed'}</strong></span>
         </div>
 
         {/* Categorized pill tags for Morning, Afternoon, Evening, Bedtime */}

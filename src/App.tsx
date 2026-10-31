@@ -19,6 +19,7 @@ import {
   getStoredUserProfile 
 } from './services/storage';
 import { analyzePrescriptionImage } from './services/gemini';
+import { LanguageProvider } from './contexts/LanguageContext';
 
 export const App: React.FC = () => {
   // Primary application state
@@ -44,10 +45,6 @@ export const App: React.FC = () => {
 
   // Toast alert feedback
   const [toastMessage, setToastMessage] = useState<string | null>(null);
-
-  // Language toggle (EN / HI)
-  const [language, setLanguage] = useState<'en' | 'hi'>('en');
-  const handleLanguageToggle = () => setLanguage(l => l === 'en' ? 'hi' : 'en');
 
   useEffect(() => {
     // Load local history & settings
@@ -173,6 +170,7 @@ export const App: React.FC = () => {
   };
 
   return (
+    <LanguageProvider>
     <div className="min-h-screen text-white flex flex-col font-sans selection:bg-cyan-500/30 selection:text-cyan-200 relative">
       {/* Global Video Background — visible on every page */}
       <video autoPlay loop muted playsInline className="vid-bg" style={{ zIndex: -1 }}>
@@ -199,8 +197,6 @@ export const App: React.FC = () => {
         hasActiveResult={!!activeResult}
         apiKeyConfigured={apiKeyConfigured}
         historyCount={history.length}
-        language={language}
-        onLanguageToggle={handleLanguageToggle}
       />
 
       {/* Main Content Sections */}
@@ -282,6 +278,7 @@ export const App: React.FC = () => {
         patientName={activeResult?.patient_info?.name || 'Patient'}
       />
     </div>
+    </LanguageProvider>
   );
 };
 

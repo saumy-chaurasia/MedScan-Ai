@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Shield, Sparkles, History, User, ArrowRight, Globe } from 'lucide-react';
+import { useLang } from '../contexts/LanguageContext';
 
 interface NavbarProps {
   onOpenAuth: () => void;
@@ -9,8 +10,6 @@ interface NavbarProps {
   hasActiveResult: boolean;
   apiKeyConfigured: boolean;
   historyCount: number;
-  language: 'en' | 'hi';
-  onLanguageToggle: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -21,23 +20,22 @@ export const Navbar: React.FC<NavbarProps> = ({
   hasActiveResult,
   apiKeyConfigured,
   historyCount,
-  language,
-  onLanguageToggle,
 }) => {
+  const { lang, t, toggleLang } = useLang();
+  const [langOpen, setLangOpen] = useState(false);
+
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const [langOpen, setLangOpen] = useState(false);
-
   return (
     <header className="sticky top-0 z-40 w-full border-b border-white/10 bg-[#06080F]/40 backdrop-blur-xl transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         
-        {/* Brand Logo with Neumorphic 3D Bevel & Liquid Glow */}
-        <div 
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} 
+        {/* Brand Logo */}
+        <div
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           className="flex items-center gap-3.5 cursor-pointer group select-none"
         >
           <div className="relative flex items-center justify-center w-11 h-11 rounded-2xl neu-raised border border-white/15 group-hover:border-cyan-400/60 transition-all duration-300">
@@ -47,13 +45,11 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div>
             <div className="text-xl font-black tracking-tight text-white flex items-center gap-1.5 font-sans">
               <span className="liquid-chrome-text">MedScan</span>
-              <span className="liquid-chrome-cyan-text font-black">
-                AI
-              </span>
+              <span className="liquid-chrome-cyan-text font-black">AI</span>
             </div>
             <p className="text-[10px] text-slate-400 tracking-wider font-mono flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 inline-block animate-pulse shadow-[0_0_8px_#00F2FE]" />
-              <span className="text-slate-300 font-semibold">CLINICAL PRESCRIPTION VISION</span>
+              <span className="text-slate-300 font-semibold">{t('nav_clinical_vision')}</span>
             </p>
           </div>
         </div>
@@ -64,22 +60,22 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => scrollTo('features-section')}
             className="hover:text-cyan-300 transition-colors cursor-pointer py-1 relative group"
           >
-            <span>Features</span>
+            <span>{t('nav_features')}</span>
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:w-full transition-all duration-300" />
           </button>
           <button
             onClick={() => scrollTo('scanner-section')}
             className="hover:text-cyan-300 transition-colors cursor-pointer py-1 relative group"
           >
-            <span>Live Demo</span>
+            <span>{t('nav_live_demo')}</span>
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:w-full transition-all duration-300" />
           </button>
         </nav>
 
         {/* Right Action Cluster */}
         <div className="flex items-center gap-3">
-          
-          {/* History Button (Neumorphic Raised) */}
+
+          {/* History Button */}
           <button
             onClick={onOpenHistory}
             className="relative p-2.5 rounded-2xl neu-raised border border-white/10 hover:border-cyan-400/40 text-slate-300 hover:text-white transition-all cursor-pointer"
@@ -101,19 +97,19 @@ export const Navbar: React.FC<NavbarProps> = ({
               title="Switch Language"
             >
               <Globe className="w-3.5 h-3.5 text-cyan-400" />
-              <span>{language === 'en' ? 'EN' : 'HI'}</span>
+              <span>{lang === 'en' ? 'EN' : 'HI'}</span>
             </button>
             {langOpen && (
-              <div className="absolute right-0 mt-2 w-24 rounded-2xl glass-card-premium border border-white/10 overflow-hidden z-50">
+              <div className="absolute right-0 mt-2 w-28 rounded-2xl glass-card-premium border border-white/10 overflow-hidden z-50">
                 <button
-                  onClick={() => { onLanguageToggle(); setLangOpen(false); }}
-                  className={`w-full text-left px-4 py-2.5 text-xs font-bold transition-colors ${language === 'en' ? 'text-cyan-300 bg-cyan-500/10' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                  onClick={() => { if (lang !== 'en') toggleLang(); setLangOpen(false); }}
+                  className={`w-full text-left px-4 py-2.5 text-xs font-bold transition-colors ${lang === 'en' ? 'text-cyan-300 bg-cyan-500/10' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                 >
                   English
                 </button>
                 <button
-                  onClick={() => { onLanguageToggle(); setLangOpen(false); }}
-                  className={`w-full text-left px-4 py-2.5 text-xs font-bold transition-colors ${language === 'hi' ? 'text-cyan-300 bg-cyan-500/10' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                  onClick={() => { if (lang !== 'hi') toggleLang(); setLangOpen(false); }}
+                  className={`w-full text-left px-4 py-2.5 text-xs font-bold transition-colors ${lang === 'hi' ? 'text-cyan-300 bg-cyan-500/10' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                 >
                   हिंदी
                 </button>
@@ -121,16 +117,16 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </div>
 
-          {/* Sign In / Register (Neumorphic Raised) */}
+          {/* Sign In */}
           <button
             onClick={onOpenAuth}
             className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-2xl neu-raised border border-white/10 hover:border-white/25 text-xs font-bold text-slate-200 hover:text-white transition-all cursor-pointer"
           >
             <User className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Sign In</span>
+            <span>{t('nav_sign_in')}</span>
           </button>
 
-          {/* Try Demo CTA Button (Liquid Chrome with Specular Highlights) */}
+          {/* Try Demo CTA */}
           <button
             onClick={() => {
               onSelectSample('sample-antibiotic-resp');
@@ -139,7 +135,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-2xl liquid-chrome-button text-slate-950 font-black text-xs sm:text-sm cursor-pointer group"
           >
             <Sparkles className="w-4 h-4 text-slate-950 fill-slate-950" />
-            <span>Try Demo</span>
+            <span>{t('nav_try_demo')}</span>
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>

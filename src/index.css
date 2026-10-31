@@ -28,20 +28,35 @@ body {
 /* Default: landscape / ~16:9 screens */
 .vid-bg {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 50%;
+  left: 50%;
   width: 100vw;
   height: 100vh;
+  min-width: 100%;
+  min-height: 100%;
+  max-width: none !important;
+  max-height: none !important;
   object-fit: cover;
   background-color: #070A11;
-  transform-origin: center center;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
 }
 
-/* Portrait screens (~9:16) — rotate video 90deg to fill vertically */
-@media (max-aspect-ratio: 1/1) {
+/* Portrait screens (~9:16) — rotate video 90deg and scale to fill full 9:16 screen */
+@media (orientation: portrait), (max-aspect-ratio: 1/1) {
   .vid-bg {
+    /* When rotated 90deg, width covers viewport height and height covers viewport width.
+       max-width: none !important overrides Tailwind's max-width: 100% reset that was causing the square cut */
     width: 100vh;
+    width: 100dvh;
     height: 100vw;
+    height: 100dvw;
+    min-width: 100vh;
+    min-width: 100dvh;
+    min-height: 100vw;
+    min-height: 100dvw;
+    max-width: none !important;
+    max-height: none !important;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) rotate(90deg);

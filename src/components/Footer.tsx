@@ -1,11 +1,13 @@
 import React from 'react';
 import { Shield } from 'lucide-react';
+import { useLang } from '../contexts/LanguageContext';
 
 interface FooterProps {
   onOpenApiKey: () => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onOpenApiKey }) => {
+  const { t } = useLang();
   return (
     <footer className="border-t border-white/5 bg-[#05070D]/30 backdrop-blur-lg py-12 text-slate-400 text-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -22,32 +24,32 @@ export const Footer: React.FC<FooterProps> = ({ onOpenApiKey }) => {
               </span>
             </div>
             <p className="text-xs text-slate-400 max-w-md leading-relaxed">
-              Clinical prescription vision platform. Translates illegible doctor handwriting into structured dosages, generic chemical mappings, and chronotherapeutic 24-hour schedules.
+              {t('footer_desc')}
             </p>
           </div>
 
-          {/* Quick Links (Docs removed per user request) */}
+          {/* Quick Links */}
           <div>
-            <h4 className="text-xs font-black text-white uppercase tracking-wider mb-3 font-mono">Platform</h4>
+            <h4 className="text-xs font-black text-white uppercase tracking-wider mb-3 font-mono">{t('footer_platform')}</h4>
             <ul className="space-y-2 font-medium">
               <li>
                 <a href="#scanner-section" className="hover:text-cyan-400 transition-colors">
-                  Prescription Scanner
+                  {t('footer_scanner')}
                 </a>
               </li>
               <li>
                 <a href="#care-plan-section" className="hover:text-cyan-400 transition-colors">
-                  24-Hour Care Plan
+                  {t('footer_care_plan')}
                 </a>
               </li>
               <li>
                 <a href="#features-section" className="hover:text-cyan-400 transition-colors">
-                  Clinical Features
+                  {t('footer_clinical_features')}
                 </a>
               </li>
               <li>
                 <button onClick={onOpenApiKey} className="hover:text-cyan-400 transition-colors cursor-pointer">
-                  AI Engine Configuration
+                  {t('footer_ai_config')}
                 </button>
               </li>
             </ul>
@@ -55,7 +57,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenApiKey }) => {
 
           {/* Compliance & Standards */}
           <div>
-            <h4 className="text-xs font-black text-white uppercase tracking-wider mb-3 font-mono">Clinical Safety</h4>
+            <h4 className="text-xs font-black text-white uppercase tracking-wider mb-3 font-mono">{t('footer_clinical_safety')}</h4>
             <ul className="space-y-2 text-slate-500 font-medium">
               <li>WHO INN Chemical Standardization</li>
               <li>ISO-27799 Health Informatics</li>
@@ -67,13 +69,13 @@ export const Footer: React.FC<FooterProps> = ({ onOpenApiKey }) => {
 
         {/* Regulatory Disclaimer Box (Neumorphic Inset) */}
         <div className="p-4 rounded-2xl neu-pressed border border-white/5 text-[11px] text-slate-400 leading-relaxed mb-8">
-          <strong className="text-slate-200">Clinical Decision Support Disclaimer:</strong> MedScan AI is an artificial intelligence-assisted decision support system designed to assist patients, caregivers, and clinicians in understanding prescriptions and organizing medication schedules. It is not intended to replace professional clinical diagnosis, prescription alterations, or physician advice. Always consult a qualified medical practitioner or pharmacist before modifying any treatment regimen.
+          <strong className="text-slate-200">Clinical Decision Support Disclaimer:</strong> {t('footer_disclaimer')}
         </div>
 
         {/* Copyright Bar */}
         <div className="pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-500 font-medium">
           <div>
-            © {new Date().getFullYear()} MedScan AI Healthcare Systems. All rights reserved.
+            © {new Date().getFullYear()} MedScan AI Healthcare Systems. {t('footer_rights')}
           </div>
           <div className="flex items-center gap-1 font-mono text-[11px]">
             <span>Precision Medical Vision &amp; Chronotherapy Engine</span>

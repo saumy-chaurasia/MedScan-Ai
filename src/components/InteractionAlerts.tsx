@@ -1,17 +1,19 @@
 import React from 'react';
 import { AlertTriangle, ShieldAlert, CheckCircle2, Info, Flame } from 'lucide-react';
 import { DrugInteraction, InteractionSeverity } from '../types/prescription';
+import { useLang } from '../contexts/LanguageContext';
 
 interface InteractionAlertsProps {
   interactions: DrugInteraction[];
 }
 
 export const InteractionAlerts: React.FC<InteractionAlertsProps> = ({ interactions }) => {
+  const { t } = useLang();
   if (!interactions || interactions.length === 0) {
     return (
       <div className="p-4 rounded-2xl bg-emerald-950/20 border border-emerald-500/30 flex items-center gap-3 text-emerald-300 text-xs sm:text-sm">
         <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
-        <span>No adverse drug-drug interactions detected between prescribed medications.</span>
+        <span>{t('alert_none')}</span>
       </div>
     );
   }
@@ -23,21 +25,21 @@ export const InteractionAlerts: React.FC<InteractionAlertsProps> = ({ interactio
           wrapper: 'bg-red-950/30 border-red-500/50 hover:border-red-400',
           badge: 'bg-red-500/20 text-red-300 border-red-500/40',
           icon: <Flame className="w-4 h-4 text-red-400" />,
-          title: 'Critical Clinical Hazard',
+          title: t('alert_critical'),
         };
       case 'High':
         return {
           wrapper: 'bg-rose-950/20 border-rose-500/40 hover:border-rose-400',
           badge: 'bg-rose-500/20 text-rose-300 border-rose-500/30',
           icon: <ShieldAlert className="w-4 h-4 text-rose-400" />,
-          title: 'High Risk Interaction',
+          title: t('alert_high'),
         };
       case 'Moderate':
         return {
           wrapper: 'bg-amber-950/20 border-amber-500/40 hover:border-amber-400',
           badge: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
           icon: <AlertTriangle className="w-4 h-4 text-amber-400" />,
-          title: 'Moderate Interaction Notice',
+          title: t('alert_moderate'),
         };
       case 'Low':
       default:
@@ -45,7 +47,7 @@ export const InteractionAlerts: React.FC<InteractionAlertsProps> = ({ interactio
           wrapper: 'bg-blue-950/20 border-blue-500/30 hover:border-blue-400',
           badge: 'bg-blue-500/20 text-blue-300 border-blue-500/30',
           icon: <Info className="w-4 h-4 text-blue-400" />,
-          title: 'Minor Clinical Observation',
+          title: t('alert_minor'),
         };
     }
   };

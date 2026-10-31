@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Upload, Sparkles, Image as ImageIcon, AlertCircle, RefreshCw, CheckCircle2, ChevronRight, FileText } from 'lucide-react';
 import { SAMPLE_PRESCRIPTIONS, SamplePrescriptionItem } from '../services/sampleData';
+import { useLang } from '../contexts/LanguageContext';
 
 interface PrescriptionScannerProps {
   onAnalyzeFile: (file: File) => Promise<void>;
@@ -20,15 +21,16 @@ export const PrescriptionScanner: React.FC<PrescriptionScannerProps> = ({
   statusMessage,
   previewUrl,
 }) => {
+  const { t } = useLang();
   const [isDragOver, setIsDragOver] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const steps = [
-    { num: 1, label: 'Extracting handwritten script and clinical typography...' },
-    { num: 2, label: 'Resolving trade brand names to generic pharmaceutical compounds...' },
-    { num: 3, label: 'Cross-referencing multi-drug interactions & metabolic timing hazards...' },
-    { num: 4, label: 'Synthesizing 24-hour patient care schedule & dietary guardrails...' },
+    { num: 1, label: t('scanner_step_1') },
+    { num: 2, label: t('scanner_step_2') },
+    { num: 3, label: t('scanner_step_3') },
+    { num: 4, label: t('scanner_step_4') },
   ];
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -80,14 +82,14 @@ export const PrescriptionScanner: React.FC<PrescriptionScannerProps> = ({
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full neu-pill border border-white/10 text-cyan-300 text-xs font-mono font-bold mb-3">
             <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-            <span>MedScan Vision Ingestion</span>
+            <span>{t('scanner_badge')}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight">
-            <span className="liquid-chrome-text">Prescription Vision &amp; </span>
-            <span className="liquid-chrome-cyan-text">Ingestion Engine</span>
+            <span className="liquid-chrome-text">{t('scanner_title_a')}</span>
+            <span className="liquid-chrome-cyan-text">{t('scanner_title_b')}</span>
           </h2>
           <p className="mt-3 text-sm sm:text-base text-slate-400 max-w-2xl mx-auto font-normal">
-            Upload an image of a doctor's handwritten script, clinic summary, or pick an instant pre-loaded case below.
+            {t('scanner_subtitle')}
           </p>
         </div>
 
@@ -123,7 +125,7 @@ export const PrescriptionScanner: React.FC<PrescriptionScannerProps> = ({
                   <span className="font-bold">MEDSCAN AI VISION ACTIVE</span>
                 </div>
                 <div className="absolute bottom-3 right-3 px-3 py-1 rounded-xl bg-black/85 backdrop-blur-md border border-white/10 text-[10px] font-mono text-slate-300">
-                  Target: Handwritten Rx
+                  {t('scanner_target')}
                 </div>
               </div>
 
@@ -134,7 +136,7 @@ export const PrescriptionScanner: React.FC<PrescriptionScannerProps> = ({
                     <RefreshCw className="w-5 h-5 animate-spin" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-white liquid-chrome-text">Analyzing Prescription</h3>
+                    <h3 className="text-lg font-bold text-white liquid-chrome-text">{t('scanner_analyzing_title')}</h3>
                     <p className="text-xs text-cyan-400 font-mono">{statusMessage}</p>
                   </div>
                 </div>
@@ -175,7 +177,7 @@ export const PrescriptionScanner: React.FC<PrescriptionScannerProps> = ({
                 </div>
 
                 <div className="p-3.5 rounded-2xl neu-pressed border border-white/5 text-xs text-slate-400 leading-relaxed">
-                  <span className="text-cyan-400 font-bold">Clinical Safeguard:</span> Image data is processed with clinical pharmacovigilance validation and local encryption.
+                  <span className="text-cyan-400 font-bold">{t('scanner_safeguard_label')}</span> {t('scanner_safeguard')}
                 </div>
               </div>
             </div>
@@ -206,10 +208,10 @@ export const PrescriptionScanner: React.FC<PrescriptionScannerProps> = ({
                 </div>
 
                 <h3 className="text-lg sm:text-xl font-bold text-white group-hover:text-cyan-300 transition-colors">
-                  Drag &amp; Drop your prescription here, or click to browse
+                  {t('scanner_drop_title')}
                 </h3>
                 <p className="mt-2 text-xs sm:text-sm text-slate-400 max-w-md font-normal leading-relaxed">
-                  Supports doctor handwriting, typed clinic discharge summaries, and OPD slips in PNG, JPG, JPEG, or WEBP up to 10MB.
+                  {t('scanner_drop_desc')}
                 </p>
 
                 <div className="mt-6 flex flex-wrap items-center justify-center gap-2.5">
@@ -217,10 +219,10 @@ export const PrescriptionScanner: React.FC<PrescriptionScannerProps> = ({
                     PNG / JPG / WEBP
                   </span>
                   <span className="px-3 py-1 rounded-full neu-pill text-[11px] font-mono text-slate-300 border border-white/10 font-bold">
-                    Max 10MB
+                    {t('scanner_max_size')}
                   </span>
                   <span className="px-3 py-1 rounded-full neu-pill text-[11px] font-mono text-cyan-300 border border-cyan-400/30 font-bold">
-                    High-Def OCR
+                    {t('scanner_hd_ocr')}
                   </span>
                 </div>
               </div>
@@ -238,9 +240,9 @@ export const PrescriptionScanner: React.FC<PrescriptionScannerProps> = ({
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
                   <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-300 font-mono">
                     <Sparkles className="w-4 h-4 text-cyan-400" />
-                    <span>Instant Pre-Loaded Prescriptions (Click to Test)</span>
+                    <span>{t('scanner_samples_title')}</span>
                   </div>
-                  <span className="text-[11px] text-cyan-400/80 font-mono">1-Click Clinical Scenarios</span>
+                  <span className="text-[11px] text-cyan-400/80 font-mono">{t('scanner_samples_subtitle')}</span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">

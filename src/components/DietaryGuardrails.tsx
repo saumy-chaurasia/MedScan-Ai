@@ -1,11 +1,13 @@
 import React from 'react';
 import { AlertOctagon, Wine, Droplets, Ban } from 'lucide-react';
+import { useLang } from '../contexts/LanguageContext';
 
 interface DietaryGuardrailsProps {
   warnings: string[];
 }
 
 export const DietaryGuardrails: React.FC<DietaryGuardrailsProps> = ({ warnings }) => {
+  const { t } = useLang();
   return (
     <div className="rounded-3xl glass-card-premium neu-flat p-5 sm:p-6 shadow-md">
       <div className="flex items-center gap-2.5 mb-3">
@@ -13,12 +15,12 @@ export const DietaryGuardrails: React.FC<DietaryGuardrailsProps> = ({ warnings }
           <AlertOctagon className="w-4 h-4" />
         </div>
         <h4 className="text-xs font-black text-white uppercase tracking-wider font-mono">
-          Dietary &amp; Lifestyle Guardrails
+          {t('diet_title')}
         </h4>
       </div>
 
       <p className="text-xs text-slate-400 mb-4 leading-relaxed">
-        Specific food components, minerals, and beverages alter bioavailability or trigger toxic hepatic reactions.
+        {t('diet_desc')}
       </p>
 
       {/* Bulleted Guardrail Items */}
@@ -35,7 +37,7 @@ export const DietaryGuardrails: React.FC<DietaryGuardrailsProps> = ({ warnings }
           ))
         ) : (
           <li className="text-xs text-slate-400">
-            Maintain adequate hydration and take medications with a full glass of water.
+            {t('diet_default')}
           </li>
         )}
       </ul>
@@ -44,15 +46,11 @@ export const DietaryGuardrails: React.FC<DietaryGuardrailsProps> = ({ warnings }
       <div className="mt-4 pt-3.5 border-t border-white/5 flex flex-wrap gap-2 text-[11px] font-mono text-slate-300">
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full neu-raised border border-rose-500/30 text-rose-300">
           <Wine className="w-3 h-3 text-rose-400" />
-          <span>Alcohol: Prohibited</span>
+          <span>{t('diet_alcohol')}</span>
         </span>
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full neu-raised border border-cyan-500/30 text-cyan-300">
           <Droplets className="w-3 h-3 text-cyan-400" />
-          <span>Min 2.5L Water/Day</span>
-        </span>
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full neu-raised border border-amber-500/30 text-amber-300">
-          <Ban className="w-3 h-3 text-amber-400" />
-          <span>Avoid Grapefruit Juice</span>
+          <span>{t('diet_hydration')}</span>
         </span>
       </div>
     </div>

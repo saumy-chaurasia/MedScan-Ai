@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { CheckCircle2, Sun, CloudSun, Moon, Sunrise } from 'lucide-react';
 import { ScheduleSlot } from '../types/prescription';
+import { useLang } from '../contexts/LanguageContext';
 import confetti from 'canvas-confetti';
 
 interface ScheduleTimelineProps {
@@ -8,6 +9,7 @@ interface ScheduleTimelineProps {
 }
 
 export const ScheduleTimeline: React.FC<ScheduleTimelineProps> = ({ schedule }) => {
+  const { t } = useLang();
   const [completedSlots, setCompletedSlots] = useState<Record<number, boolean>>({});
 
   const toggleSlot = (idx: number, e: React.MouseEvent) => {
@@ -97,7 +99,7 @@ export const ScheduleTimeline: React.FC<ScheduleTimelineProps> = ({ schedule }) 
                         : 'neu-pill text-slate-400 border border-white/5'
                     }`}
                   >
-                    {isTaken ? '✓ Taken' : 'Tap to Mark Taken'}
+                    {isTaken ? t('sched_taken') : t('sched_mark')}
                   </span>
                 </div>
               </div>
@@ -105,7 +107,7 @@ export const ScheduleTimeline: React.FC<ScheduleTimelineProps> = ({ schedule }) 
               {/* Medications to Take in This Window */}
               <div className="mb-2.5">
                 <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400 mb-1">
-                  Medications to Take:
+                  {t('sched_to_take')}
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {slot.medications_to_take.map((med, mIdx) => (
@@ -125,7 +127,7 @@ export const ScheduleTimeline: React.FC<ScheduleTimelineProps> = ({ schedule }) 
 
               {/* Dietary & Food Timing Instructions */}
               <div className="text-xs text-slate-300 neu-pressed p-3 rounded-xl border border-white/5 flex items-start gap-2">
-                <span className="text-cyan-400 font-bold shrink-0 font-mono">Dietary Note:</span>
+                <span className="text-cyan-400 font-bold shrink-0 font-mono">{t('sched_diet_note')}</span>
                 <span className="leading-relaxed">{slot.dietary_note}</span>
               </div>
             </div>
