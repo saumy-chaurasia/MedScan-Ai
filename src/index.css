@@ -20,7 +20,9 @@ body {
 }
 
 /* ========================================================= */
-/* SECTION TEXT SHADOW — black glow behind bare section text */
+/* SECTION TEXT SHADOW — dark shadow behind bare section text */
+/* Uses filter:drop-shadow (not text-shadow) so it works     */
+/* correctly on gradient/transparent-fill text too.          */
 /* x=0, y=0, blur=20px, opacity=100% black                  */
 /* ========================================================= */
 section h1,
@@ -30,13 +32,10 @@ section h4,
 section h5,
 section h6,
 section p,
-section span,
 section label,
 section li,
-section a,
-section div > strong,
-section div > em {
-  text-shadow: 0 0 20px rgba(0, 0, 0, 1), 0 0 8px rgba(0, 0, 0, 1);
+section a {
+  filter: drop-shadow(0 0 20px rgba(0, 0, 0, 1)) drop-shadow(0 0 8px rgba(0, 0, 0, 1));
 }
 
 /* Reset: remove shadow inside cards, navbar, footer */
@@ -60,6 +59,7 @@ header h1, header h2, header h3, header h4,
 header p,  header span, header label, header li, header a, header div,
 footer h1, footer h2, footer h3, footer h4,
 footer p,  footer span, footer label, footer li, footer a, footer div {
+  filter: none;
   text-shadow: none;
 }
 
