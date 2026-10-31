@@ -59,7 +59,7 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
   };
 
   return (
-    <section id="care-plan-section" className="py-14 md:py-20 border-t border-white/5 bg-[#06080F]/70">
+    <section id="care-plan-section" className="py-14 md:py-20 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Top Header & Action Bar */}

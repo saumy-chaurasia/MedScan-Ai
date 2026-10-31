@@ -170,10 +170,10 @@ export const App: React.FC = () => {
 
   return (
     <div className="min-h-screen text-white flex flex-col font-sans selection:bg-cyan-500/30 selection:text-cyan-200 relative">
-      <video autoPlay loop muted playsInline className="fixed inset-0 w-full h-full object-cover" style={{ zIndex: -100 }}>
-        <source src="/xrays.mp4" type="video/mp4" />
+      {/* Global Video Background — visible on every page */}
+      <video autoPlay loop muted playsInline className="fixed inset-0 w-full h-full object-cover" style={{ zIndex: -1 }}>
+        <source src="/zbg.mp4" type="video/mp4" />
       </video>
-      <div className="fixed inset-0 bg-[#070A11]/70 pointer-events-none" style={{ zIndex: -99 }} />
       
       {/* Toast Notification (Neumorphic Liquid Toast) */}
       {toastMessage && (

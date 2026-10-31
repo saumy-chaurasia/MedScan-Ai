@@ -28,7 +28,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-white/10 bg-[#06080F]/75 backdrop-blur-2xl transition-all">
+    <header className="sticky top-0 z-40 w-full border-b border-white/10 bg-[#06080F]/40 backdrop-blur-xl transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         
         {/* Brand Logo with Neumorphic 3D Bevel & Liquid Glow */}
@@ -113,7 +113,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <Key className="w-3.5 h-3.5 text-cyan-400" />
             <span className="hidden lg:inline">
-              {apiKeyConfigured ? 'Vision AI Ready' : 'Engine Key'}
+              'Engine Key'
             </span>
           </button>
 

@@ -9,13 +9,6 @@ interface HeroProps {
 export const Hero: React.FC<HeroProps> = ({ onScanClick, onDemoClick }) => {
   return (
     <section className="relative overflow-hidden pt-14 pb-18 md:pt-24 md:pb-28 border-b border-white/5">
-      {/* Liquid Chrome Ambient Specular Aura */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[400px] bg-gradient-to-tr from-cyan-500/20 via-blue-600/15 to-transparent rounded-full blur-[140px] pointer-events-none -z-10" />
-      <div className="absolute top-10 right-10 w-96 h-96 bg-cyan-400/8 rounded-full blur-[110px] pointer-events-none -z-10" />
-
-      {/* Decorative Liquid Chrome Molten Ring Effect */}
-      <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[550px] h-[550px] rounded-full border border-cyan-400/10 pointer-events-none animate-float-chrome -z-10" />
-      <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[450px] h-[450px] rounded-full border border-white/5 pointer-events-none animate-float-chrome -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
         
