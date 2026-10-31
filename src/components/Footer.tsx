@@ -7,7 +7,7 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onOpenApiKey }) => {
   return (
-    <footer className="border-t border-white/5 bg-[#05070D] py-12 text-slate-400 text-xs">
+    <footer className="border-t border-white/5 bg-[#05070D]/60 backdrop-blur-xl py-12 text-slate-400 text-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
