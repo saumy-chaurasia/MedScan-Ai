@@ -45,6 +45,10 @@ export const App: React.FC = () => {
   // Toast alert feedback
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
+  // Language toggle (EN / HI)
+  const [language, setLanguage] = useState<'en' | 'hi'>('en');
+  const handleLanguageToggle = () => setLanguage(l => l === 'en' ? 'hi' : 'en');
+
   useEffect(() => {
     // Load local history & settings
     const storedHistory = getStoredHistory();
@@ -195,6 +199,8 @@ export const App: React.FC = () => {
         hasActiveResult={!!activeResult}
         apiKeyConfigured={apiKeyConfigured}
         historyCount={history.length}
+        language={language}
+        onLanguageToggle={handleLanguageToggle}
       />
 
       {/* Main Content Sections */}

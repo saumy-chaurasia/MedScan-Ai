@@ -1,5 +1,5 @@
-import React from 'react';
-import { Shield, Sparkles, History, Key, User, ArrowRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { Shield, Sparkles, History, User, ArrowRight, Globe } from 'lucide-react';
 
 interface NavbarProps {
   onOpenAuth: () => void;
@@ -9,6 +9,8 @@ interface NavbarProps {
   hasActiveResult: boolean;
   apiKeyConfigured: boolean;
   historyCount: number;
+  language: 'en' | 'hi';
+  onLanguageToggle: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -19,13 +21,15 @@ export const Navbar: React.FC<NavbarProps> = ({
   hasActiveResult,
   apiKeyConfigured,
   historyCount,
+  language,
+  onLanguageToggle,
 }) => {
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
+
+  const [langOpen, setLangOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-white/10 bg-[#06080F]/40 backdrop-blur-xl transition-all">
@@ -70,18 +74,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span>Live Demo</span>
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:w-full transition-all duration-300" />
           </button>
-          <button
-            onClick={() => scrollTo('care-plan-section')}
-            className={`transition-colors cursor-pointer flex items-center gap-2 py-1 relative group ${
-              hasActiveResult ? 'text-cyan-300 font-bold' : 'hover:text-cyan-300'
-            }`}
-          >
-            <span>Care Plan</span>
-            {hasActiveResult && (
-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping shadow-[0_0_8px_#00F2FE]" />
-            )}
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:w-full transition-all duration-300" />
-          </button>
         </nav>
 
         {/* Right Action Cluster */}
@@ -101,18 +93,33 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </button>
 
-          {/* Engine Settings Button (Neumorphic Raised) */}
-          <button
-            onClick={onOpenApiKey}
-            className={`flex items-center gap-2 px-3.5 py-2 rounded-2xl text-xs font-bold neu-raised border transition-all cursor-pointer ${
-              apiKeyConfigured
-                ? 'border-emerald-500/40 text-emerald-300 hover:border-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.15)]'
-                : 'border-white/10 text-slate-300 hover:border-cyan-400/40'
-            }`}
-            title="Configure Vision Engine & API Key"
-          >
-            <Key className="w-3.5 h-3.5 text-cyan-400" />
-          </button>
+          {/* Language Toggle EN / HI */}
+          <div className="relative">
+            <button
+              onClick={() => setLangOpen(o => !o)}
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-2xl neu-raised border border-white/10 hover:border-cyan-400/40 text-xs font-bold text-slate-200 hover:text-cyan-300 transition-all cursor-pointer"
+              title="Switch Language"
+            >
+              <Globe className="w-3.5 h-3.5 text-cyan-400" />
+              <span>{language === 'en' ? 'EN' : 'HI'}</span>
+            </button>
+            {langOpen && (
+              <div className="absolute right-0 mt-2 w-24 rounded-2xl glass-card-premium border border-white/10 overflow-hidden z-50">
+                <button
+                  onClick={() => { onLanguageToggle(); setLangOpen(false); }}
+                  className={`w-full text-left px-4 py-2.5 text-xs font-bold transition-colors ${language === 'en' ? 'text-cyan-300 bg-cyan-500/10' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                >
+                  English
+                </button>
+                <button
+                  onClick={() => { onLanguageToggle(); setLangOpen(false); }}
+                  className={`w-full text-left px-4 py-2.5 text-xs font-bold transition-colors ${language === 'hi' ? 'text-cyan-300 bg-cyan-500/10' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                >
+                  हिंदी
+                </button>
+              </div>
+            )}
+          </div>
 
           {/* Sign In / Register (Neumorphic Raised) */}
           <button

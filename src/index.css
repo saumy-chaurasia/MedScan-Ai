@@ -40,7 +40,6 @@ body {
 /* Portrait screens (~9:16) — rotate video 90deg to fill vertically */
 @media (max-aspect-ratio: 1/1) {
   .vid-bg {
-    /* Swap dimensions so the rotated video fills the portrait viewport */
     width: 100vh;
     height: 100vw;
     top: 50%;

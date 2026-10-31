@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
   Download, 
   Bell, 
@@ -14,7 +14,10 @@ import {
   Share2,
   Clock,
   Sparkles,
-  RotateCcw
+  RotateCcw,
+  Volume2,
+  VolumeX,
+  ChevronDown
 } from 'lucide-react';
 import { PrescriptionAnalysisResult } from '../types/prescription';
 import { MedicationCard } from './MedicationCard';
@@ -22,6 +25,15 @@ import { InteractionAlerts } from './InteractionAlerts';
 import { ScheduleTimeline } from './ScheduleTimeline';
 import { DietaryGuardrails } from './DietaryGuardrails';
 import { generateCarePlanPDF } from '../services/pdfGenerator';
+
+const TTS_LANGUAGES = [
+  { label: 'English',   code: 'en-IN' },
+  { label: 'हिंदी',     code: 'hi-IN' },
+  { label: 'Bhojpuri',  code: 'bho-IN' },
+  { label: 'ਪੰਜਾਬੀ',   code: 'pa-IN' },
+  { label: 'മലയാളം',  code: 'ml-IN' },
+  { label: 'मराठी',    code: 'mr-IN' },
+];
 
 interface SplitViewDashboardProps {
   data: PrescriptionAnalysisResult;
@@ -41,6 +53,44 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
   const [isExporting, setIsExporting] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
 
+  // TTS state
+  const [ttsLang, setTtsLang] = useState(TTS_LANGUAGES[0]);
+  const [ttsOpen, setTtsOpen] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const uttRef = useRef<SpeechSynthesisUtterance | null>(null);
+
+  const buildPrescriptionText = () => {
+    const meds = data.medications?.map(m =>
+      `${m.brand_name || ''} ${m.generic_name ? '(' + m.generic_name + ')' : ''}, ${m.dosage || ''}, ${m.frequency || ''}`
+    ).join('. ');
+    return `Prescription for ${data.patient_info?.name || 'patient'}. 
+Doctor: ${data.patient_info?.physician_name || ''}. 
+Medications: ${meds || 'none'}. 
+${data.patient_info?.doctor_notes ? 'Doctor notes: ' + data.patient_info.doctor_notes : ''}`;
+  };
+
+  const handleSpeak = () => {
+    if (isSpeaking) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+      return;
+    }
+    const utt = new SpeechSynthesisUtterance(buildPrescriptionText());
+    utt.lang = ttsLang.code;
+    utt.rate = 0.9;
+    utt.onend = () => setIsSpeaking(false);
+    utt.onerror = () => setIsSpeaking(false);
+    uttRef.current = utt;
+    window.speechSynthesis.speak(utt);
+    setIsSpeaking(true);
+  };
+
+  const handleSelectTtsLang = (lang: typeof TTS_LANGUAGES[0]) => {
+    if (isSpeaking) { window.speechSynthesis.cancel(); setIsSpeaking(false); }
+    setTtsLang(lang);
+    setTtsOpen(false);
+  };
+
   const handleDownloadPDF = () => {
     setIsExporting(true);
     try {
@@ -59,8 +109,11 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
   };
 
   return (
-    <section id="care-plan-section" className="py-14 md:py-20 border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="care-plan-section" className="relative py-14 md:py-20 border-t border-white/5">
+      {/* 25% black overlay above background video for this section */}
+      <div className="absolute inset-0 bg-black/25 pointer-events-none" />
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Top Header & Action Bar */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-10">
@@ -69,16 +122,53 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
               <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
               <span>Verified Clinical Analysis Output</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight">
-              <span className="liquid-chrome-text">Decoded Care Plan &amp; </span>
-              <span className="liquid-chrome-cyan-text">24-Hour Chrono-Schedule</span>
-            </h2>
-            <p className="mt-1 text-sm text-slate-400">
-              Structured dosage extraction, brand-to-generic mappings, and chronotherapeutic time slots.
-            </p>
+
+            {/* TTS — Read Prescription Aloud + Language Dropdown */}
+            <div className="flex items-center gap-3 mt-3 mb-4">
+              <button
+                onClick={handleSpeak}
+                className={`flex items-center gap-2 px-4 py-2 rounded-2xl neu-raised border text-xs font-bold transition-all cursor-pointer ${
+                  isSpeaking
+                    ? 'border-cyan-400/60 text-cyan-300 shadow-[0_0_15px_rgba(0,242,254,0.25)]'
+                    : 'border-white/10 text-slate-300 hover:border-cyan-400/40 hover:text-cyan-300'
+                }`}
+                title={isSpeaking ? 'Stop reading' : 'Read prescription aloud'}
+              >
+                {isSpeaking ? <VolumeX className="w-4 h-4 text-cyan-400" /> : <Volume2 className="w-4 h-4 text-cyan-400" />}
+                <span>{isSpeaking ? 'Stop' : 'Read Aloud'}</span>
+              </button>
+
+              {/* Language dropdown for TTS */}
+              <div className="relative">
+                <button
+                  onClick={() => setTtsOpen(o => !o)}
+                  className="flex items-center gap-1.5 px-3.5 py-2 rounded-2xl neu-raised border border-white/10 hover:border-cyan-400/40 text-xs font-bold text-slate-300 hover:text-cyan-300 transition-all cursor-pointer"
+                >
+                  <span>{ttsLang.label}</span>
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform ${ttsOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {ttsOpen && (
+                  <div className="absolute left-0 mt-2 w-36 rounded-2xl glass-card-premium border border-white/10 overflow-hidden z-50">
+                    {TTS_LANGUAGES.map(lang => (
+                      <button
+                        key={lang.code}
+                        onClick={() => handleSelectTtsLang(lang)}
+                        className={`w-full text-left px-4 py-2.5 text-xs font-bold transition-colors ${
+                          ttsLang.code === lang.code
+                            ? 'text-cyan-300 bg-cyan-500/10'
+                            : 'text-slate-300 hover:text-white hover:bg-white/5'
+                        }`}
+                      >
+                        {lang.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
 
-          {/* Export / Action Bar (Liquid Chrome & Neumorphic Buttons) */}
+          {/* Export / Action Bar */}
           <div className="flex flex-wrap items-center gap-3">
             
             {/* Download PDF (Liquid Chrome Button) */}
