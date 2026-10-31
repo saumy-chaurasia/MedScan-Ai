@@ -20,7 +20,37 @@ body {
 }
 
 /* ========================================================= */
-/* SECTION TEXT SHADOW — dark shadow behind bare section text */
+/* RESPONSIVE VIDEO BACKGROUND                               */
+/* 16:9 landscape → normal fit                              */
+/* 9:16 portrait  → rotate 90deg + scale to fill            */
+/* ========================================================= */
+
+/* Default: landscape / ~16:9 screens */
+.vid-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  background-color: #070A11;
+  transform-origin: center center;
+}
+
+/* Portrait screens (~9:16) — rotate video 90deg to fill vertically */
+@media (max-aspect-ratio: 1/1) {
+  .vid-bg {
+    /* Swap dimensions so the rotated video fills the portrait viewport */
+    width: 100vh;
+    height: 100vw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(90deg);
+    object-fit: cover;
+  }
+}
+
+
 /* Uses filter:drop-shadow (not text-shadow) so it works     */
 /* correctly on gradient/transparent-fill text too.          */
 /* x=0, y=0, blur=20px, opacity=100% black                  */

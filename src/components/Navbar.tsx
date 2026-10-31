@@ -112,9 +112,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             title="Configure Vision Engine & API Key"
           >
             <Key className="w-3.5 h-3.5 text-cyan-400" />
-            <span className="hidden lg:inline">
-              'Engine Key'
-            </span>
           </button>
 
           {/* Sign In / Register (Neumorphic Raised) */}

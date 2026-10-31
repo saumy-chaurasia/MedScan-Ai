@@ -12,15 +12,6 @@ export const Hero: React.FC<HeroProps> = ({ onScanClick, onDemoClick }) => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
         
-        {/* Top Neumorphic / Liquid Chrome Pill Badge */}
-        <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full neu-pill border border-white/15 text-cyan-300 text-xs sm:text-sm font-bold mb-8 backdrop-blur-2xl shadow-[0_4px_25px_rgba(0,242,254,0.18)]">
-          <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping shadow-[0_0_10px_#00F2FE]" />
-          <span className="liquid-chrome-text font-black tracking-wide">Next-Gen Clinical Vision OCR</span>
-          <span className="text-[10px] font-mono text-cyan-300 bg-cyan-500/15 px-2.5 py-0.5 rounded-full border border-cyan-400/30 font-bold">
-            MedScan AI
-          </span>
-        </div>
-
         {/* Main Headline with Dynamic Liquid Chrome Sheen */}
         <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight text-white max-w-5xl mx-auto leading-[1.08] select-none">
           Decode Any Doctor's Handwriting.{' '}
