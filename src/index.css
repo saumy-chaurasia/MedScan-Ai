@@ -19,6 +19,50 @@ body {
   overflow-x: hidden;
 }
 
+/* ========================================================= */
+/* SECTION TEXT SHADOW — black glow behind bare section text */
+/* x=0, y=0, blur=20px, opacity=100% black                  */
+/* ========================================================= */
+section h1,
+section h2,
+section h3,
+section h4,
+section h5,
+section h6,
+section p,
+section span,
+section label,
+section li,
+section a,
+section div > strong,
+section div > em {
+  text-shadow: 0 0 20px rgba(0, 0, 0, 1), 0 0 8px rgba(0, 0, 0, 1);
+}
+
+/* Reset: remove shadow inside cards, navbar, footer */
+.glass-card-premium h1,  .glass-card-premium h2,  .glass-card-premium h3,
+.glass-card-premium h4,  .glass-card-premium h5,  .glass-card-premium h6,
+.glass-card-premium p,   .glass-card-premium span, .glass-card-premium label,
+.glass-card-premium li,  .glass-card-premium a,   .glass-card-premium strong,
+.glass-card-premium em,  .glass-card-premium div,
+.glass-subcard h1,  .glass-subcard h2,  .glass-subcard h3,
+.glass-subcard h4,  .glass-subcard h5,  .glass-subcard h6,
+.glass-subcard p,   .glass-subcard span,.glass-subcard label,
+.glass-subcard li,  .glass-subcard a,   .glass-subcard strong,
+.glass-subcard em,  .glass-subcard div,
+.neu-raised h1, .neu-raised h2, .neu-raised h3, .neu-raised h4,
+.neu-raised p,  .neu-raised span, .neu-raised label, .neu-raised li,
+.neu-raised a,  .neu-raised strong, .neu-raised em, .neu-raised div,
+.neu-flat h1,   .neu-flat h2,   .neu-flat h3,   .neu-flat h4,
+.neu-flat p,    .neu-flat span, .neu-flat label, .neu-flat li,
+.neu-flat a,    .neu-flat strong, .neu-flat em,  .neu-flat div,
+header h1, header h2, header h3, header h4,
+header p,  header span, header label, header li, header a, header div,
+footer h1, footer h2, footer h3, footer h4,
+footer p,  footer span, footer label, footer li, footer a, footer div {
+  text-shadow: none;
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 7px;
