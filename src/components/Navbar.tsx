@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Shield, Sparkles, History, User, ArrowRight, Globe } from 'lucide-react';
 import { useLang } from '../contexts/LanguageContext';
+import { UserProfile } from '../types/prescription';
 
 interface NavbarProps {
   onOpenAuth: () => void;
@@ -10,6 +11,7 @@ interface NavbarProps {
   hasActiveResult: boolean;
   apiKeyConfigured: boolean;
   historyCount: number;
+  userProfile?: UserProfile | null;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -20,6 +22,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   hasActiveResult,
   apiKeyConfigured,
   historyCount,
+  userProfile,
 }) => {
   const { lang, t, toggleLang } = useLang();
   const [langOpen, setLangOpen] = useState(false);
@@ -100,30 +103,39 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span>{lang === 'en' ? 'EN' : 'HI'}</span>
             </button>
             {langOpen && (
-              <div className="absolute right-0 mt-2 w-28 rounded-2xl glass-card-premium border border-white/10 overflow-hidden z-50">
-                <button
-                  onClick={() => { if (lang !== 'en') toggleLang(); setLangOpen(false); }}
-                  className={`w-full text-left px-4 py-2.5 text-xs font-bold transition-colors ${lang === 'en' ? 'text-cyan-300 bg-cyan-500/10' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
-                >
-                  English
-                </button>
-                <button
-                  onClick={() => { if (lang !== 'hi') toggleLang(); setLangOpen(false); }}
-                  className={`w-full text-left px-4 py-2.5 text-xs font-bold transition-colors ${lang === 'hi' ? 'text-cyan-300 bg-cyan-500/10' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
-                >
-                  हिंदी
-                </button>
-              </div>
+              <>
+                <div 
+                  className="fixed inset-0 z-40" 
+                  onClick={() => setLangOpen(false)} 
+                />
+                <div className="absolute right-0 mt-2 w-28 rounded-2xl glass-card-premium border border-white/10 overflow-hidden z-50">
+                  <button
+                    onClick={() => { if (lang !== 'en') toggleLang(); setLangOpen(false); }}
+                    className={`w-full text-left px-4 py-2.5 text-xs font-bold transition-colors ${lang === 'en' ? 'text-cyan-300 bg-cyan-500/10' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                  >
+                    English
+                  </button>
+                  <button
+                    onClick={() => { if (lang !== 'hi') toggleLang(); setLangOpen(false); }}
+                    className={`w-full text-left px-4 py-2.5 text-xs font-bold transition-colors ${lang === 'hi' ? 'text-cyan-300 bg-cyan-500/10' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                  >
+                    हिंदी
+                  </button>
+                </div>
+              </>
             )}
           </div>
 
-          {/* Sign In */}
+          {/* Sign In / User Profile Button */}
           <button
             onClick={onOpenAuth}
-            className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-2xl neu-raised border border-white/10 hover:border-white/25 text-xs font-bold text-slate-200 hover:text-white transition-all cursor-pointer"
+            className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-2xl neu-raised border border-white/10 hover:border-cyan-400/40 text-xs font-bold text-slate-200 hover:text-white transition-all cursor-pointer"
+            title={userProfile ? `Account: ${userProfile.name}` : 'Sign In'}
           >
             <User className="w-3.5 h-3.5 text-cyan-400" />
-            <span>{t('nav_sign_in')}</span>
+            <span className="hidden sm:inline">
+              {userProfile ? userProfile.name.split(' ')[0] : t('nav_sign_in')}
+            </span>
           </button>
 
           {/* Try Demo CTA */}

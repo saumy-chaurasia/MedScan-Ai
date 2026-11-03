@@ -248,7 +248,20 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
   };
 
   const handleShare = () => {
-    navigator.clipboard.writeText(window.location.href);
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(window.location.href);
+      } else {
+        const input = document.createElement('input');
+        input.value = window.location.href;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+      }
+    } catch {
+      // fallback
+    }
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2000);
   };
@@ -293,21 +306,28 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
                   <ChevronDown className={`w-3.5 h-3.5 transition-transform ${ttsOpen ? 'rotate-180' : ''}`} />
                 </button>
                 {ttsOpen && (
-                  <div className="absolute left-0 mt-2 w-36 rounded-2xl glass-card-premium border border-white/10 overflow-hidden z-50">
-                    {TTS_LANGUAGES.map(lang => (
-                      <button
-                        key={lang.code}
-                        onClick={() => handleSelectTtsLang(lang)}
-                        className={`w-full text-left px-4 py-2.5 text-xs font-bold transition-colors ${
-                          ttsLang.code === lang.code
-                            ? 'text-cyan-300 bg-cyan-500/10'
-                            : 'text-slate-300 hover:text-white hover:bg-white/5'
-                        }`}
-                      >
-                        {lang.label}
-                      </button>
-                    ))}
-                  </div>
+                  <>
+                    <div 
+                      className="fixed inset-0 z-40" 
+                      onClick={() => setTtsOpen(false)} 
+                    />
+                    <div className="absolute left-0 mt-2 w-36 rounded-2xl glass-card-premium border border-white/10 overflow-hidden z-50">
+                      {TTS_LANGUAGES.map(lang => (
+                        <button
+                          key={lang.code}
+                          type="button"
+                          onClick={() => handleSelectTtsLang(lang)}
+                          className={`w-full text-left px-4 py-2.5 text-xs font-bold transition-colors cursor-pointer ${
+                            ttsLang.code === lang.code
+                              ? 'text-cyan-300 bg-cyan-500/10'
+                              : 'text-slate-300 hover:text-white hover:bg-white/5'
+                          }`}
+                        >
+                          {lang.label}
+                        </button>
+                      ))}
+                    </div>
+                  </>
                 )}
               </div>
             </div>

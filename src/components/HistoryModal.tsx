@@ -20,8 +20,14 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-      <div className="relative w-full max-w-4xl max-h-[85vh] rounded-3xl glass-card-premium neu-flat p-6 sm:p-8 shadow-2xl flex flex-col border border-white/10">
+    <div 
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in"
+    >
+      <div 
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-4xl max-h-[85vh] rounded-3xl glass-card-premium neu-flat p-6 sm:p-8 shadow-2xl flex flex-col border border-white/10"
+      >
         
         {/* Close Button */}
         <button

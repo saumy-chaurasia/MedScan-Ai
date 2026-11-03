@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Lock, Mail, User } from 'lucide-react';
+import { X, Lock, Mail, User, LogOut, ShieldCheck } from 'lucide-react';
 import { UserProfile } from '../types/prescription';
 import { saveUserProfile } from '../services/storage';
 
@@ -7,9 +7,17 @@ interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
   onLoginSuccess: (user: UserProfile) => void;
+  onLogout?: () => void;
+  currentUser?: UserProfile | null;
 }
 
-export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSuccess }) => {
+export const AuthModal: React.FC<AuthModalProps> = ({ 
+  isOpen, 
+  onClose, 
+  onLoginSuccess,
+  onLogout,
+  currentUser 
+}) => {
   const [activeTab, setActiveTab] = useState<'login' | 'signup'>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -53,23 +61,64 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSu
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-      <div className="relative w-full max-w-md rounded-3xl glass-card-premium neu-flat p-6 sm:p-8 shadow-2xl border border-white/10">
+    <div 
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in"
+    >
+      <div 
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-md rounded-3xl glass-card-premium neu-flat p-6 sm:p-8 shadow-2xl border border-white/10"
+      >
         
         {/* Close Button */}
         <button
+          type="button"
           onClick={onClose}
           className="absolute top-5 right-5 p-2 rounded-xl neu-raised text-slate-400 hover:text-white transition-colors cursor-pointer"
+          title="Close modal"
         >
           <X className="w-5 h-5" />
         </button>
+
+        {/* Current User Card if signed in */}
+        {currentUser && (
+          <div className="mb-6 p-4 rounded-2xl bg-cyan-950/30 border border-cyan-400/30 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl neu-raised border border-cyan-400/40 flex items-center justify-center text-cyan-400 font-bold">
+                {currentUser.name.charAt(0)}
+              </div>
+              <div>
+                <div className="text-sm font-black text-white flex items-center gap-1.5">
+                  <span>{currentUser.name}</span>
+                  <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
+                </div>
+                <div className="text-xs text-slate-400 font-mono">{currentUser.email}</div>
+              </div>
+            </div>
+            {onLogout && (
+              <button
+                type="button"
+                onClick={() => {
+                  onLogout();
+                  onClose();
+                }}
+                className="p-2 rounded-xl neu-raised text-red-400 hover:text-red-300 hover:bg-red-950/40 transition-colors cursor-pointer"
+                title="Sign Out"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+        )}
 
         {/* Header */}
         <div className="text-center mb-6">
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl neu-raised border border-cyan-400/30 text-cyan-400 mb-3 shadow-[0_0_20px_rgba(0,242,254,0.2)]">
             <Lock className="w-6 h-6" />
           </div>
-          <h3 className="text-xl font-black text-white liquid-chrome-text">MedScan AI Account</h3>
+          <h3 className="text-xl font-black text-white liquid-chrome-text">
+            {currentUser ? 'Switch or Manage Account' : 'MedScan AI Account'}
+          </h3>
           <p className="text-xs text-slate-400 mt-1">
             Access past prescriptions, track adherence, and sync caregiver alerts
           </p>

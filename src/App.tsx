@@ -138,13 +138,16 @@ export const App: React.FC = () => {
       setActiveResult(sample.data);
       setIsAnalyzing(false);
       showToast(`Loaded ${sample.title} Care Plan!`);
-      scrollTo('care-plan-section');
+      setTimeout(() => scrollTo('care-plan-section'), 120);
     }, 1600);
   };
 
   // Reset Scan
   const handleResetScan = () => {
+    setActiveResult(null);
     setPreviewUrl(null);
+    setIsSaved(false);
+    setIsAnalyzing(false);
     scrollTo('scanner-section');
     showToast('Ready for new prescription scan.');
   };
@@ -197,6 +200,7 @@ export const App: React.FC = () => {
         hasActiveResult={!!activeResult}
         apiKeyConfigured={apiKeyConfigured}
         historyCount={history.length}
+        userProfile={userProfile}
       />
 
       {/* Main Content Sections */}
@@ -244,9 +248,15 @@ export const App: React.FC = () => {
       <AuthModal
         isOpen={isAuthOpen}
         onClose={() => setIsAuthOpen(false)}
+        currentUser={userProfile}
         onLoginSuccess={(profile) => {
           setUserProfile(profile);
           showToast(`Welcome back, ${profile.name}!`);
+        }}
+        onLogout={() => {
+          setUserProfile(null);
+          localStorage.removeItem('medscan_user_profile_v2');
+          showToast('Signed out of MedScan AI.');
         }}
       />
 
@@ -257,8 +267,9 @@ export const App: React.FC = () => {
         onSelectHistoryItem={(item) => {
           setActiveResult(item.data);
           if (item.thumbnail_url) setPreviewUrl(item.thumbnail_url);
+          setIsSaved(true);
           showToast(`Loaded ${item.prescription_name}!`);
-          scrollTo('care-plan-section');
+          setTimeout(() => scrollTo('care-plan-section'), 120);
         }}
         onDeleteItem={handleDeleteHistory}
       />

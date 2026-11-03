@@ -16,6 +16,7 @@ interface PrescriptionScannerProps {
 export const PrescriptionScanner: React.FC<PrescriptionScannerProps> = ({
   onAnalyzeFile,
   onSelectSample,
+  onResetScan,
   isAnalyzing,
   currentStep,
   statusMessage,
@@ -176,8 +177,19 @@ export const PrescriptionScanner: React.FC<PrescriptionScannerProps> = ({
                   })}
                 </div>
 
-                <div className="p-3.5 rounded-2xl neu-pressed border border-white/5 text-xs text-slate-400 leading-relaxed">
-                  <span className="text-cyan-400 font-bold">{t('scanner_safeguard_label')}</span> {t('scanner_safeguard')}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+                  <div className="p-3.5 rounded-2xl neu-pressed border border-white/5 text-xs text-slate-400 leading-relaxed flex-1">
+                    <span className="text-cyan-400 font-bold">{t('scanner_safeguard_label')}</span> {t('scanner_safeguard')}
+                  </div>
+                  {onResetScan && (
+                    <button
+                      type="button"
+                      onClick={onResetScan}
+                      className="px-4 py-2.5 rounded-2xl neu-raised border border-white/10 hover:border-red-400/40 text-xs text-slate-300 hover:text-red-300 transition-colors cursor-pointer shrink-0 font-bold self-start sm:self-auto"
+                    >
+                      Cancel Scan
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

@@ -8,10 +8,21 @@ interface ReminderModalProps {
 }
 
 export const ReminderModal: React.FC<ReminderModalProps> = ({ isOpen, onClose, patientName }) => {
-  const [channel, setChannel] = useState<'whatsapp' | 'sms' | 'both'>('whatsapp');
-  const [phoneNumber, setPhoneNumber] = useState('+1 (555) 234-5678');
-  const [caregiverPhone, setCaregiverPhone] = useState('');
-  const [leadTime, setLeadTime] = useState('15');
+  const getSavedReminders = () => {
+    try {
+      const raw = localStorage.getItem('medscan_reminders_v2');
+      if (raw) return JSON.parse(raw);
+    } catch {
+      // ignore
+    }
+    return null;
+  };
+
+  const saved = getSavedReminders();
+  const [channel, setChannel] = useState<'whatsapp' | 'sms' | 'both'>(saved?.channel || 'whatsapp');
+  const [phoneNumber, setPhoneNumber] = useState(saved?.phoneNumber || '+1 (555) 234-5678');
+  const [caregiverPhone, setCaregiverPhone] = useState(saved?.caregiverPhone || '');
+  const [leadTime, setLeadTime] = useState(saved?.leadTime || '15');
   const [isSent, setIsSent] = useState(false);
   const [testNotification, setTestNotification] = useState<string | null>(null);
 
@@ -21,6 +32,15 @@ export const ReminderModal: React.FC<ReminderModalProps> = ({ isOpen, onClose, p
     e.preventDefault();
     setIsSent(true);
 
+    try {
+      localStorage.setItem(
+        'medscan_reminders_v2',
+        JSON.stringify({ channel, phoneNumber, caregiverPhone, leadTime, updatedAt: new Date().toISOString() })
+      );
+    } catch {
+      // ignore
+    }
+
     // Show simulation toast
     setTestNotification(
       `💬 [${channel.toUpperCase()}] MedScan AI Alert: Hi ${patientName}, it's 08:30 AM! Time for your scheduled morning dose. Take after breakfast with water!`
@@ -28,8 +48,14 @@ export const ReminderModal: React.FC<ReminderModalProps> = ({ isOpen, onClose, p
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-      <div className="relative w-full max-w-lg rounded-3xl glass-card-premium neu-flat p-6 sm:p-8 shadow-2xl border border-white/10">
+    <div 
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in"
+    >
+      <div 
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-lg rounded-3xl glass-card-premium neu-flat p-6 sm:p-8 shadow-2xl border border-white/10"
+      >
         
         {/* Close Button */}
         <button
