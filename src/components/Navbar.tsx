@@ -58,7 +58,14 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Navigation Links */}
-        <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-300">
+        <nav className="hidden md:flex items-center gap-7 lg:gap-8 text-sm font-semibold text-slate-300">
+          <button
+            onClick={() => scrollTo('home-section')}
+            className="hover:text-cyan-300 transition-colors cursor-pointer py-1 relative group"
+          >
+            <span>{t('nav_home')}</span>
+            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:w-full transition-all duration-300" />
+          </button>
           <button
             onClick={() => scrollTo('features-section')}
             className="hover:text-cyan-300 transition-colors cursor-pointer py-1 relative group"
@@ -71,6 +78,18 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="hover:text-cyan-300 transition-colors cursor-pointer py-1 relative group"
           >
             <span>{t('nav_live_demo')}</span>
+            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:w-full transition-all duration-300" />
+          </button>
+          <button
+            onClick={() => scrollTo('history-section')}
+            className="hover:text-cyan-300 transition-colors cursor-pointer py-1 relative group flex items-center gap-1.5"
+          >
+            <span>{t('nav_history')}</span>
+            {historyCount > 0 && (
+              <span className="px-1.5 py-0.2 rounded-full bg-cyan-400/20 text-cyan-300 text-[10px] font-mono border border-cyan-400/30 font-bold">
+                {historyCount}
+              </span>
+            )}
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:w-full transition-all duration-300" />
           </button>
         </nav>
@@ -151,6 +170,43 @@ export const Navbar: React.FC<NavbarProps> = ({
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
+      </div>
+
+      {/* Mobile Sub-Navigation Bar */}
+      <div className="md:hidden border-t border-white/5 bg-[#06080F]/80 backdrop-blur-md px-4 py-2 flex items-center justify-around text-xs font-bold text-slate-300">
+        <button
+          type="button"
+          onClick={() => scrollTo('home-section')}
+          className="px-2.5 py-1 rounded-xl neu-raised text-slate-300 hover:text-cyan-300 transition-colors"
+        >
+          {t('nav_home')}
+        </button>
+        <button
+          type="button"
+          onClick={() => scrollTo('features-section')}
+          className="px-2.5 py-1 rounded-xl neu-raised text-slate-300 hover:text-cyan-300 transition-colors"
+        >
+          {t('nav_features')}
+        </button>
+        <button
+          type="button"
+          onClick={() => scrollTo('scanner-section')}
+          className="px-2.5 py-1 rounded-xl neu-raised text-slate-300 hover:text-cyan-300 transition-colors"
+        >
+          {t('nav_live_demo')}
+        </button>
+        <button
+          type="button"
+          onClick={() => scrollTo('history-section')}
+          className="px-2.5 py-1 rounded-xl neu-raised text-slate-300 hover:text-cyan-300 transition-colors flex items-center gap-1"
+        >
+          <span>{t('nav_history')}</span>
+          {historyCount > 0 && (
+            <span className="w-4 h-4 rounded-full bg-cyan-400 text-slate-950 text-[9px] font-black flex items-center justify-center">
+              {historyCount}
+            </span>
+          )}
+        </button>
       </div>
     </header>
   );

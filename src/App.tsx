@@ -4,6 +4,7 @@ import { Hero } from './components/Hero';
 import { PrescriptionScanner } from './components/PrescriptionScanner';
 import { SplitViewDashboard } from './components/SplitViewDashboard';
 import { FeatureHighlights } from './components/FeatureHighlights';
+import { HistorySection } from './components/HistorySection';
 import { Footer } from './components/Footer';
 import { AuthModal } from './components/AuthModal';
 import { HistoryModal } from './components/HistoryModal';
@@ -70,6 +71,50 @@ export const App: React.FC = () => {
     }
   };
 
+  // Create a persistent compressed base64 data URL for uploaded prescription images
+  const createPersistentThumbnail = (file: File): Promise<string> => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          try {
+            const canvas = document.createElement('canvas');
+            const maxDim = 800;
+            let width = img.width;
+            let height = img.height;
+            if (width > height) {
+              if (width > maxDim) {
+                height = Math.round((height * maxDim) / width);
+                width = maxDim;
+              }
+            } else {
+              if (height > maxDim) {
+                width = Math.round((width * maxDim) / height);
+                height = maxDim;
+              }
+            }
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            if (ctx) {
+              ctx.drawImage(img, 0, 0, width, height);
+              resolve(canvas.toDataURL('image/jpeg', 0.8));
+              return;
+            }
+          } catch {
+            // fallback
+          }
+          resolve((e.target?.result as string) || '');
+        };
+        img.onerror = () => resolve((e.target?.result as string) || '');
+        img.src = e.target?.result as string;
+      };
+      reader.onerror = () => resolve('');
+      reader.readAsDataURL(file);
+    });
+  };
+
   // Uploaded File Handler
   const handleAnalyzeFile = async (file: File) => {
     setIsAnalyzing(true);
@@ -81,19 +126,24 @@ export const App: React.FC = () => {
     setIsSaved(false);
 
     try {
+      // Generate persistent thumbnail in parallel
+      const thumbPromise = createPersistentThumbnail(file);
+
       const result = await analyzePrescriptionImage(file, (step, msg) => {
         setCurrentStep(step);
         setStatusMessage(msg);
       });
 
+      const persistentThumb = await thumbPromise;
+
       setActiveResult(result);
       setIsAnalyzing(false);
 
-      // Auto save to local history
+      // Auto save to local history with persistent image
       const savedItem = addHistoryItem(
         result,
         `${result.medications[0]?.brand_name || 'Prescription'} Care Plan`,
-        tempUrl
+        persistentThumb || tempUrl
       );
       setHistory((prev) => [savedItem, ...prev]);
       setIsSaved(true);
@@ -191,7 +241,7 @@ export const App: React.FC = () => {
       {/* Global Navigation Header */}
       <Navbar
         onOpenAuth={() => setIsAuthOpen(true)}
-        onOpenHistory={() => setIsHistoryOpen(true)}
+        onOpenHistory={() => scrollTo('history-section')}
         onOpenApiKey={() => setIsApiKeyOpen(true)}
         onSelectSample={(sampleId) => {
           const s = SAMPLE_PRESCRIPTIONS.find((p) => p.id === sampleId);
@@ -232,6 +282,24 @@ export const App: React.FC = () => {
             isSaved={isSaved}
           />
         )}
+
+        {/* Expanded History Section */}
+        <HistorySection
+          history={history}
+          onSelectHistoryItem={(item) => {
+            setActiveResult(item.data);
+            if (item.thumbnail_url) setPreviewUrl(item.thumbnail_url);
+            setIsSaved(true);
+            showToast(`Loaded ${item.prescription_name}!`);
+            setTimeout(() => scrollTo('care-plan-section'), 120);
+          }}
+          onDeleteItem={handleDeleteHistory}
+          onScanNewClick={() => scrollTo('scanner-section')}
+          onSelectSample={(sampleId) => {
+            const s = SAMPLE_PRESCRIPTIONS.find((p) => p.id === sampleId);
+            if (s) handleSelectSample(s);
+          }}
+        />
 
         {/* Feature Highlights Grid */}
         <FeatureHighlights

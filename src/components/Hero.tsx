@@ -10,7 +10,7 @@ interface HeroProps {
 export const Hero: React.FC<HeroProps> = ({ onScanClick, onDemoClick }) => {
   const { t } = useLang();
   return (
-    <section className="relative overflow-hidden pt-14 pb-18 md:pt-24 md:pb-28 border-b border-white/5">
+    <section id="home-section" className="relative overflow-hidden pt-14 pb-18 md:pt-24 md:pb-28 border-b border-white/5">
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
 
