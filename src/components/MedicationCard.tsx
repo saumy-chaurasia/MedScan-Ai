@@ -12,16 +12,16 @@ export const MedicationCard: React.FC<MedicationCardProps> = ({ medication, inde
   const { t } = useLang();
   const getSlotBadgeColor = (slot: string) => {
     const s = slot.toLowerCase();
-    if (s.includes('morning') || s.includes('breakfast')) {
+    if (s.includes('morning') || s.includes('breakfast') || s.includes('सुबह')) {
       return 'bg-amber-500/10 text-amber-300 border-amber-500/30';
     }
-    if (s.includes('afternoon') || s.includes('lunch')) {
+    if (s.includes('afternoon') || s.includes('lunch') || s.includes('दोपहर')) {
       return 'bg-blue-500/10 text-blue-300 border-blue-500/30';
     }
-    if (s.includes('evening') || s.includes('dinner')) {
+    if (s.includes('evening') || s.includes('dinner') || s.includes('शाम')) {
       return 'bg-purple-500/10 text-purple-300 border-purple-500/30';
     }
-    if (s.includes('bedtime') || s.includes('night')) {
+    if (s.includes('bedtime') || s.includes('night') || s.includes('रात')) {
       return 'bg-indigo-500/10 text-indigo-300 border-indigo-500/30';
     }
     return 'bg-cyan-500/10 text-cyan-300 border-cyan-500/30';

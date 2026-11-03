@@ -26,6 +26,7 @@ import { ScheduleTimeline } from './ScheduleTimeline';
 import { DietaryGuardrails } from './DietaryGuardrails';
 import { generateCarePlanPDF } from '../services/pdfGenerator';
 import { useLang } from '../contexts/LanguageContext';
+import { localizePrescriptionResult } from '../services/localizeData';
 
 const TTS_LANGUAGES = [
   { label: 'English',   code: 'en-IN' },
@@ -54,7 +55,12 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
   const [isExporting, setIsExporting] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
 
-  const { t } = useLang();
+  const { t, lang } = useLang();
+
+  // Localize analysis result based on current language
+  const activeData = React.useMemo(() => {
+    return localizePrescriptionResult(data, lang);
+  }, [data, lang]);
 
   // TTS state
   const [ttsLang, setTtsLang] = useState(TTS_LANGUAGES[0]);
@@ -63,10 +69,10 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
   const uttRef = useRef<SpeechSynthesisUtterance | null>(null);
 
   const buildPrescriptionText = () => {
-    const name = data.patient_info?.name || '';
-    const doctor = data.patient_info?.physician_name || '';
-    const notes = data.patient_info?.doctor_notes || '';
-    const medsList = data.medications || [];
+    const name = activeData.patient_info?.name || '';
+    const doctor = activeData.patient_info?.physician_name || '';
+    const notes = activeData.patient_info?.doctor_notes || '';
+    const medsList = activeData.medications || [];
     const code = ttsLang.code;
 
     // Helper to translate frequency into everyday simple words
@@ -239,7 +245,7 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
   const handleDownloadPDF = () => {
     setIsExporting(true);
     try {
-      generateCarePlanPDF(data);
+      generateCarePlanPDF(activeData);
     } catch (err) {
       console.error('PDF export error:', err);
     } finally {
@@ -428,14 +434,14 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
                 <div className="space-y-1.5 neu-raised p-4 rounded-2xl border border-white/10">
                   <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider font-bold">{t('dash_patient_name')}</div>
                   <div className="text-base font-black text-white liquid-chrome-silver-text">
-                    {data.patient_info?.name || t('dash_verified_patient')}
+                    {activeData.patient_info?.name || t('dash_verified_patient')}
                   </div>
                   <div className="text-slate-400 font-mono text-[11px]">
-                    {data.patient_info?.age_gender || t('dash_demographics')}
+                    {activeData.patient_info?.age_gender || t('dash_demographics')}
                   </div>
                   <div className="flex items-center gap-1.5 text-slate-400 pt-1">
                     <Calendar className="w-3.5 h-3.5 text-slate-500" />
-                    <span>{t('dash_rx_date')} <strong className="text-slate-200 font-mono">{data.patient_info?.date || t('dash_current')}</strong></span>
+                    <span>{t('dash_rx_date')} <strong className="text-slate-200 font-mono">{activeData.patient_info?.date || t('dash_current')}</strong></span>
                   </div>
                 </div>
 
@@ -444,28 +450,28 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
                   <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider font-bold">{t('dash_prescribing_doc')}</div>
                   <div className="text-base font-black text-cyan-300 flex items-center gap-1.5">
                     <Stethoscope className="w-4 h-4 text-cyan-400 shrink-0 drop-shadow-[0_0_8px_rgba(0,242,254,0.5)]" />
-                    <span className="line-clamp-1">{data.patient_info?.physician_name || t('dash_medical_officer')}</span>
+                    <span className="line-clamp-1">{activeData.patient_info?.physician_name || t('dash_medical_officer')}</span>
                   </div>
                   <div className="text-slate-400 flex items-center gap-1.5 text-[11px]">
                     <Building2 className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                    <span className="line-clamp-1">{data.patient_info?.hospital_clinic || t('dash_healthcare_facility')}</span>
+                    <span className="line-clamp-1">{activeData.patient_info?.hospital_clinic || t('dash_healthcare_facility')}</span>
                   </div>
-                  {data.patient_info?.diagnosis_impression && (
+                  {activeData.patient_info?.diagnosis_impression && (
                     <div className="text-[11px] text-slate-400 line-clamp-2 pt-0.5 font-mono">
-                      <span className="text-slate-300 font-bold">{t('dash_impression')}</span> {data.patient_info.diagnosis_impression}
+                      <span className="text-slate-300 font-bold">{t('dash_impression')}</span> {activeData.patient_info.diagnosis_impression}
                     </div>
                   )}
                 </div>
               </div>
 
               {/* Doctor Clinical Notes */}
-              {data.patient_info?.doctor_notes && (
+              {activeData.patient_info?.doctor_notes && (
                 <div className="mt-4 p-4 rounded-2xl neu-pressed border border-white/5 text-xs text-slate-300">
                   <span className="text-cyan-400 font-bold uppercase tracking-wider block mb-1 text-[10px] font-mono">
                     {t('dash_doctor_notes')}
                   </span>
                   <p className="leading-relaxed font-mono text-[11px] text-slate-300">
-                    "{data.patient_info.doctor_notes}"
+                    "{activeData.patient_info.doctor_notes}"
                   </p>
                 </div>
               )}
@@ -479,14 +485,14 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
                     <FileCheck2 className="w-4 h-4" />
                   </div>
                   <h3 className="text-base font-bold text-white">
-                    {t('dash_decoded_meds')} ({data.medications?.length || 0})
+                    {t('dash_decoded_meds')} ({activeData.medications?.length || 0})
                   </h3>
                 </div>
                 <span className="text-xs text-slate-400 font-mono">{t('dash_mapped_inn')}</span>
               </div>
 
               <div className="space-y-4">
-                {data.medications?.map((med, idx) => (
+                {activeData.medications?.map((med, idx) => (
                   <MedicationCard key={idx} medication={med} index={idx} />
                 ))}
               </div>
@@ -494,7 +500,7 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
 
             {/* Warnings & Multi-Drug Hazard Matrix */}
             <div>
-              <InteractionAlerts interactions={data.drug_interactions} />
+              <InteractionAlerts interactions={activeData.drug_interactions} />
             </div>
 
           </div>
@@ -522,16 +528,16 @@ export const SplitViewDashboard: React.FC<SplitViewDashboardProps> = ({
                 </div>
 
                 <span className="text-xs font-mono text-cyan-300 neu-pill px-3 py-1 border border-cyan-400/30 font-bold shadow-[0_0_12px_rgba(0,242,254,0.15)]">
-                  {data.schedule_24h?.length || 0} {t('dash_dose_slots')}
+                  {activeData.schedule_24h?.length || 0} {t('dash_dose_slots')}
                 </span>
               </div>
 
               {/* Interactive Timeline Component */}
-              <ScheduleTimeline schedule={data.schedule_24h} />
+              <ScheduleTimeline schedule={activeData.schedule_24h} />
             </div>
 
             {/* Dietary & Lifestyle Guardrails Box */}
-            <DietaryGuardrails warnings={data.dietary_warnings} />
+            <DietaryGuardrails warnings={activeData.dietary_warnings} />
 
             {/* Caregiver Sync Helper */}
             <div className="p-5 rounded-3xl neu-raised border border-white/10 text-xs text-slate-400 flex items-center justify-between">

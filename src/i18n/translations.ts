@@ -4,6 +4,7 @@ export const translations = {
   en: {
     // Navbar
     nav_home: 'Home',
+    nav_scan_prescription: 'Scan Prescription',
     nav_features: 'Features',
     nav_live_demo: 'Live Demo',
     nav_history: 'History',
@@ -137,7 +138,12 @@ export const translations = {
     history_no_search_results: 'No historical scans match your search query.',
     history_view_full_plan: 'Load Full Care Plan',
     history_view_image: 'View Uploaded Photo',
+    history_download_rx: 'Download Photo',
     history_delete: 'Delete Record',
+    delete_confirm_title: 'Delete Prescription Record?',
+    delete_confirm_msg: 'Are you sure you want to delete this prescription record? This action cannot be undone.',
+    delete_confirm_btn: 'Yes, Delete',
+    delete_cancel_btn: 'Cancel',
     history_patient_label: 'Patient',
     history_doctor_label: 'Doctor',
     history_diagnosis_label: 'Diagnosis',
@@ -148,7 +154,12 @@ export const translations = {
     history_uploaded_doc: 'Uploaded Rx Photo',
     history_total_scans: 'Total Archived Scans',
 
+    // Reminders
+    reminder_channel_whatsapp: 'WhatsApp',
+    reminder_subtitle: 'Automated dosage notifications via SMS or WhatsApp',
+
     // Footer
+    footer_disclaimer_label: 'Clinical Decision Support Disclaimer:',
     footer_desc: 'Clinical prescription vision platform. Translates illegible doctor handwriting into structured dosages, generic chemical mappings, and chronotherapeutic 24-hour schedules.',
     footer_platform: 'Platform',
     footer_scanner: 'Prescription Scanner',
@@ -162,6 +173,7 @@ export const translations = {
   hi: {
     // Navbar
     nav_home: 'होम',
+    nav_scan_prescription: 'प्रिस्क्रिप्शन स्कैन करें',
     nav_features: 'विशेषताएं',
     nav_live_demo: 'लाइव डेमो',
     nav_history: 'इतिहास',
@@ -295,7 +307,12 @@ export const translations = {
     history_no_search_results: 'आपकी खोज से मेल खाता कोई रिकॉर्ड नहीं मिला।',
     history_view_full_plan: 'पूरी योजना लोड करें',
     history_view_image: 'अपलोड की गई फोटो देखें',
+    history_download_rx: 'फोटो डाउनलोड करें',
     history_delete: 'रिकॉर्ड हटाएं',
+    delete_confirm_title: 'प्रिस्क्रिप्शन रिकॉर्ड हटाएं?',
+    delete_confirm_msg: 'क्या आप वाकई इस प्रिस्क्रिप्शन रिकॉर्ड को हटाना चाहते हैं? यह क्रिया पूर्ववत नहीं की जा सकती।',
+    delete_confirm_btn: 'हाँ, हटाएं',
+    delete_cancel_btn: 'रद्द करें',
     history_patient_label: 'मरीज़',
     history_doctor_label: 'डॉक्टर',
     history_diagnosis_label: 'निदान',
@@ -306,7 +323,12 @@ export const translations = {
     history_uploaded_doc: 'अपलोड किया गया पर्चा',
     history_total_scans: 'कुल संग्रहीत स्कैन',
 
+    // Reminders
+    reminder_channel_whatsapp: 'व्हाट्सएप',
+    reminder_subtitle: 'SMS या व्हाट्सएप के माध्यम से स्वचालित खुराक सूचनाएं',
+
     // Footer
+    footer_disclaimer_label: 'क्लिनिकल निर्णय समर्थन अस्वीकरण:',
     footer_desc: 'क्लिनिकल प्रिस्क्रिप्शन विज़न प्लेटफॉर्म। अपठनीय डॉक्टर की लिखावट को संरचित खुराक, जेनेरिक रासायनिक मैपिंग और 24-घंटे के क्रोनोथेरेप्यूटिक शेड्यूल में बदलता है।',
     footer_platform: 'प्लेटफॉर्म',
     footer_scanner: 'प्रिस्क्रिप्शन स्कैनर',

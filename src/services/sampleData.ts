@@ -13,26 +13,94 @@ export interface SamplePrescriptionItem {
 }
 
 // Helper to generate SVG thumbnail data URLs for realistic prescription previews
-function generatePrescriptionSVG(doctor: string, hospital: string, date: string, medicines: string[]): string {
-  const medLines = medicines.map((m, i) => `<text x="45" y="${170 + i * 28}" font-family="sans-serif" font-size="13" font-weight="600" fill="#1e293b">Rx ${i + 1}. ${m}</text>`).join('');
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="520" viewBox="0 0 400 520" fill="none">
-    <rect width="400" height="520" rx="12" fill="#F8FAFC"/>
-    <rect x="0" y="0" width="400" height="75" fill="#0284C7"/>
-    <circle cx="45" cy="38" r="20" fill="#FFFFFF" fill-opacity="0.2"/>
-    <path d="M45 28v20M35 38h20" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
-    <text x="75" y="34" font-family="sans-serif" font-size="16" font-weight="bold" fill="#FFFFFF">${hospital}</text>
-    <text x="75" y="52" font-family="sans-serif" font-size="11" fill="#E0F2FE">Department of General Medicine &amp; Surgery</text>
-    <rect x="25" y="90" width="350" height="48" rx="6" fill="#F1F5F9" stroke="#E2E8F0"/>
-    <text x="35" y="110" font-family="sans-serif" font-size="11" font-weight="bold" fill="#0F172A">Physician: ${doctor}</text>
-    <text x="35" y="126" font-family="sans-serif" font-size="10" fill="#64748B">Reg No: MCI-74892/2018 | Date: ${date}</text>
-    <line x1="25" y1="150" x2="375" y2="150" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="4 4"/>
+function generatePrescriptionSVG(
+  doctor: string,
+  hospital: string,
+  date: string,
+  medicines: string[],
+  patient = 'Patient',
+  ageSex = 'Adult',
+  diagnosis = 'Clinical Evaluation'
+): string {
+  const medLines = medicines
+    .map(
+      (m, i) => `
+    <g transform="translate(45, ${250 + i * 48})">
+      <circle cx="10" cy="10" r="10" fill="#0284C7" fill-opacity="0.12"/>
+      <text x="10" y="14" font-family="'Courier New', Courier, monospace" font-size="11" font-weight="bold" fill="#0369A1" text-anchor="middle">${i + 1}</text>
+      <text x="32" y="12" font-family="'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">${m}</text>
+      <line x1="32" y1="24" x2="510" y2="24" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="3 3"/>
+    </g>`
+    )
+    .join('');
+
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="840" viewBox="0 0 600 840" fill="none">
+    <defs>
+      <linearGradient id="header-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#0369A1"/>
+        <stop offset="100%" stop-color="#0284C7"/>
+      </linearGradient>
+    </defs>
+
+    <!-- Paper Sheet Background -->
+    <rect width="600" height="840" rx="8" fill="#FDFBF7"/>
+    <rect x="12" y="12" width="576" height="816" rx="6" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+
+    <!-- Watermark -->
+    <g transform="translate(300, 470) rotate(-35)" opacity="0.04" pointer-events="none">
+      <text x="0" y="0" font-family="Arial, sans-serif" font-size="52" font-weight="900" fill="#0F172A" text-anchor="middle">OFFICIAL CLINICAL RX</text>
+    </g>
+
+    <!-- Clinic Letterhead Header -->
+    <rect x="12" y="12" width="576" height="105" rx="6" fill="url(#header-grad)"/>
+    <circle cx="58" cy="64" r="28" fill="#FFFFFF" fill-opacity="0.2"/>
+    <path d="M58 46v36M40 64h36" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+    
+    <text x="100" y="52" font-family="'Helvetica Neue', Arial, sans-serif" font-size="20" font-weight="900" fill="#FFFFFF" letter-spacing="0.5">${hospital}</text>
+    <text x="100" y="72" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12" font-weight="500" fill="#E0F2FE">DEPARTMENT OF CLINICAL PHARMACOTHERAPY &amp; INTERNAL MEDICINE</text>
+    <text x="100" y="90" font-family="'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="400" fill="#BAE6FD">24x7 Emergency Care • ISO 9001:2015 Certified Health Center • Ph: +91 11 4982 0000</text>
+
+    <!-- Doctor Details Row -->
+    <rect x="30" y="128" width="540" height="42" rx="6" fill="#F8FAFC" stroke="#E2E8F0"/>
+    <text x="44" y="146" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12" font-weight="700" fill="#0F172A">Physician: ${doctor}</text>
+    <text x="44" y="161" font-family="'Helvetica Neue', Arial, sans-serif" font-size="10" fill="#64748B">Reg. No: MCI-74892/2018 | Specialty: Internal Medicine &amp; Clinical Care</text>
+    <text x="450" y="152" font-family="'Courier New', Courier, monospace" font-size="11" font-weight="700" fill="#0369A1">DATE: ${date}</text>
+
+    <!-- Patient Metadata Row -->
+    <rect x="30" y="178" width="540" height="38" rx="6" fill="#F1F5F9" stroke="#CBD5E1"/>
+    <text x="44" y="195" font-family="'Helvetica Neue', Arial, sans-serif" font-size="11" font-weight="700" fill="#334155">Patient: <tspan fill="#0F172A" font-weight="800">${patient}</tspan></text>
+    <text x="260" y="195" font-family="'Helvetica Neue', Arial, sans-serif" font-size="11" font-weight="600" fill="#475569">Age/Sex: ${ageSex}</text>
+    <text x="420" y="195" font-family="'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="600" fill="#64748B">OPD Ref: #RX-${date.replace(/[^0-9]/g, '')}</text>
+    <text x="44" y="209" font-family="'Helvetica Neue', Arial, sans-serif" font-size="10" fill="#64748B">Diagnosis: <tspan fill="#0369A1" font-weight="600">${diagnosis}</tspan></text>
+
+    <!-- Classic Prescription Symbol Rx -->
+    <text x="42" y="248" font-family="'Georgia', serif" font-size="32" font-weight="bold" font-style="italic" fill="#0284C7">℞</text>
+    <line x1="72" y1="242" x2="565" y2="242" stroke="#CBD5E1" stroke-width="1.5"/>
+
+    <!-- Prescribed Medicines -->
     ${medLines}
-    <rect x="25" y="420" width="350" height="60" rx="6" fill="#F8FAFC" stroke="#E2E8F0"/>
-    <text x="35" y="442" font-family="sans-serif" font-size="10" font-weight="bold" fill="#DC2626">Precautions &amp; Dietary Advice:</text>
-    <text x="35" y="458" font-family="sans-serif" font-size="9" fill="#475569">Complete full antibiotic course. Avoid dairy within 2 hours of fluoroquinolones.</text>
-    <text x="35" y="471" font-family="sans-serif" font-size="9" fill="#475569">Follow-up after 5 days if fever persists &gt; 101°F.</text>
-    <path d="M290 495 C310 480, 330 490, 345 485 C360 480, 370 488, 375 490" stroke="#0369A1" stroke-width="2" fill="none" stroke-linecap="round"/>
-    <text x="300" y="508" font-family="sans-serif" font-size="9" font-style="italic" fill="#64748B">Dr. Signature</text>
+
+    <!-- Precautions & Dietary Notes Box -->
+    <rect x="30" y="650" width="540" height="74" rx="6" fill="#FEF2F2" stroke="#FECACA"/>
+    <text x="45" y="670" font-family="'Helvetica Neue', Arial, sans-serif" font-size="11" font-weight="700" fill="#DC2626">Precautions &amp; Patient Dietary Guardrails:</text>
+    <text x="45" y="688" font-family="'Helvetica Neue', Arial, sans-serif" font-size="10" fill="#475569">• Complete full antibiotic and therapeutic cycle without interrupting dosages.</text>
+    <text x="45" y="703" font-family="'Helvetica Neue', Arial, sans-serif" font-size="10" fill="#475569">• Avoid alcohol, tobacco, and high-fat meals. Consume 2.5L+ fluids daily.</text>
+    <text x="45" y="718" font-family="'Helvetica Neue', Arial, sans-serif" font-size="10" fill="#475569">• Contact hospital immediately if rash, breathing discomfort, or fever &gt; 101°F develops.</text>
+
+    <!-- Clinic Rubber Stamp & Signature -->
+    <g transform="translate(80, 770)">
+      <circle cx="35" cy="0" r="30" fill="none" stroke="#DC2626" stroke-width="2" stroke-opacity="0.85" stroke-dasharray="4 2"/>
+      <circle cx="35" cy="0" r="26" fill="none" stroke="#DC2626" stroke-width="1" stroke-opacity="0.7"/>
+      <text x="35" y="-6" font-family="'Helvetica Neue', Arial, sans-serif" font-size="7" font-weight="bold" fill="#DC2626" text-anchor="middle">APEX HEALTH COUNCIL</text>
+      <text x="35" y="4" font-family="'Helvetica Neue', Arial, sans-serif" font-size="8" font-weight="900" fill="#DC2626" text-anchor="middle">★ VERIFIED ★</text>
+      <text x="35" y="14" font-family="'Helvetica Neue', Arial, sans-serif" font-size="6.5" font-weight="bold" fill="#DC2626" text-anchor="middle">CLINICAL AUDIT</text>
+    </g>
+
+    <g transform="translate(420, 780)">
+      <path d="M-40 -10 C-10 -30, 20 -5, 50 -25 C70 -40, 90 -10, 110 -20" stroke="#0369A1" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <line x1="-50" y1="0" x2="110" y2="0" stroke="#94A3B8" stroke-width="1"/>
+      <text x="30" y="15" font-family="'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700" fill="#475569" text-anchor="middle">Authorized Clinician Signature</text>
+    </g>
   </svg>`;
   return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }
@@ -51,7 +119,7 @@ export const SAMPLE_PRESCRIPTIONS: SamplePrescriptionItem[] = [
       'Dolo 650mg (SOS max 3x daily)',
       'Pantocid 40mg (1-0-0) empty stomach',
       'Montair-LC (0-0-1) at bedtime'
-    ]),
+    ], 'Arjun Verma', '34 Y / Male', 'Acute Lower Respiratory Infection'),
     data: {
       patient_info: {
         name: 'Arjun Verma',
@@ -177,7 +245,7 @@ export const SAMPLE_PRESCRIPTIONS: SamplePrescriptionItem[] = [
       'Telma 40mg (1-0-0) morning',
       'Rosuvas 10mg (0-0-1) bedtime',
       'Ecosprin 75mg (0-1-0) post-lunch'
-    ]),
+    ], 'Venkatesh Ramanathan', '58 Y / Male', 'Type 2 Diabetes & Hypertension'),
     data: {
       patient_info: {
         name: 'Venkatesh Ramanathan',
@@ -422,7 +490,7 @@ export const SAMPLE_PRESCRIPTIONS: SamplePrescriptionItem[] = [
       'Cifran-TZ (1-0-1) post food x 3 days',
       'Sucrafil Suspension (2 tsp TDS) 1hr pre-meal',
       'Econorm Sachet (1-0-1) in water'
-    ]),
+    ], 'Priyanka Chopra', '29 Y / Female', 'Infectious Gastroenteritis'),
     data: {
       patient_info: {
         name: 'Priyanka Chopra',

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { 
   History, 
   Search, 
@@ -17,11 +17,12 @@ import {
   Sparkles, 
   Camera, 
   FileText,
-  ShieldCheck,
+  Download,
   ChevronRight
 } from 'lucide-react';
 import { PrescriptionHistoryItem } from '../types/prescription';
 import { useLang } from '../contexts/LanguageContext';
+import { localizeHistoryItem } from '../services/localizeData';
 
 interface HistorySectionProps {
   history: PrescriptionHistoryItem[];
@@ -38,13 +39,19 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
   onScanNewClick,
   onSelectSample,
 }) => {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<'All' | 'Active' | 'Completed'>('All');
   const [selectedImage, setSelectedImage] = useState<{ url: string; title: string; patient: string } | null>(null);
+  const [itemToDelete, setItemToDelete] = useState<PrescriptionHistoryItem | null>(null);
+
+  // Localize history items based on current active language
+  const localizedHistory = useMemo(() => {
+    return history.map((item) => localizeHistoryItem(item, lang));
+  }, [history, lang]);
 
   // Filter history items by search query and status filter
-  const filteredHistory = history.filter((item) => {
+  const filteredHistory = localizedHistory.filter((item) => {
     // Status filter
     if (statusFilter !== 'All' && item.status !== statusFilter) {
       return false;
@@ -75,8 +82,54 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
     );
   });
 
-  const activeCount = history.filter((i) => i.status === 'Active').length;
-  const completedCount = history.filter((i) => i.status === 'Completed').length;
+  const activeCount = localizedHistory.filter((i) => i.status === 'Active').length;
+  const completedCount = localizedHistory.filter((i) => i.status === 'Completed').length;
+
+  // Download prescription photo as PNG or JPEG
+  const handleDownloadImage = (url: string, title: string) => {
+    const safeName = (title || 'prescription-rx').replace(/[^a-zA-Z0-9_\u0900-\u097F-]/g, '_');
+    if (url.startsWith('data:image/svg+xml')) {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        try {
+          const canvas = document.createElement('canvas');
+          canvas.width = 600;
+          canvas.height = 840;
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, 600, 840);
+            ctx.drawImage(img, 0, 0, 600, 840);
+            const pngUrl = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.download = `${safeName}.png`;
+            link.href = pngUrl;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            return;
+          }
+        } catch {
+          // fallback direct download
+        }
+        const link = document.createElement('a');
+        link.download = `${safeName}.svg`;
+        link.href = url;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
+      img.src = url;
+    } else {
+      const link = document.createElement('a');
+      link.download = `${safeName}.jpg`;
+      link.href = url;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
 
   return (
     <section id="history-section" className="py-16 md:py-24 border-t border-white/5 relative">
@@ -132,7 +185,7 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
                   : 'neu-pressed border border-white/5 text-slate-400 hover:text-white'
               }`}
             >
-              {t('history_filter_all')} ({history.length})
+              {t('history_filter_all')} ({localizedHistory.length})
             </button>
             <button
               type="button"
@@ -247,10 +300,10 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
                       </div>
                     </div>
 
-                    {/* Delete action */}
+                    {/* Delete action with popup trigger */}
                     <button
                       type="button"
-                      onClick={() => onDeleteItem(item.id)}
+                      onClick={() => setItemToDelete(item)}
                       className="p-2 rounded-xl neu-raised border border-white/5 hover:border-red-400/40 text-slate-500 hover:text-red-400 transition-colors cursor-pointer"
                       title={t('history_delete')}
                     >
@@ -269,10 +322,11 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
                           <span>{t('history_uploaded_doc')}</span>
                         </span>
                         {prescImg && (
-                          <span className="text-[10px] text-cyan-400">Click to Zoom</span>
+                          <span className="text-[10px] text-cyan-400">Click to View</span>
                         )}
                       </div>
 
+                      {/* Photo preview container */}
                       <div
                         onClick={() => {
                           if (prescImg) {
@@ -311,22 +365,32 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
                         )}
                       </div>
 
-                      {/* Quick Inspect Button under photo */}
+                      {/* Action buttons under photo: View & Download */}
                       {prescImg && (
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setSelectedImage({
-                              url: prescImg,
-                              title: item.prescription_name,
-                              patient: item.patient_name,
-                            })
-                          }
-                          className="mt-3 w-full py-2 px-3 rounded-xl neu-raised border border-white/5 hover:border-cyan-400/30 text-xs text-slate-300 hover:text-cyan-300 flex items-center justify-center gap-2 transition-all cursor-pointer font-bold"
-                        >
-                          <Maximize2 className="w-3.5 h-3.5 text-cyan-400" />
-                          <span>{t('history_view_image')}</span>
-                        </button>
+                        <div className="mt-3 grid grid-cols-2 gap-2">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setSelectedImage({
+                                url: prescImg,
+                                title: item.prescription_name,
+                                patient: item.patient_name,
+                              })
+                            }
+                            className="py-2 px-2.5 rounded-xl neu-raised border border-white/5 hover:border-cyan-400/30 text-xs text-slate-300 hover:text-cyan-300 flex items-center justify-center gap-1.5 transition-all cursor-pointer font-bold"
+                          >
+                            <Maximize2 className="w-3.5 h-3.5 text-cyan-400" />
+                            <span>{t('history_view_image')}</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDownloadImage(prescImg, item.prescription_name)}
+                            className="py-2 px-2.5 rounded-xl neu-raised border border-white/5 hover:border-emerald-400/40 text-xs text-slate-300 hover:text-emerald-300 flex items-center justify-center gap-1.5 transition-all cursor-pointer font-bold"
+                          >
+                            <Download className="w-3.5 h-3.5 text-emerald-400" />
+                            <span>{t('history_download_rx')}</span>
+                          </button>
+                        </div>
                       )}
                     </div>
 
@@ -487,7 +551,7 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
 
       </div>
 
-      {/* Enlarged Photo Modal Lightbox */}
+      {/* Enlarged Photo Modal Lightbox with Download Option */}
       {selectedImage && (
         <div
           onClick={() => setSelectedImage(null)}
@@ -495,30 +559,80 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative max-w-4xl max-h-[90vh] w-full rounded-3xl glass-card-premium neu-flat p-4 sm:p-6 border border-white/10 flex flex-col items-center shadow-2xl"
+            className="relative max-w-4xl max-h-[92vh] w-full rounded-3xl glass-card-premium neu-flat p-4 sm:p-6 border border-white/10 flex flex-col items-center shadow-2xl"
           >
-            {/* Close Button */}
-            <button
-              type="button"
-              onClick={() => setSelectedImage(null)}
-              className="absolute top-4 right-4 p-2 rounded-xl neu-raised text-slate-400 hover:text-white transition-colors cursor-pointer z-10"
-            >
-              <X className="w-5 h-5" />
-            </button>
-
-            {/* Header info */}
-            <div className="w-full text-left mb-3 pr-10">
-              <h4 className="text-lg font-bold text-white liquid-chrome-text">{selectedImage.title}</h4>
-              <p className="text-xs text-slate-400 font-mono">Patient: {selectedImage.patient}</p>
+            {/* Top Bar with Title and Actions */}
+            <div className="w-full flex items-center justify-between mb-3 pr-2">
+              <div>
+                <h4 className="text-lg font-bold text-white liquid-chrome-text">{selectedImage.title}</h4>
+                <p className="text-xs text-slate-400 font-mono">Patient: {selectedImage.patient}</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleDownloadImage(selectedImage.url, selectedImage.title)}
+                  className="px-3.5 py-2 rounded-xl neu-raised border border-emerald-400/40 text-emerald-300 hover:text-white flex items-center gap-1.5 text-xs font-bold transition-colors cursor-pointer"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Download Rx</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedImage(null)}
+                  className="p-2 rounded-xl neu-raised text-slate-400 hover:text-white transition-colors cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
             </div>
 
-            {/* Image Preview */}
-            <div className="w-full max-h-[72vh] overflow-auto rounded-2xl bg-black/90 border border-cyan-400/30 flex items-center justify-center p-2">
+            {/* Image Preview Area */}
+            <div className="w-full max-h-[74vh] overflow-auto rounded-2xl bg-black/90 border border-cyan-400/30 flex items-center justify-center p-2">
               <img
                 src={selectedImage.url}
                 alt={selectedImage.title}
-                className="max-h-[70vh] w-auto object-contain filter contrast-125 brightness-95"
+                className="max-h-[72vh] w-auto object-contain filter contrast-125 brightness-95"
               />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Popup */}
+      {itemToDelete && (
+        <div
+          onClick={() => setItemToDelete(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative max-w-md w-full rounded-3xl glass-card-premium neu-flat p-6 sm:p-8 border border-white/10 shadow-2xl text-center"
+          >
+            <div className="w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-400 mx-auto flex items-center justify-center mb-4">
+              <AlertTriangle className="w-7 h-7" />
+            </div>
+            <h4 className="text-lg font-bold text-white mb-2">{t('delete_confirm_title')}</h4>
+            <p className="text-xs text-slate-300 leading-relaxed mb-6">
+              {t('delete_confirm_msg')}
+            </p>
+            <div className="flex items-center justify-center gap-3">
+              <button
+                type="button"
+                onClick={() => setItemToDelete(null)}
+                className="flex-1 py-2.5 px-4 rounded-xl neu-raised border border-white/10 text-xs font-bold text-slate-300 hover:text-white transition-colors cursor-pointer"
+              >
+                {t('delete_cancel_btn')}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  onDeleteItem(itemToDelete.id);
+                  setItemToDelete(null);
+                }}
+                className="flex-1 py-2.5 px-4 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs shadow-[0_0_15px_rgba(239,68,68,0.4)] transition-all cursor-pointer"
+              >
+                {t('delete_confirm_btn')}
+              </button>
             </div>
           </div>
         </div>
@@ -526,4 +640,3 @@ export const HistorySection: React.FC<HistorySectionProps> = ({
     </section>
   );
 };
-

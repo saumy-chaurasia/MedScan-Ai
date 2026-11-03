@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { X, Bell, MessageSquare, Phone, Check, Sparkles, Send } from 'lucide-react';
+import { useLang } from '../contexts/LanguageContext';
 
 interface ReminderModalProps {
   isOpen: boolean;
@@ -8,6 +9,7 @@ interface ReminderModalProps {
 }
 
 export const ReminderModal: React.FC<ReminderModalProps> = ({ isOpen, onClose, patientName }) => {
+  const { t } = useLang();
   const getSavedReminders = () => {
     try {
       const raw = localStorage.getItem('medscan_reminders_v2');
@@ -72,7 +74,7 @@ export const ReminderModal: React.FC<ReminderModalProps> = ({ isOpen, onClose, p
           </div>
           <div>
             <h3 className="text-xl font-black text-white liquid-chrome-text">Set Care Plan Reminders</h3>
-            <p className="text-xs text-slate-400">Automated dosage notifications via SMS or WhatsApp</p>
+            <p className="text-xs text-slate-400">{t('reminder_subtitle')}</p>
           </div>
         </div>
 
@@ -104,7 +106,7 @@ export const ReminderModal: React.FC<ReminderModalProps> = ({ isOpen, onClose, p
                 }`}
               >
                 <MessageSquare className="w-3.5 h-3.5" />
-                <span>WhatsApp</span>
+                <span>{t('reminder_channel_whatsapp')}</span>
               </button>
 
               <button

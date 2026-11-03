@@ -69,7 +69,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenApiKey }) => {
 
         {/* Regulatory Disclaimer Box (Neumorphic Inset) */}
         <div className="p-4 rounded-2xl neu-pressed border border-white/5 text-[11px] text-slate-400 leading-relaxed mb-8">
-          <strong className="text-slate-200">Clinical Decision Support Disclaimer:</strong> {t('footer_disclaimer')}
+          <strong className="text-slate-200">{t('footer_disclaimer_label')} </strong>{t('footer_disclaimer')}
         </div>
 
         {/* Copyright Bar */}

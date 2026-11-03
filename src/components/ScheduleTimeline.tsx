@@ -34,13 +34,13 @@ export const ScheduleTimeline: React.FC<ScheduleTimelineProps> = ({ schedule }) 
 
   const getSlotIcon = (timeSlot: string) => {
     const s = timeSlot.toLowerCase();
-    if (s.includes('breakfast') || s.includes('07:') || s.includes('08:') || s.includes('morning')) {
+    if (s.includes('breakfast') || s.includes('नाश्ता') || s.includes('07:') || s.includes('08:') || s.includes('morning') || s.includes('सुबह')) {
       return <Sunrise className="w-4 h-4 text-amber-400" />;
     }
-    if (s.includes('lunch') || s.includes('afternoon') || s.includes('12:') || s.includes('13:') || s.includes('14:') || s.includes('01:') || s.includes('02:')) {
+    if (s.includes('lunch') || s.includes('दोपहर') || s.includes('afternoon') || s.includes('12:') || s.includes('13:') || s.includes('14:') || s.includes('01:') || s.includes('02:')) {
       return <Sun className="w-4 h-4 text-cyan-400" />;
     }
-    if (s.includes('dinner') || s.includes('18:') || s.includes('19:') || s.includes('20:') || s.includes('08:00 pm') || s.includes('08:30 pm')) {
+    if (s.includes('dinner') || s.includes('रात का खाना') || s.includes('शाम') || s.includes('18:') || s.includes('19:') || s.includes('20:') || s.includes('08:00 pm') || s.includes('08:30 pm')) {
       return <CloudSun className="w-4 h-4 text-indigo-400" />;
     }
     return <Moon className="w-4 h-4 text-purple-400" />;

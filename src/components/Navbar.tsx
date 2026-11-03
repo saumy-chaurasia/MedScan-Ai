@@ -67,17 +67,17 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:w-full transition-all duration-300" />
           </button>
           <button
+            onClick={() => scrollTo('scanner-section')}
+            className="hover:text-cyan-300 transition-colors cursor-pointer py-1 relative group"
+          >
+            <span>{t('nav_scan_prescription')}</span>
+            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:w-full transition-all duration-300" />
+          </button>
+          <button
             onClick={() => scrollTo('features-section')}
             className="hover:text-cyan-300 transition-colors cursor-pointer py-1 relative group"
           >
             <span>{t('nav_features')}</span>
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:w-full transition-all duration-300" />
-          </button>
-          <button
-            onClick={() => scrollTo('scanner-section')}
-            className="hover:text-cyan-300 transition-colors cursor-pointer py-1 relative group"
-          >
-            <span>{t('nav_live_demo')}</span>
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:w-full transition-all duration-300" />
           </button>
           <button
@@ -183,17 +183,17 @@ export const Navbar: React.FC<NavbarProps> = ({
         </button>
         <button
           type="button"
+          onClick={() => scrollTo('scanner-section')}
+          className="px-2.5 py-1 rounded-xl neu-raised text-slate-300 hover:text-cyan-300 transition-colors"
+        >
+          {t('nav_scan_prescription')}
+        </button>
+        <button
+          type="button"
           onClick={() => scrollTo('features-section')}
           className="px-2.5 py-1 rounded-xl neu-raised text-slate-300 hover:text-cyan-300 transition-colors"
         >
           {t('nav_features')}
-        </button>
-        <button
-          type="button"
-          onClick={() => scrollTo('scanner-section')}
-          className="px-2.5 py-1 rounded-xl neu-raised text-slate-300 hover:text-cyan-300 transition-colors"
-        >
-          {t('nav_live_demo')}
         </button>
         <button
           type="button"
