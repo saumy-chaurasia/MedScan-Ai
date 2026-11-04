@@ -38,7 +38,10 @@ export const App: React.FC = () => {
   const [isSaved, setIsSaved] = useState(false);
   const [apiKeyConfigured, setApiKeyConfigured] = useState(false);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [view, setView] = useState<'main' | 'login'>('main');
+  // Default directly to 'login' page when anyone opens the website (unless explicitly #home)
+  const [view, setView] = useState<'main' | 'login'>(() => {
+    return window.location.hash === '#home' ? 'main' : 'login';
+  });
 
   // Modals state
   const [isAuthOpen, setIsAuthOpen] = useState(false);
@@ -50,12 +53,12 @@ export const App: React.FC = () => {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    // Handle URL hash for login page (#login)
+    // Route to login page by default, unless hash is specifically #home
     const handleHash = () => {
-      if (window.location.hash === '#login') {
-        setView('login');
-      } else {
+      if (window.location.hash === '#home') {
         setView('main');
+      } else {
+        setView('login');
       }
     };
     handleHash();
@@ -244,12 +247,12 @@ export const App: React.FC = () => {
         <LoginPage
           onBack={() => {
             setView('main');
-            window.location.hash = '';
+            window.location.hash = '#home';
           }}
           onLoginSuccess={(profile) => {
             setUserProfile(profile);
             setView('main');
-            window.location.hash = '';
+            window.location.hash = '#home';
             showToast(`Welcome back, ${profile.name}!`);
           }}
           onLogout={() => {

@@ -5,6 +5,7 @@ import {
   Mail, 
   User, 
   ArrowLeft, 
+  ArrowRight,
   Sparkles, 
   CheckCircle2, 
   Globe, 
@@ -196,51 +197,63 @@ export const LoginPage: React.FC<LoginPageProps> = ({
           </div>
         </div>
 
-        {/* Language Selector */}
-        <div className="relative">
+        {/* Language Selector & Skip to Dashboard */}
+        <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={() => setLangOpen((o) => !o)}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-2xl neu-raised border border-white/10 hover:border-cyan-400/40 text-xs font-bold text-slate-200 hover:text-cyan-300 transition-all cursor-pointer"
+            onClick={onBack}
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-white/10 hover:border-cyan-400/30 text-xs font-semibold text-slate-300 hover:text-cyan-300 transition-all cursor-pointer"
+            title={lang === 'en' ? 'Explore without signing in' : 'बिना साइन इन किए देखें'}
           >
-            <Globe className="w-3.5 h-3.5 text-cyan-400" />
-            <span>{lang === 'en' ? 'EN' : 'HI'}</span>
+            <span>{lang === 'en' ? 'Guest Explore' : 'अतिथि प्रवेश'}</span>
+            <ArrowRight className="w-3.5 h-3.5 text-cyan-400" />
           </button>
 
-          {langOpen && (
-            <>
-              <div 
-                className="fixed inset-0 z-40" 
-                onClick={() => setLangOpen(false)} 
-              />
-              <div className="absolute right-0 mt-2 w-28 rounded-2xl glass-card-premium border border-white/10 overflow-hidden z-50">
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (lang !== 'en') toggleLang();
-                    setLangOpen(false);
-                  }}
-                  className={`w-full text-left px-4 py-2.5 text-xs font-bold transition-colors ${
-                    lang === 'en' ? 'text-cyan-300 bg-cyan-500/10' : 'text-slate-300 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  English
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (lang !== 'hi') toggleLang();
-                    setLangOpen(false);
-                  }}
-                  className={`w-full text-left px-4 py-2.5 text-xs font-bold transition-colors ${
-                    lang === 'hi' ? 'text-cyan-300 bg-cyan-500/10' : 'text-slate-300 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  हिंदी
-                </button>
-              </div>
-            </>
-          )}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setLangOpen((o) => !o)}
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-2xl neu-raised border border-white/10 hover:border-cyan-400/40 text-xs font-bold text-slate-200 hover:text-cyan-300 transition-all cursor-pointer"
+            >
+              <Globe className="w-3.5 h-3.5 text-cyan-400" />
+              <span>{lang === 'en' ? 'EN' : 'HI'}</span>
+            </button>
+
+            {langOpen && (
+              <>
+                <div 
+                  className="fixed inset-0 z-40" 
+                  onClick={() => setLangOpen(false)} 
+                />
+                <div className="absolute right-0 mt-2 w-28 rounded-2xl glass-card-premium border border-white/10 overflow-hidden z-50">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (lang !== 'en') toggleLang();
+                      setLangOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-2.5 text-xs font-bold transition-colors cursor-pointer ${
+                      lang === 'en' ? 'text-cyan-300 bg-cyan-500/10' : 'text-slate-300 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
+                    English
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (lang !== 'hi') toggleLang();
+                      setLangOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-2.5 text-xs font-bold transition-colors cursor-pointer ${
+                      lang === 'hi' ? 'text-cyan-300 bg-cyan-500/10' : 'text-slate-300 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
+                    हिंदी
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </header>
 
@@ -309,6 +322,45 @@ export const LoginPage: React.FC<LoginPageProps> = ({
               </span>
             </div>
           )}
+
+          {/* Prominent Instant Demo Login Button */}
+          <div className="mb-6">
+            <button
+              type="button"
+              onClick={() => handleDemoLogin('clinician')}
+              className="w-full p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-cyan-500/20 via-blue-600/20 to-teal-500/20 hover:from-cyan-500/35 hover:via-blue-600/35 hover:to-teal-500/35 border-2 border-cyan-400/60 hover:border-cyan-300 text-white font-black text-sm flex items-center justify-between shadow-[0_0_25px_rgba(0,242,254,0.3)] hover:shadow-[0_0_35px_rgba(0,242,254,0.5)] transition-all duration-300 cursor-pointer group hover:scale-[1.01]"
+              title={t('login_instant_demo_btn')}
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-500 text-slate-950 flex items-center justify-center font-black shadow-lg group-hover:scale-110 transition-transform shrink-0">
+                  <Sparkles className="w-5 h-5 text-slate-950 fill-slate-950" />
+                </div>
+                <div className="text-left">
+                  <div className="text-xs sm:text-sm font-black text-white flex items-center gap-2 flex-wrap">
+                    <span className="liquid-chrome-cyan-text">{t('login_instant_demo_btn')}</span>
+                    <span className="px-1.5 py-0.5 rounded text-[9px] font-mono uppercase bg-cyan-400 text-slate-950 font-black tracking-wider">
+                      FAST 1-CLICK
+                    </span>
+                  </div>
+                  <p className="text-[10px] text-slate-300 font-sans mt-0.5">
+                    {t('login_instant_demo_sub')}
+                  </p>
+                </div>
+              </div>
+              <div className="w-8 h-8 rounded-xl bg-white/10 group-hover:bg-cyan-400/30 flex items-center justify-center transition-colors shrink-0">
+                <ArrowRight className="w-4 h-4 text-cyan-300 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </button>
+          </div>
+
+          <div className="relative flex items-center justify-center mb-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-white/10" />
+            </div>
+            <span className="relative px-3 bg-[#0a0f1d] text-[11px] font-mono text-slate-400 uppercase tracking-wider backdrop-blur-md rounded-full border border-white/5">
+              {t('login_or')}
+            </span>
+          </div>
 
           {/* Tab Switcher (Sign In vs Sign Up) */}
           <div className="grid grid-cols-2 p-1 rounded-2xl neu-pressed border border-white/5 mb-6">
@@ -526,3 +578,4 @@ export const LoginPage: React.FC<LoginPageProps> = ({
     </div>
   );
 };
+

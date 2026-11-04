@@ -182,6 +182,8 @@ export const translations = {
     login_or: 'or continue with email',
     login_switch_profile: 'Switch Profile or Sign Out',
     login_active_session: 'Active Clinical Session',
+    login_instant_demo_btn: '⚡ Instant Demo Login (1-Click Access)',
+    login_instant_demo_sub: 'Instant entry without password • Explore full clinical platform',
 
     // Footer
     footer_disclaimer_label: 'Clinical Decision Support Disclaimer:',
@@ -376,6 +378,8 @@ export const translations = {
     login_or: 'या ईमेल के साथ आगे बढ़ें',
     login_switch_profile: 'प्रोफ़ाइल बदलें या साइन आउट करें',
     login_active_session: 'सक्रिय क्लिनिकल सत्र',
+    login_instant_demo_btn: '⚡ त्वरित डेमो लॉगिन (1-क्लिक प्रवेश)',
+    login_instant_demo_sub: 'बिना पासवर्ड के तुरंत प्रवेश • सभी क्लिनिकल सुविधाओं का परीक्षण करें',
 
     // Footer
     footer_disclaimer_label: 'क्लिनिकल निर्णय समर्थन अस्वीकरण:',
