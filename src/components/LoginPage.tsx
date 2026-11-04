@@ -143,7 +143,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
   };
 
   return (
-    <div className="min-h-screen relative flex flex-col justify-between p-4 sm:p-6 lg:p-8 text-white font-sans overflow-x-hidden selection:bg-cyan-500/30 selection:text-cyan-200">
+    <div className="h-screen max-h-screen overflow-hidden relative flex flex-col justify-between p-3 sm:p-4 md:p-5 text-white font-sans selection:bg-cyan-500/30 selection:text-cyan-200">
       
       {/* Background Video using Login.mp4 */}
       <video
@@ -164,33 +164,33 @@ export const LoginPage: React.FC<LoginPageProps> = ({
       />
 
       {/* Top Header Bar */}
-      <header className="relative z-10 max-w-7xl mx-auto w-full flex items-center justify-between pb-6">
+      <header className="relative z-10 max-w-6xl mx-auto w-full flex items-center justify-between py-1 shrink-0">
         
         {/* Brand Logo & Back to Home */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={onBack}
-            className="flex items-center gap-2 p-2.5 sm:px-4 sm:py-2 rounded-2xl neu-raised border border-white/10 hover:border-cyan-400/40 text-xs font-bold text-slate-300 hover:text-white transition-all cursor-pointer group"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl neu-raised border border-white/10 hover:border-cyan-400/40 text-xs font-bold text-slate-300 hover:text-white transition-all cursor-pointer group"
             title={t('login_back_home')}
           >
-            <ArrowLeft className="w-4 h-4 text-cyan-400 group-hover:-translate-x-1 transition-transform" />
+            <ArrowLeft className="w-3.5 h-3.5 text-cyan-400 group-hover:-translate-x-1 transition-transform" />
             <span className="hidden sm:inline">{t('login_back_home')}</span>
           </button>
 
           <div 
             onClick={onBack}
-            className="flex items-center gap-3 cursor-pointer group select-none"
+            className="flex items-center gap-2.5 cursor-pointer group select-none"
           >
-            <div className="w-10 h-10 rounded-2xl neu-raised border border-white/15 flex items-center justify-center text-cyan-400 group-hover:border-cyan-400/50 transition-colors">
-              <Shield className="w-5 h-5 drop-shadow-[0_0_8px_rgba(0,242,254,0.6)]" />
+            <div className="w-8 h-8 rounded-xl neu-raised border border-white/15 flex items-center justify-center text-cyan-400 group-hover:border-cyan-400/50 transition-colors">
+              <Shield className="w-4 h-4 drop-shadow-[0_0_8px_rgba(0,242,254,0.6)]" />
             </div>
             <div className="hidden xs:block">
-              <div className="text-lg font-black tracking-tight text-white flex items-center gap-1">
+              <div className="text-base font-black tracking-tight text-white flex items-center gap-1 leading-none">
                 <span className="liquid-chrome-text">MedScan</span>
                 <span className="liquid-chrome-cyan-text font-black">AI</span>
               </div>
-              <p className="text-[10px] text-slate-400 font-mono tracking-wider">
+              <p className="text-[9px] text-slate-400 font-mono tracking-wider mt-0.5">
                 CLINICAL VISION PORTAL
               </p>
             </div>
@@ -198,7 +198,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
         </div>
 
         {/* Language Selector & Skip to Dashboard */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <button
             type="button"
             onClick={onBack}
@@ -206,16 +206,16 @@ export const LoginPage: React.FC<LoginPageProps> = ({
             title={lang === 'en' ? 'Explore without signing in' : 'बिना साइन इन किए देखें'}
           >
             <span>{lang === 'en' ? 'Guest Explore' : 'अतिथि प्रवेश'}</span>
-            <ArrowRight className="w-3.5 h-3.5 text-cyan-400" />
+            <ArrowRight className="w-3 h-3 text-cyan-400" />
           </button>
 
           <div className="relative">
             <button
               type="button"
               onClick={() => setLangOpen((o) => !o)}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-2xl neu-raised border border-white/10 hover:border-cyan-400/40 text-xs font-bold text-slate-200 hover:text-cyan-300 transition-all cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl neu-raised border border-white/10 hover:border-cyan-400/40 text-xs font-bold text-slate-200 hover:text-cyan-300 transition-all cursor-pointer"
             >
-              <Globe className="w-3.5 h-3.5 text-cyan-400" />
+              <Globe className="w-3 h-3 text-cyan-400" />
               <span>{lang === 'en' ? 'EN' : 'HI'}</span>
             </button>
 
@@ -225,14 +225,14 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                   className="fixed inset-0 z-40" 
                   onClick={() => setLangOpen(false)} 
                 />
-                <div className="absolute right-0 mt-2 w-28 rounded-2xl glass-card-premium border border-white/10 overflow-hidden z-50">
+                <div className="absolute right-0 mt-1.5 w-28 rounded-xl glass-card-premium border border-white/10 overflow-hidden z-50 shadow-xl">
                   <button
                     type="button"
                     onClick={() => {
                       if (lang !== 'en') toggleLang();
                       setLangOpen(false);
                     }}
-                    className={`w-full text-left px-4 py-2.5 text-xs font-bold transition-colors cursor-pointer ${
+                    className={`w-full text-left px-3.5 py-2 text-xs font-bold transition-colors cursor-pointer ${
                       lang === 'en' ? 'text-cyan-300 bg-cyan-500/10' : 'text-slate-300 hover:text-white hover:bg-white/5'
                     }`}
                   >
@@ -244,7 +244,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                       if (lang !== 'hi') toggleLang();
                       setLangOpen(false);
                     }}
-                    className={`w-full text-left px-4 py-2.5 text-xs font-bold transition-colors cursor-pointer ${
+                    className={`w-full text-left px-3.5 py-2 text-xs font-bold transition-colors cursor-pointer ${
                       lang === 'hi' ? 'text-cyan-300 bg-cyan-500/10' : 'text-slate-300 hover:text-white hover:bg-white/5'
                     }`}
                   >
@@ -257,32 +257,31 @@ export const LoginPage: React.FC<LoginPageProps> = ({
         </div>
       </header>
 
-      {/* Center Auth Card */}
-      <main className="relative z-10 max-w-lg w-full mx-auto my-auto py-6">
-        <div className="rounded-3xl glass-card-premium neu-flat p-6 sm:p-9 shadow-2xl border border-white/15 relative overflow-hidden backdrop-blur-2xl">
+      {/* Center Auth Card — Sized for Single Screen view with Zero Scrolling */}
+      <main className="relative z-10 max-w-md w-full mx-auto my-auto flex-1 flex flex-col justify-center py-1 sm:py-2 min-h-0">
+        <div className="rounded-2xl sm:rounded-3xl glass-card-premium neu-flat p-4 sm:p-5 md:p-6 shadow-2xl border border-white/15 relative overflow-hidden backdrop-blur-2xl max-h-[calc(100vh-80px)] overflow-y-auto">
           
           {/* Subtle glowing ambient pulse */}
-          <div className="absolute -top-24 -right-24 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -top-24 -right-24 w-40 h-40 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-24 -left-24 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
 
           {/* Current User Session Overview (if signed in) */}
           {currentUser && (
-            <div className="mb-6 p-4 rounded-2xl bg-cyan-950/30 border border-cyan-400/30 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl neu-raised border border-cyan-400/40 flex items-center justify-center text-cyan-400 font-bold">
+            <div className="mb-3 p-2.5 rounded-xl bg-cyan-950/40 border border-cyan-400/30 flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg neu-raised border border-cyan-400/40 flex items-center justify-center text-cyan-400 font-bold text-xs">
                   {currentUser.name.charAt(0)}
                 </div>
                 <div>
-                  <div className="text-xs text-slate-400 font-mono uppercase">{t('login_active_session')}</div>
-                  <div className="text-sm font-black text-white">{currentUser.name}</div>
-                  <div className="text-[11px] text-slate-400 font-mono">{currentUser.email}</div>
+                  <div className="text-[10px] text-slate-400 font-mono uppercase leading-tight">{t('login_active_session')}</div>
+                  <div className="text-xs font-bold text-white leading-tight">{currentUser.name}</div>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5">
                 <button
                   type="button"
                   onClick={onBack}
-                  className="px-3 py-1.5 rounded-xl liquid-chrome-button text-slate-950 text-xs font-black cursor-pointer"
+                  className="px-2.5 py-1 rounded-lg liquid-chrome-button text-slate-950 text-xs font-black cursor-pointer"
                 >
                   Continue
                 </button>
@@ -290,89 +289,89 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                   <button
                     type="button"
                     onClick={onLogout}
-                    className="p-2 rounded-xl neu-raised text-red-400 hover:text-red-300 hover:bg-red-950/40 transition-colors cursor-pointer"
+                    className="p-1.5 rounded-lg neu-raised text-red-400 hover:text-red-300 hover:bg-red-950/40 transition-colors cursor-pointer"
                     title={t('login_switch_profile')}
                   >
-                    <LogOut className="w-4 h-4" />
+                    <LogOut className="w-3.5 h-3.5" />
                   </button>
                 )}
               </div>
             </div>
           )}
 
-          {/* Header Icon & Title */}
-          <div className="text-center mb-6">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl neu-raised border border-cyan-400/30 text-cyan-400 mb-3 shadow-[0_0_20px_rgba(0,242,254,0.25)]">
-              <Lock className="w-6 h-6" />
+          {/* Compact Header Icon & Title */}
+          <div className="text-center mb-3">
+            <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl neu-raised border border-cyan-400/30 text-cyan-400 mb-1.5 shadow-[0_0_15px_rgba(0,242,254,0.25)]">
+              <Lock className="w-5 h-5" />
             </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-white liquid-chrome-text">
+            <h2 className="text-xl sm:text-2xl font-black text-white liquid-chrome-text leading-tight">
               {mode === 'login' ? t('login_title_signin') : t('login_title_signup')}
             </h2>
-            <p className="text-xs sm:text-sm text-slate-400 mt-2 max-w-sm mx-auto">
+            <p className="text-[11px] sm:text-xs text-slate-400 mt-0.5 max-w-xs mx-auto line-clamp-1">
               {mode === 'login' ? t('login_subtitle_signin') : t('login_subtitle_signup')}
             </p>
           </div>
 
           {/* Auto-Shift Dynamic Notification Pill */}
           {autoNotice && (
-            <div className="mb-5 p-3.5 rounded-2xl bg-cyan-950/40 border border-cyan-400/40 text-cyan-200 text-xs flex items-center gap-2.5 animate-pulse-subtle">
-              <Sparkles className="w-4 h-4 text-cyan-400 shrink-0" />
-              <span className="font-semibold">
+            <div className="mb-2.5 p-2 rounded-xl bg-cyan-950/50 border border-cyan-400/40 text-cyan-200 text-xs flex items-center gap-2 animate-pulse-subtle">
+              <Sparkles className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+              <span className="font-semibold text-[11px]">
                 {autoNotice === 'auto_signup' ? t('login_auto_shift_msg') : t('login_auto_login_msg')}
               </span>
             </div>
           )}
 
           {/* Single Dedicated Demo Login Button */}
-          <div className="mb-6">
+          <div className="mb-3">
             <button
               type="button"
               onClick={() => handleDemoLogin('clinician')}
-              className="w-full p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-cyan-500/20 via-blue-600/20 to-teal-500/20 hover:from-cyan-500/35 hover:via-blue-600/35 hover:to-teal-500/35 border-2 border-cyan-400/60 hover:border-cyan-300 text-white font-black text-sm flex items-center justify-between shadow-[0_0_25px_rgba(0,242,254,0.3)] hover:shadow-[0_0_35px_rgba(0,242,254,0.5)] transition-all duration-300 cursor-pointer group hover:scale-[1.01]"
+              className="w-full py-2.5 px-3.5 rounded-xl bg-gradient-to-r from-cyan-500/20 via-blue-600/20 to-teal-500/20 hover:from-cyan-500/35 hover:via-blue-600/35 hover:to-teal-500/35 border border-cyan-400/60 hover:border-cyan-300 text-white font-black text-xs sm:text-sm flex items-center justify-between shadow-[0_0_20px_rgba(0,242,254,0.25)] hover:shadow-[0_0_30px_rgba(0,242,254,0.45)] transition-all duration-300 cursor-pointer group hover:scale-[1.01]"
               title="Demo Login"
             >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-500 text-slate-950 flex items-center justify-center font-black shadow-lg group-hover:scale-110 transition-transform shrink-0">
-                  <Sparkles className="w-5 h-5 text-slate-950 fill-slate-950" />
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-500 text-slate-950 flex items-center justify-center font-black shadow-md shrink-0 group-hover:scale-105 transition-transform">
+                  <Sparkles className="w-4 h-4 text-slate-950 fill-slate-950" />
                 </div>
                 <div className="text-left">
-                  <div className="text-sm sm:text-base font-black text-white flex items-center gap-2 flex-wrap">
+                  <div className="text-xs sm:text-sm font-black text-white flex items-center gap-1.5">
                     <span className="liquid-chrome-cyan-text">{t('login_demo_btn')}</span>
-                    <span className="px-1.5 py-0.5 rounded text-[9px] font-mono uppercase bg-cyan-400 text-slate-950 font-black tracking-wider">
-                      1-CLICK ACCESS
+                    <span className="px-1 py-0.2 rounded text-[8px] font-mono uppercase bg-cyan-400 text-slate-950 font-bold tracking-wider">
+                      1-CLICK
                     </span>
                   </div>
-                  <p className="text-[10px] text-slate-300 font-sans mt-0.5">
+                  <p className="text-[9px] text-slate-300 font-sans leading-none mt-0.5">
                     {t('login_demo_sub')}
                   </p>
                 </div>
               </div>
-              <div className="w-8 h-8 rounded-xl bg-white/10 group-hover:bg-cyan-400/30 flex items-center justify-center transition-colors shrink-0">
-                <ArrowRight className="w-4 h-4 text-cyan-300 group-hover:translate-x-1 transition-transform" />
+              <div className="w-6 h-6 rounded-lg bg-white/10 group-hover:bg-cyan-400/30 flex items-center justify-center transition-colors shrink-0">
+                <ArrowRight className="w-3.5 h-3.5 text-cyan-300 group-hover:translate-x-0.5 transition-transform" />
               </div>
             </button>
           </div>
 
-          <div className="relative flex items-center justify-center mb-6">
+          <div className="relative flex items-center justify-center mb-3">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-white/10" />
             </div>
-            <span className="relative px-3 bg-[#0a0f1d] text-[11px] font-mono text-slate-400 uppercase tracking-wider backdrop-blur-md rounded-full border border-white/5">
+            <span className="relative px-2.5 bg-[#0a0f1d] text-[10px] font-mono text-slate-400 uppercase tracking-wider backdrop-blur-md rounded-full border border-white/5">
               {t('login_or')}
             </span>
           </div>
 
           {/* Tab Switcher (Sign In vs Sign Up) */}
-          <div className="grid grid-cols-2 p-1 rounded-2xl neu-pressed border border-white/5 mb-6">
+          <div className="grid grid-cols-2 p-1 rounded-xl neu-pressed border border-white/5 mb-3">
             <button
               type="button"
               onClick={() => {
                 setMode('login');
                 setAutoNotice(null);
               }}
-              className={`py-2.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${
+              className={`py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                 mode === 'login'
-                  ? 'liquid-chrome-button text-slate-950 font-black shadow-md'
+                  ? 'liquid-chrome-button text-slate-950 font-black shadow-sm'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -384,9 +383,9 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                 setMode('signup');
                 setAutoNotice(null);
               }}
-              className={`py-2.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${
+              className={`py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                 mode === 'signup'
-                  ? 'liquid-chrome-button text-slate-950 font-black shadow-md'
+                  ? 'liquid-chrome-button text-slate-950 font-black shadow-sm'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -395,84 +394,84 @@ export const LoginPage: React.FC<LoginPageProps> = ({
           </div>
 
           {/* Core Auth Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-2.5">
             
             {/* Full Name field (Only shown on Sign Up mode) */}
             {mode === 'signup' && (
               <div className="animate-fade-in">
-                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5 font-mono">
+                <label className="block text-[10px] font-bold text-slate-300 uppercase tracking-wider mb-1 font-mono">
                   {t('login_fullname_label')}
                 </label>
                 <div className="relative">
-                  <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <User className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
                     ref={nameInputRef}
                     type="text"
                     required
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    placeholder="e.g. Dr. Rajesh Sharma or Priya Verma"
-                    className="w-full pl-10 pr-4 py-3 rounded-2xl neu-pressed border border-white/10 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400/50 transition-all font-sans"
+                    placeholder="e.g. Dr. Rajesh Sharma"
+                    className="w-full pl-9 pr-3 py-2 rounded-xl neu-pressed border border-white/10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400/50 transition-all font-sans"
                   />
                 </div>
               </div>
             )}
 
-            {/* Email Address field (Triggers auto-shift when new email entered) */}
+            {/* Email Address field */}
             <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider font-mono">
+              <div className="flex items-center justify-between mb-1">
+                <label className="block text-[10px] font-bold text-slate-300 uppercase tracking-wider font-mono">
                   {t('login_email_label')}
                 </label>
                 {mode === 'login' && email && !isAccountRegistered(email) && (
-                  <span className="text-[10px] text-cyan-400 font-mono flex items-center gap-1">
+                  <span className="text-[9px] text-cyan-400 font-mono flex items-center gap-1">
                     <Sparkles className="w-2.5 h-2.5" />
-                    <span>New account detected</span>
+                    <span>New account</span>
                   </span>
                 )}
               </div>
               <div className="relative">
-                <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Mail className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => handleEmailChange(e.target.value)}
                   placeholder="name@clinic.com or user@gmail.com"
-                  className="w-full pl-10 pr-4 py-3 rounded-2xl neu-pressed border border-white/10 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400/50 transition-all font-sans"
+                  className="w-full pl-9 pr-3 py-2 rounded-xl neu-pressed border border-white/10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400/50 transition-all font-sans"
                 />
               </div>
             </div>
 
             {/* Healthcare Role Selector (Sign Up only) */}
             {mode === 'signup' && (
-              <div className="animate-fade-in pt-1">
-                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2 font-mono">
+              <div className="animate-fade-in">
+                <label className="block text-[10px] font-bold text-slate-300 uppercase tracking-wider mb-1 font-mono">
                   {t('login_role_label')}
                 </label>
-                <div className="grid grid-cols-2 gap-2.5">
+                <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
                     onClick={() => setRole('clinician')}
-                    className={`p-3 rounded-2xl border text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                    className={`py-1.5 px-2 rounded-xl border text-[11px] font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                       role === 'clinician'
-                        ? 'bg-cyan-500/20 border-cyan-400/50 text-cyan-300 shadow-[0_0_15px_rgba(0,242,254,0.25)]'
+                        ? 'bg-cyan-500/20 border-cyan-400/50 text-cyan-300 shadow-[0_0_10px_rgba(0,242,254,0.25)]'
                         : 'neu-raised border-white/5 text-slate-400 hover:text-white'
                     }`}
                   >
-                    <Stethoscope className="w-4 h-4" />
+                    <Stethoscope className="w-3.5 h-3.5" />
                     <span>{t('login_role_clinician')}</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setRole('patient')}
-                    className={`p-3 rounded-2xl border text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                    className={`py-1.5 px-2 rounded-xl border text-[11px] font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                       role === 'patient'
-                        ? 'bg-emerald-500/20 border-emerald-400/50 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.25)]'
+                        ? 'bg-emerald-500/20 border-emerald-400/50 text-emerald-300 shadow-[0_0_10px_rgba(16,185,129,0.25)]'
                         : 'neu-raised border-white/5 text-slate-400 hover:text-white'
                     }`}
                   >
-                    <Heart className="w-4 h-4" />
+                    <Heart className="w-3.5 h-3.5" />
                     <span>{t('login_role_patient')}</span>
                   </button>
                 </div>
@@ -481,34 +480,34 @@ export const LoginPage: React.FC<LoginPageProps> = ({
 
             {/* Password Field */}
             <div>
-              <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5 font-mono">
+              <label className="block text-[10px] font-bold text-slate-300 uppercase tracking-wider mb-1 font-mono">
                 {t('login_password_label')}
               </label>
               <div className="relative">
-                <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Lock className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••••••"
-                  className="w-full pl-10 pr-10 py-3 rounded-2xl neu-pressed border border-white/10 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400/50 transition-all font-sans"
+                  className="w-full pl-9 pr-9 py-2 rounded-xl neu-pressed border border-white/10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400/50 transition-all font-sans"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((s) => !s)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors cursor-pointer"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors cursor-pointer"
                 >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                 </button>
               </div>
             </div>
 
             {/* Submit Action Button */}
-            <div className="pt-2">
+            <div className="pt-1">
               <button
                 type="submit"
-                className="w-full py-3.5 px-6 rounded-2xl liquid-chrome-button text-slate-950 font-black text-xs sm:text-sm shadow-[0_0_25px_rgba(0,242,254,0.3)] hover:scale-[1.01] transition-transform cursor-pointer"
+                className="w-full py-2.5 px-4 rounded-xl liquid-chrome-button text-slate-950 font-black text-xs sm:text-sm shadow-[0_0_20px_rgba(0,242,254,0.3)] hover:scale-[1.01] transition-transform cursor-pointer"
               >
                 {mode === 'login' ? t('login_signin_btn') : t('login_signup_btn')}
               </button>
@@ -516,7 +515,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
           </form>
 
           {/* Toggle link below form */}
-          <div className="mt-6 text-center text-xs text-slate-400">
+          <div className="mt-2.5 text-center text-xs text-slate-400">
             {mode === 'login' ? (
               <button
                 type="button"
@@ -524,7 +523,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                   setMode('signup');
                   setAutoNotice(null);
                 }}
-                className="text-cyan-400 hover:text-cyan-300 font-bold transition-colors cursor-pointer"
+                className="text-cyan-400 hover:text-cyan-300 font-bold transition-colors cursor-pointer text-xs"
               >
                 {t('login_need_acc')}
               </button>
@@ -535,7 +534,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                   setMode('login');
                   setAutoNotice(null);
                 }}
-                className="text-cyan-400 hover:text-cyan-300 font-bold transition-colors cursor-pointer"
+                className="text-cyan-400 hover:text-cyan-300 font-bold transition-colors cursor-pointer text-xs"
               >
                 {t('login_already_have_acc')}
               </button>
@@ -545,8 +544,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({
         </div>
       </main>
 
-      {/* Footer Disclaimer */}
-      <footer className="relative z-10 text-center py-4 text-[11px] text-slate-500 font-mono">
+      {/* Compact Footer */}
+      <footer className="relative z-10 text-center py-1 text-[10px] text-slate-500 font-mono shrink-0">
         <span>© {new Date().getFullYear()} MedScan AI • HIPAA &amp; ISO-27799 Compliant Health Security</span>
       </footer>
 
