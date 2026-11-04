@@ -42,15 +42,15 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     const demoUser: UserProfile = role === 'clinician'
       ? {
           id: 'demo-clinician',
-          name: 'Dr. Alistair Vance, MD',
-          email: 'alistair.vance@medscan.health',
-          role: 'clinician',
+          name: 'Patient Demo',
+          email: 'patient.demo@medscan.ai',
+          role: 'patient',
         }
       : {
           id: 'demo-patient',
-          name: 'Sarah Jenkins',
-          email: 'sarah.jenkins@gmail.com',
-          phone: '+1 (555) 019-2834',
+          name: 'Patient Demo',
+          email: 'patient.demo@medscan.ai',
+          phone: '+91 98765 43210',
           blood_group: 'B+ Positive',
           known_allergies: ['Penicillin (Mild rash)'],
           role: 'patient',

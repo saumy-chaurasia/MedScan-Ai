@@ -90,34 +90,34 @@ export function deleteHistoryItem(id: string): PrescriptionHistoryItem[] {
   return updated;
 }
 
-export function getStoredUserProfile(): UserProfile {
+export function getStoredUserProfile(): UserProfile | null {
   if (typeof window === 'undefined') {
     return {
-      id: 'demo-user-1',
-      name: 'Dr. Alistair Vance',
-      email: 'alistair.vance@medscan.health',
-      role: 'clinician',
+      id: 'demo-patient-default',
+      name: 'Patient Demo',
+      email: 'patient.demo@medscan.ai',
+      role: 'patient',
     };
   }
   const raw = localStorage.getItem(STORAGE_KEYS.USER_PROFILE);
   if (raw) {
     try {
-      return JSON.parse(raw);
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed === 'object') {
+        // Automatically migrate any previous "Dr. Alistair Vance, MD" profile to "Patient Demo"
+        if (parsed.name && (parsed.name.includes('Alistair') || parsed.name.includes('Vance'))) {
+          parsed.name = 'Patient Demo';
+          parsed.email = 'patient.demo@medscan.ai';
+          parsed.role = 'patient';
+          localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(parsed));
+        }
+        return parsed;
+      }
     } catch {
       // ignore
     }
   }
-  const defaultProfile: UserProfile = {
-    id: 'user-default-1',
-    name: 'Sarah Jenkins',
-    email: 'sarah.jenkins@gmail.com',
-    phone: '+1 (555) 019-2834',
-    blood_group: 'B+ Positive',
-    known_allergies: ['Penicillin (Mild rash)', 'Sulfa Drugs'],
-    role: 'patient',
-  };
-  localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(defaultProfile));
-  return defaultProfile;
+  return null;
 }
 
 export function saveUserProfile(profile: UserProfile): void {
@@ -138,14 +138,14 @@ const DEFAULT_ACCOUNTS: RegisteredAccount[] = [
     role: 'patient',
   },
   {
-    email: 'alistair.vance@medscan.health',
-    name: 'Dr. Alistair Vance, MD',
-    role: 'clinician',
+    email: 'patient.demo@medscan.ai',
+    name: 'Patient Demo',
+    role: 'patient',
   },
   {
     email: 'demo@medscan.ai',
-    name: 'Clinical Vision Demo',
-    role: 'clinician',
+    name: 'Patient Demo',
+    role: 'patient',
   },
 ];
 

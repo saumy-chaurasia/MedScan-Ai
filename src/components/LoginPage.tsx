@@ -115,11 +115,11 @@ export const LoginPage: React.FC<LoginPageProps> = ({
     onLoginSuccess(profile);
   };
 
-  // Demo 1-Click Login — logs in as Patient Demo Login and guarantees history is saved on user's device
+  // Demo 1-Click Login — logs in as Patient Demo and guarantees history is saved on user's device
   const handleDemoLogin = () => {
     const demoProfile: UserProfile = {
       id: 'demo-patient-local',
-      name: 'Patient Demo Login',
+      name: 'Patient Demo',
       email: 'patient.demo@medscan.ai',
       phone: '+91 98765 43210',
       blood_group: 'B+ Positive',
@@ -268,11 +268,13 @@ export const LoginPage: React.FC<LoginPageProps> = ({
             <div className="mb-2.5 p-2 rounded-xl bg-cyan-950/40 border border-cyan-400/30 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-7 h-7 rounded-lg neu-raised border border-cyan-400/40 flex items-center justify-center text-cyan-400 font-bold text-xs">
-                  {currentUser.name.charAt(0)}
+                  {(currentUser.name.includes('Alistair') ? 'Patient Demo' : currentUser.name).charAt(0)}
                 </div>
                 <div>
                   <div className="text-[9px] text-slate-400 font-mono uppercase leading-none">{t('login_active_session')}</div>
-                  <div className="text-xs font-bold text-white leading-tight">{currentUser.name}</div>
+                  <div className="text-xs font-bold text-white leading-tight">
+                    {currentUser.name.includes('Alistair') ? 'Patient Demo' : currentUser.name}
+                  </div>
                 </div>
               </div>
               <div className="flex items-center gap-1.5">
