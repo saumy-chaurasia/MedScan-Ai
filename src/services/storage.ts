@@ -26,8 +26,13 @@ export function setStoredApiKey(key: string): void {
 }
 
 export function getStoredModel(): string {
-  if (typeof window === 'undefined') return 'gemini-1.5-flash';
-  return localStorage.getItem(STORAGE_KEYS.SELECTED_MODEL) || 'gemini-1.5-flash';
+  if (typeof window === 'undefined') return 'gemini-3.5-flash';
+  const saved = localStorage.getItem(STORAGE_KEYS.SELECTED_MODEL);
+  if (!saved || saved.includes('1.5')) {
+    localStorage.setItem(STORAGE_KEYS.SELECTED_MODEL, 'gemini-3.5-flash');
+    return 'gemini-3.5-flash';
+  }
+  return saved;
 }
 
 export function setStoredModel(model: string): void {
