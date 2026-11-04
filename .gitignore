@@ -38,3 +38,7 @@ pnpm-debug.log*
 *.sln
 *.sw?
 Thumbs.db
+
+# Root media duplicate (served from public/)
+/Login.mp4
+

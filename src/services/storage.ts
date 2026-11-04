@@ -8,6 +8,7 @@ const STORAGE_KEYS = {
   SELECTED_MODEL: 'medscan_gemini_model',
   USER_PROFILE: 'medscan_user_profile_v2',
   REMINDERS: 'medscan_reminders_v2',
+  REGISTERED_ACCOUNTS: 'medscan_registered_accounts_v2',
 };
 
 export function getStoredApiKey(): string {
@@ -123,3 +124,59 @@ export function saveUserProfile(profile: UserProfile): void {
   if (typeof window === 'undefined') return;
   localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(profile));
 }
+
+export interface RegisteredAccount {
+  email: string;
+  name: string;
+  role: 'patient' | 'clinician';
+}
+
+const DEFAULT_ACCOUNTS: RegisteredAccount[] = [
+  {
+    email: 'sarah.jenkins@gmail.com',
+    name: 'Sarah Jenkins',
+    role: 'patient',
+  },
+  {
+    email: 'alistair.vance@medscan.health',
+    name: 'Dr. Alistair Vance, MD',
+    role: 'clinician',
+  },
+  {
+    email: 'demo@medscan.ai',
+    name: 'Clinical Vision Demo',
+    role: 'clinician',
+  },
+];
+
+export function getRegisteredAccounts(): RegisteredAccount[] {
+  if (typeof window === 'undefined') return DEFAULT_ACCOUNTS;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.REGISTERED_ACCOUNTS);
+    if (!raw) {
+      localStorage.setItem(STORAGE_KEYS.REGISTERED_ACCOUNTS, JSON.stringify(DEFAULT_ACCOUNTS));
+      return DEFAULT_ACCOUNTS;
+    }
+    return JSON.parse(raw);
+  } catch {
+    return DEFAULT_ACCOUNTS;
+  }
+}
+
+export function isAccountRegistered(email: string): boolean {
+  if (!email) return false;
+  const clean = email.trim().toLowerCase();
+  const accounts = getRegisteredAccounts();
+  return accounts.some((a) => a.email.toLowerCase() === clean);
+}
+
+export function registerAccount(account: RegisteredAccount): void {
+  if (typeof window === 'undefined') return;
+  const accounts = getRegisteredAccounts();
+  const cleanEmail = account.email.trim().toLowerCase();
+  if (!accounts.some((a) => a.email.toLowerCase() === cleanEmail)) {
+    const updated = [...accounts, { ...account, email: cleanEmail }];
+    localStorage.setItem(STORAGE_KEYS.REGISTERED_ACCOUNTS, JSON.stringify(updated));
+  }
+}
+

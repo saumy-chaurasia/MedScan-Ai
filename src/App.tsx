@@ -6,6 +6,7 @@ import { SplitViewDashboard } from './components/SplitViewDashboard';
 import { FeatureHighlights } from './components/FeatureHighlights';
 import { HistorySection } from './components/HistorySection';
 import { Footer } from './components/Footer';
+import { LoginPage } from './components/LoginPage';
 import { AuthModal } from './components/AuthModal';
 import { HistoryModal } from './components/HistoryModal';
 import { ApiKeyModal } from './components/ApiKeyModal';
@@ -37,6 +38,7 @@ export const App: React.FC = () => {
   const [isSaved, setIsSaved] = useState(false);
   const [apiKeyConfigured, setApiKeyConfigured] = useState(false);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [view, setView] = useState<'main' | 'login'>('main');
 
   // Modals state
   const [isAuthOpen, setIsAuthOpen] = useState(false);
@@ -46,6 +48,20 @@ export const App: React.FC = () => {
 
   // Toast alert feedback
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Handle URL hash for login page (#login)
+    const handleHash = () => {
+      if (window.location.hash === '#login') {
+        setView('login');
+      } else {
+        setView('main');
+      }
+    };
+    handleHash();
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
 
   useEffect(() => {
     // Load local history & settings
@@ -224,34 +240,57 @@ export const App: React.FC = () => {
 
   return (
     <LanguageProvider>
-    <div className="min-h-screen text-white flex flex-col font-sans selection:bg-cyan-500/30 selection:text-cyan-200 relative">
-      {/* Global Video Background — visible on every page */}
-      <video autoPlay loop muted playsInline className="vid-bg" style={{ zIndex: -1 }}>
-        <source src="/zbg.mp4" type="video/mp4" />
-      </video>
-      
-      {/* Toast Notification (Neumorphic Liquid Toast) */}
-      {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 px-5 py-3 rounded-2xl glass-card-premium neu-flat border border-cyan-400/40 text-cyan-300 font-bold text-xs sm:text-sm shadow-[0_0_30px_rgba(0,242,254,0.3)] backdrop-blur-2xl animate-fade-in flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-          <span>{toastMessage}</span>
-        </div>
-      )}
+      {view === 'login' ? (
+        <LoginPage
+          onBack={() => {
+            setView('main');
+            window.location.hash = '';
+          }}
+          onLoginSuccess={(profile) => {
+            setUserProfile(profile);
+            setView('main');
+            window.location.hash = '';
+            showToast(`Welcome back, ${profile.name}!`);
+          }}
+          onLogout={() => {
+            setUserProfile(null);
+            localStorage.removeItem('medscan_user_profile_v2');
+            showToast('Signed out of MedScan AI.');
+          }}
+          currentUser={userProfile}
+        />
+      ) : (
+        <div className="min-h-screen text-white flex flex-col font-sans selection:bg-cyan-500/30 selection:text-cyan-200 relative">
+          {/* Global Video Background — visible on every page */}
+          <video autoPlay loop muted playsInline className="vid-bg" style={{ zIndex: -1 }}>
+            <source src="/zbg.mp4" type="video/mp4" />
+          </video>
+          
+          {/* Toast Notification (Neumorphic Liquid Toast) */}
+          {toastMessage && (
+            <div className="fixed bottom-6 right-6 z-50 px-5 py-3 rounded-2xl glass-card-premium neu-flat border border-cyan-400/40 text-cyan-300 font-bold text-xs sm:text-sm shadow-[0_0_30px_rgba(0,242,254,0.3)] backdrop-blur-2xl animate-fade-in flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+              <span>{toastMessage}</span>
+            </div>
+          )}
 
-      {/* Global Navigation Header */}
-      <Navbar
-        onOpenAuth={() => setIsAuthOpen(true)}
-        onOpenHistory={() => scrollTo('history-section')}
-        onOpenApiKey={() => setIsApiKeyOpen(true)}
-        onSelectSample={(sampleId) => {
-          const s = SAMPLE_PRESCRIPTIONS.find((p) => p.id === sampleId);
-          if (s) handleSelectSample(s);
-        }}
-        hasActiveResult={!!activeResult}
-        apiKeyConfigured={apiKeyConfigured}
-        historyCount={history.length}
-        userProfile={userProfile}
-      />
+          {/* Global Navigation Header */}
+          <Navbar
+            onOpenAuth={() => {
+              setView('login');
+              window.location.hash = 'login';
+            }}
+            onOpenHistory={() => scrollTo('history-section')}
+            onOpenApiKey={() => setIsApiKeyOpen(true)}
+            onSelectSample={(sampleId) => {
+              const s = SAMPLE_PRESCRIPTIONS.find((p) => p.id === sampleId);
+              if (s) handleSelectSample(s);
+            }}
+            hasActiveResult={!!activeResult}
+            apiKeyConfigured={apiKeyConfigured}
+            historyCount={history.length}
+            userProfile={userProfile}
+          />
 
       {/* Main Content Sections */}
       <main className="flex-1">
@@ -357,6 +396,7 @@ export const App: React.FC = () => {
         patientName={activeResult?.patient_info?.name || 'Patient'}
       />
     </div>
+    )}
     </LanguageProvider>
   );
 };
