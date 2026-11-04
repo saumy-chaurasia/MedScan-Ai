@@ -323,27 +323,27 @@ export const LoginPage: React.FC<LoginPageProps> = ({
             </div>
           )}
 
-          {/* Prominent Instant Demo Login Button */}
+          {/* Single Dedicated Demo Login Button */}
           <div className="mb-6">
             <button
               type="button"
               onClick={() => handleDemoLogin('clinician')}
               className="w-full p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-cyan-500/20 via-blue-600/20 to-teal-500/20 hover:from-cyan-500/35 hover:via-blue-600/35 hover:to-teal-500/35 border-2 border-cyan-400/60 hover:border-cyan-300 text-white font-black text-sm flex items-center justify-between shadow-[0_0_25px_rgba(0,242,254,0.3)] hover:shadow-[0_0_35px_rgba(0,242,254,0.5)] transition-all duration-300 cursor-pointer group hover:scale-[1.01]"
-              title={t('login_instant_demo_btn')}
+              title="Demo Login"
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-500 text-slate-950 flex items-center justify-center font-black shadow-lg group-hover:scale-110 transition-transform shrink-0">
                   <Sparkles className="w-5 h-5 text-slate-950 fill-slate-950" />
                 </div>
                 <div className="text-left">
-                  <div className="text-xs sm:text-sm font-black text-white flex items-center gap-2 flex-wrap">
-                    <span className="liquid-chrome-cyan-text">{t('login_instant_demo_btn')}</span>
+                  <div className="text-sm sm:text-base font-black text-white flex items-center gap-2 flex-wrap">
+                    <span className="liquid-chrome-cyan-text">{t('login_demo_btn')}</span>
                     <span className="px-1.5 py-0.5 rounded text-[9px] font-mono uppercase bg-cyan-400 text-slate-950 font-black tracking-wider">
-                      FAST 1-CLICK
+                      1-CLICK ACCESS
                     </span>
                   </div>
                   <p className="text-[10px] text-slate-300 font-sans mt-0.5">
-                    {t('login_instant_demo_sub')}
+                    {t('login_demo_sub')}
                   </p>
                 </div>
               </div>
@@ -514,31 +514,6 @@ export const LoginPage: React.FC<LoginPageProps> = ({
               </button>
             </div>
           </form>
-
-          {/* Quick 1-Click Demo Logins */}
-          <div className="mt-6 pt-5 border-t border-white/10">
-            <div className="text-center text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-3">
-              {t('login_demo_title')}
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              <button
-                type="button"
-                onClick={() => handleDemoLogin('clinician')}
-                className="py-2.5 px-3 rounded-xl neu-raised border border-white/10 hover:border-cyan-400/40 text-xs font-bold text-slate-300 hover:text-cyan-300 flex items-center justify-center gap-2 transition-all cursor-pointer"
-              >
-                <Stethoscope className="w-3.5 h-3.5 text-cyan-400" />
-                <span>{t('login_demo_clinician')}</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleDemoLogin('patient')}
-                className="py-2.5 px-3 rounded-xl neu-raised border border-white/10 hover:border-emerald-400/40 text-xs font-bold text-slate-300 hover:text-emerald-300 flex items-center justify-center gap-2 transition-all cursor-pointer"
-              >
-                <Heart className="w-3.5 h-3.5 text-emerald-400" />
-                <span>{t('login_demo_patient')}</span>
-              </button>
-            </div>
-          </div>
 
           {/* Toggle link below form */}
           <div className="mt-6 text-center text-xs text-slate-400">
