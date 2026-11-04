@@ -22,7 +22,8 @@ import {
   isAccountRegistered, 
   registerAccount, 
   saveUserProfile, 
-  getRegisteredAccounts 
+  getRegisteredAccounts,
+  getStoredHistory
 } from '../services/storage';
 
 interface LoginPageProps {
@@ -114,31 +115,28 @@ export const LoginPage: React.FC<LoginPageProps> = ({
     onLoginSuccess(profile);
   };
 
-  // Demo 1-Click Login
-  const handleDemoLogin = (demoRole: 'clinician' | 'patient') => {
-    const demoProfile: UserProfile = demoRole === 'clinician'
-      ? {
-          id: 'demo-clinician',
-          name: 'Dr. Alistair Vance, MD',
-          email: 'alistair.vance@medscan.health',
-          role: 'clinician',
-        }
-      : {
-          id: 'demo-patient',
-          name: 'Sarah Jenkins',
-          email: 'sarah.jenkins@gmail.com',
-          phone: '+1 (555) 019-2834',
-          blood_group: 'B+ Positive',
-          known_allergies: ['Penicillin (Mild rash)'],
-          role: 'patient',
-        };
+  // Demo 1-Click Login — logs in as Patient Demo Login and guarantees history is saved on user's device
+  const handleDemoLogin = () => {
+    const demoProfile: UserProfile = {
+      id: 'demo-patient-local',
+      name: 'Patient Demo Login',
+      email: 'patient.demo@medscan.ai',
+      phone: '+91 98765 43210',
+      blood_group: 'B+ Positive',
+      known_allergies: ['Penicillin (Mild rash)'],
+      role: 'patient',
+    };
 
     registerAccount({
       email: demoProfile.email,
       name: demoProfile.name,
-      role: demoProfile.role as 'patient' | 'clinician',
+      role: 'patient',
     });
     saveUserProfile(demoProfile);
+
+    // Initialize & persist history on the user's laptop or device
+    getStoredHistory();
+
     onLoginSuccess(demoProfile);
   };
 
@@ -257,9 +255,9 @@ export const LoginPage: React.FC<LoginPageProps> = ({
         </div>
       </header>
 
-      {/* Center Auth Card — Sized for Single Screen view with Zero Scrolling */}
+      {/* Center Auth Card — Sized for Single Screen view with Zero Scrolling in Card */}
       <main className="relative z-10 max-w-md w-full mx-auto my-auto flex-1 flex flex-col justify-center py-1 sm:py-2 min-h-0">
-        <div className="rounded-2xl sm:rounded-3xl glass-card-premium neu-flat p-4 sm:p-5 md:p-6 shadow-2xl border border-white/15 relative overflow-hidden backdrop-blur-2xl max-h-[calc(100vh-80px)] overflow-y-auto">
+        <div className="rounded-2xl sm:rounded-3xl glass-card-premium neu-flat p-3.5 sm:p-5 shadow-2xl border border-white/15 relative overflow-hidden backdrop-blur-2xl">
           
           {/* Subtle glowing ambient pulse */}
           <div className="absolute -top-24 -right-24 w-40 h-40 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -267,13 +265,13 @@ export const LoginPage: React.FC<LoginPageProps> = ({
 
           {/* Current User Session Overview (if signed in) */}
           {currentUser && (
-            <div className="mb-3 p-2.5 rounded-xl bg-cyan-950/40 border border-cyan-400/30 flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg neu-raised border border-cyan-400/40 flex items-center justify-center text-cyan-400 font-bold text-xs">
+            <div className="mb-2.5 p-2 rounded-xl bg-cyan-950/40 border border-cyan-400/30 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 rounded-lg neu-raised border border-cyan-400/40 flex items-center justify-center text-cyan-400 font-bold text-xs">
                   {currentUser.name.charAt(0)}
                 </div>
                 <div>
-                  <div className="text-[10px] text-slate-400 font-mono uppercase leading-tight">{t('login_active_session')}</div>
+                  <div className="text-[9px] text-slate-400 font-mono uppercase leading-none">{t('login_active_session')}</div>
                   <div className="text-xs font-bold text-white leading-tight">{currentUser.name}</div>
                 </div>
               </div>
@@ -289,7 +287,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                   <button
                     type="button"
                     onClick={onLogout}
-                    className="p-1.5 rounded-lg neu-raised text-red-400 hover:text-red-300 hover:bg-red-950/40 transition-colors cursor-pointer"
+                    className="p-1 rounded-lg neu-raised text-red-400 hover:text-red-300 hover:bg-red-950/40 transition-colors cursor-pointer"
                     title={t('login_switch_profile')}
                   >
                     <LogOut className="w-3.5 h-3.5" />
@@ -300,21 +298,21 @@ export const LoginPage: React.FC<LoginPageProps> = ({
           )}
 
           {/* Compact Header Icon & Title */}
-          <div className="text-center mb-3">
-            <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl neu-raised border border-cyan-400/30 text-cyan-400 mb-1.5 shadow-[0_0_15px_rgba(0,242,254,0.25)]">
-              <Lock className="w-5 h-5" />
+          <div className="text-center mb-2.5">
+            <div className="inline-flex items-center justify-center w-9 h-9 rounded-xl neu-raised border border-cyan-400/30 text-cyan-400 mb-1 shadow-[0_0_12px_rgba(0,242,254,0.25)]">
+              <Lock className="w-4 h-4" />
             </div>
-            <h2 className="text-xl sm:text-2xl font-black text-white liquid-chrome-text leading-tight">
+            <h2 className="text-lg sm:text-xl font-black text-white liquid-chrome-text leading-tight">
               {mode === 'login' ? t('login_title_signin') : t('login_title_signup')}
             </h2>
-            <p className="text-[11px] sm:text-xs text-slate-400 mt-0.5 max-w-xs mx-auto line-clamp-1">
+            <p className="text-[11px] text-slate-400 mt-0.5 max-w-xs mx-auto line-clamp-1">
               {mode === 'login' ? t('login_subtitle_signin') : t('login_subtitle_signup')}
             </p>
           </div>
 
           {/* Auto-Shift Dynamic Notification Pill */}
           {autoNotice && (
-            <div className="mb-2.5 p-2 rounded-xl bg-cyan-950/50 border border-cyan-400/40 text-cyan-200 text-xs flex items-center gap-2 animate-pulse-subtle">
+            <div className="mb-2 p-1.5 rounded-xl bg-cyan-950/50 border border-cyan-400/40 text-cyan-200 text-xs flex items-center gap-2 animate-pulse-subtle">
               <Sparkles className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
               <span className="font-semibold text-[11px]">
                 {autoNotice === 'auto_signup' ? t('login_auto_shift_msg') : t('login_auto_login_msg')}
@@ -322,23 +320,23 @@ export const LoginPage: React.FC<LoginPageProps> = ({
             </div>
           )}
 
-          {/* Single Dedicated Demo Login Button */}
-          <div className="mb-3">
+          {/* Single Dedicated Demo Login Button — Patient Demo Login */}
+          <div className="mb-2.5">
             <button
               type="button"
-              onClick={() => handleDemoLogin('clinician')}
-              className="w-full py-2.5 px-3.5 rounded-xl bg-gradient-to-r from-cyan-500/20 via-blue-600/20 to-teal-500/20 hover:from-cyan-500/35 hover:via-blue-600/35 hover:to-teal-500/35 border border-cyan-400/60 hover:border-cyan-300 text-white font-black text-xs sm:text-sm flex items-center justify-between shadow-[0_0_20px_rgba(0,242,254,0.25)] hover:shadow-[0_0_30px_rgba(0,242,254,0.45)] transition-all duration-300 cursor-pointer group hover:scale-[1.01]"
-              title="Demo Login"
+              onClick={handleDemoLogin}
+              className="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-cyan-500/20 via-blue-600/20 to-teal-500/20 hover:from-cyan-500/35 hover:via-blue-600/35 hover:to-teal-500/35 border border-cyan-400/60 hover:border-cyan-300 text-white font-black text-xs sm:text-sm flex items-center justify-between shadow-[0_0_15px_rgba(0,242,254,0.25)] hover:shadow-[0_0_25px_rgba(0,242,254,0.45)] transition-all duration-300 cursor-pointer group hover:scale-[1.01]"
+              title="Patient Demo Login"
             >
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-500 text-slate-950 flex items-center justify-center font-black shadow-md shrink-0 group-hover:scale-105 transition-transform">
-                  <Sparkles className="w-4 h-4 text-slate-950 fill-slate-950" />
+                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-500 text-slate-950 flex items-center justify-center font-black shadow-md shrink-0 group-hover:scale-105 transition-transform">
+                  <Sparkles className="w-3.5 h-3.5 text-slate-950 fill-slate-950" />
                 </div>
                 <div className="text-left">
                   <div className="text-xs sm:text-sm font-black text-white flex items-center gap-1.5">
                     <span className="liquid-chrome-cyan-text">{t('login_demo_btn')}</span>
                     <span className="px-1 py-0.2 rounded text-[8px] font-mono uppercase bg-cyan-400 text-slate-950 font-bold tracking-wider">
-                      1-CLICK
+                      PATIENT DEMO
                     </span>
                   </div>
                   <p className="text-[9px] text-slate-300 font-sans leading-none mt-0.5">
@@ -352,7 +350,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
             </button>
           </div>
 
-          <div className="relative flex items-center justify-center mb-3">
+          <div className="relative flex items-center justify-center mb-2.5">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-white/10" />
             </div>
@@ -362,7 +360,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
           </div>
 
           {/* Tab Switcher (Sign In vs Sign Up) */}
-          <div className="grid grid-cols-2 p-1 rounded-xl neu-pressed border border-white/5 mb-3">
+          <div className="grid grid-cols-2 p-1 rounded-xl neu-pressed border border-white/5 mb-2.5">
             <button
               type="button"
               onClick={() => {

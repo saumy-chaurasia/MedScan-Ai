@@ -183,7 +183,7 @@ export const translations = {
     login_switch_profile: 'Switch Profile or Sign Out',
     login_active_session: 'Active Clinical Session',
     login_demo_btn: 'Demo Login',
-    login_demo_sub: '1-Click instant access • Explore all clinical features',
+    login_demo_sub: 'Patient Demo Login • All history saved locally on your device',
 
     // Footer
     footer_disclaimer_label: 'Clinical Decision Support Disclaimer:',
@@ -379,7 +379,7 @@ export const translations = {
     login_switch_profile: 'प्रोफ़ाइल बदलें या साइन आउट करें',
     login_active_session: 'सक्रिय क्लिनिकल सत्र',
     login_demo_btn: 'डेमो लॉगिन (Demo Login)',
-    login_demo_sub: '1-क्लिक त्वरित प्रवेश • सभी नैदानिक सुविधाएं देखें',
+    login_demo_sub: 'मरीज़ डेमो लॉगिन • सभी इतिहास आपके डिवाइस/लैपटॉप में सहेजा जाएगा',
 
     // Footer
     footer_disclaimer_label: 'क्लिनिकल निर्णय समर्थन अस्वीकरण:',
