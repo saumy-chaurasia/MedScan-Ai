@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Shield, Sparkles, History, User, ArrowRight, Globe } from 'lucide-react';
 import { useLang } from '../contexts/LanguageContext';
 import { UserProfile } from '../types/prescription';
@@ -14,6 +14,8 @@ interface NavbarProps {
   userProfile?: UserProfile | null;
 }
 
+type SectionId = 'home' | 'scanner' | 'features' | 'history';
+
 export const Navbar: React.FC<NavbarProps> = ({
   onOpenAuth,
   onOpenHistory,
@@ -26,10 +28,59 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const { lang, t, toggleLang } = useLang();
   const [langOpen, setLangOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<SectionId>('home');
+
+  // Scroll Spy to detect which section the user is currently looking at
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+
+      // Top of page is always 'home'
+      if (scrollY < 180) {
+        setActiveSection('home');
+        return;
+      }
+
+      // If scrolled near bottom of page, highlight the last section
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 60) {
+        setActiveSection('features');
+        return;
+      }
+
+      // Check sections from bottom to top of page
+      const sections: { id: SectionId; elementId: string }[] = [
+        { id: 'features', elementId: 'features-section' },
+        { id: 'history', elementId: 'history-section' },
+        { id: 'scanner', elementId: 'scanner-section' },
+        { id: 'home', elementId: 'home-section' },
+      ];
+
+      const navOffset = 220;
+      for (const sec of sections) {
+        const el = document.getElementById(sec.elementId);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= navOffset) {
+            setActiveSection(sec.id);
+            return;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleNavClick = (sectionId: SectionId, elementId: string) => {
+    setActiveSection(sectionId);
+    scrollTo(elementId);
   };
 
   return (
@@ -57,40 +108,77 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
-        {/* Navigation Links */}
-        <nav className="hidden md:flex items-center gap-7 lg:gap-8 text-sm font-semibold text-slate-300">
+        {/* Navigation Links with Curved Rectangular Active Indicator */}
+        <nav className="hidden md:flex items-center gap-1.5 lg:gap-2 p-1.5 rounded-2xl glass-card-premium neu-pressed border border-white/10 text-sm font-semibold text-slate-300">
           <button
-            onClick={() => scrollTo('home-section')}
-            className="hover:text-cyan-300 transition-colors cursor-pointer py-1 relative group"
+            type="button"
+            onClick={() => handleNavClick('home', 'home-section')}
+            className={`px-3.5 py-1.5 rounded-xl transition-all duration-300 cursor-pointer flex items-center gap-1.5 ${
+              activeSection === 'home'
+                ? 'bg-cyan-500/20 border border-cyan-400/60 text-cyan-300 shadow-[0_0_15px_rgba(0,242,254,0.35)] font-bold'
+                : 'text-slate-300 hover:text-white hover:bg-white/5 border border-transparent'
+            }`}
           >
+            {activeSection === 'home' && (
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#00F2FE]" />
+            )}
             <span>{t('nav_home')}</span>
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:w-full transition-all duration-300" />
           </button>
+
           <button
-            onClick={() => scrollTo('scanner-section')}
-            className="hover:text-cyan-300 transition-colors cursor-pointer py-1 relative group"
+            type="button"
+            onClick={() => handleNavClick('scanner', 'scanner-section')}
+            className={`px-3.5 py-1.5 rounded-xl transition-all duration-300 cursor-pointer flex items-center gap-1.5 ${
+              activeSection === 'scanner'
+                ? 'bg-cyan-500/20 border border-cyan-400/60 text-cyan-300 shadow-[0_0_15px_rgba(0,242,254,0.35)] font-bold'
+                : 'text-slate-300 hover:text-white hover:bg-white/5 border border-transparent'
+            }`}
           >
+            {activeSection === 'scanner' && (
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#00F2FE]" />
+            )}
             <span>{t('nav_scan_prescription')}</span>
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:w-full transition-all duration-300" />
           </button>
+
           <button
-            onClick={() => scrollTo('features-section')}
-            className="hover:text-cyan-300 transition-colors cursor-pointer py-1 relative group"
+            type="button"
+            onClick={() => handleNavClick('features', 'features-section')}
+            className={`px-3.5 py-1.5 rounded-xl transition-all duration-300 cursor-pointer flex items-center gap-1.5 ${
+              activeSection === 'features'
+                ? 'bg-cyan-500/20 border border-cyan-400/60 text-cyan-300 shadow-[0_0_15px_rgba(0,242,254,0.35)] font-bold'
+                : 'text-slate-300 hover:text-white hover:bg-white/5 border border-transparent'
+            }`}
           >
+            {activeSection === 'features' && (
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#00F2FE]" />
+            )}
             <span>{t('nav_features')}</span>
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:w-full transition-all duration-300" />
           </button>
+
           <button
-            onClick={() => scrollTo('history-section')}
-            className="hover:text-cyan-300 transition-colors cursor-pointer py-1 relative group flex items-center gap-1.5"
+            type="button"
+            onClick={() => handleNavClick('history', 'history-section')}
+            className={`px-3.5 py-1.5 rounded-xl transition-all duration-300 cursor-pointer flex items-center gap-1.5 ${
+              activeSection === 'history'
+                ? 'bg-cyan-500/20 border border-cyan-400/60 text-cyan-300 shadow-[0_0_15px_rgba(0,242,254,0.35)] font-bold'
+                : 'text-slate-300 hover:text-white hover:bg-white/5 border border-transparent'
+            }`}
           >
+            {activeSection === 'history' && (
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#00F2FE]" />
+            )}
             <span>{t('nav_history')}</span>
             {historyCount > 0 && (
-              <span className="px-1.5 py-0.2 rounded-full bg-cyan-400/20 text-cyan-300 text-[10px] font-mono border border-cyan-400/30 font-bold">
+              <span
+                className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono border font-bold ${
+                  activeSection === 'history'
+                    ? 'bg-cyan-400 text-slate-950 border-cyan-300'
+                    : 'bg-cyan-400/20 text-cyan-300 border-cyan-400/30'
+                }`}
+              >
                 {historyCount}
               </span>
             )}
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:w-full transition-all duration-300" />
           </button>
         </nav>
 
@@ -172,37 +260,59 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      {/* Mobile Sub-Navigation Bar */}
-      <div className="md:hidden border-t border-white/5 bg-[#06080F]/80 backdrop-blur-md px-4 py-2 flex items-center justify-around text-xs font-bold text-slate-300">
+      {/* Mobile Sub-Navigation Bar with Curved Rectangular Active Indicator */}
+      <div className="md:hidden border-t border-white/10 bg-[#06080F]/90 backdrop-blur-md px-3 py-1.5 flex items-center justify-around text-xs font-bold text-slate-300">
         <button
           type="button"
-          onClick={() => scrollTo('home-section')}
-          className="px-2.5 py-1 rounded-xl neu-raised text-slate-300 hover:text-cyan-300 transition-colors"
+          onClick={() => handleNavClick('home', 'home-section')}
+          className={`px-3 py-1 rounded-xl transition-all duration-300 ${
+            activeSection === 'home'
+              ? 'bg-cyan-500/20 border border-cyan-400/60 text-cyan-300 shadow-[0_0_12px_rgba(0,242,254,0.35)] font-black'
+              : 'text-slate-400 hover:text-white border border-transparent'
+          }`}
         >
           {t('nav_home')}
         </button>
         <button
           type="button"
-          onClick={() => scrollTo('scanner-section')}
-          className="px-2.5 py-1 rounded-xl neu-raised text-slate-300 hover:text-cyan-300 transition-colors"
+          onClick={() => handleNavClick('scanner', 'scanner-section')}
+          className={`px-3 py-1 rounded-xl transition-all duration-300 ${
+            activeSection === 'scanner'
+              ? 'bg-cyan-500/20 border border-cyan-400/60 text-cyan-300 shadow-[0_0_12px_rgba(0,242,254,0.35)] font-black'
+              : 'text-slate-400 hover:text-white border border-transparent'
+          }`}
         >
           {t('nav_scan_prescription')}
         </button>
         <button
           type="button"
-          onClick={() => scrollTo('features-section')}
-          className="px-2.5 py-1 rounded-xl neu-raised text-slate-300 hover:text-cyan-300 transition-colors"
+          onClick={() => handleNavClick('features', 'features-section')}
+          className={`px-3 py-1 rounded-xl transition-all duration-300 ${
+            activeSection === 'features'
+              ? 'bg-cyan-500/20 border border-cyan-400/60 text-cyan-300 shadow-[0_0_12px_rgba(0,242,254,0.35)] font-black'
+              : 'text-slate-400 hover:text-white border border-transparent'
+          }`}
         >
           {t('nav_features')}
         </button>
         <button
           type="button"
-          onClick={() => scrollTo('history-section')}
-          className="px-2.5 py-1 rounded-xl neu-raised text-slate-300 hover:text-cyan-300 transition-colors flex items-center gap-1"
+          onClick={() => handleNavClick('history', 'history-section')}
+          className={`px-3 py-1 rounded-xl transition-all duration-300 flex items-center gap-1 ${
+            activeSection === 'history'
+              ? 'bg-cyan-500/20 border border-cyan-400/60 text-cyan-300 shadow-[0_0_12px_rgba(0,242,254,0.35)] font-black'
+              : 'text-slate-400 hover:text-white border border-transparent'
+          }`}
         >
           <span>{t('nav_history')}</span>
           {historyCount > 0 && (
-            <span className="w-4 h-4 rounded-full bg-cyan-400 text-slate-950 text-[9px] font-black flex items-center justify-center">
+            <span
+              className={`w-3.5 h-3.5 rounded-full text-[9px] font-black flex items-center justify-center ${
+                activeSection === 'history'
+                  ? 'bg-cyan-400 text-slate-950'
+                  : 'bg-cyan-400/30 text-cyan-200'
+              }`}
+            >
               {historyCount}
             </span>
           )}
